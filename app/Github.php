@@ -59,22 +59,35 @@ class GitHub
         return $this->get_request_json($url);
     }
 
-    //get readme file of a specific repo
-    public function get_readme($repo = '')
+    //get global readme file of a specific repo
+    public function get_global_readme($repo = '')
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/readme'; // get readme.md
         return $this->get_request_json($url);
     }
 
-    //get the data from a specific file
-    public function get_file_data($repo = '', $path = '')
+    //get readme file specific location
+    public function get_specific_readme($repo = '', $path)
     {
-        $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/contents/' . $path; // get specific file data
+
+        $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo  . '/contents/' . $path . '/README.md'; // get readme.md
         return $this->get_request_json($url);
     }
 
     //get the data from a specific file
-    public function fork($repo = '', $path = '')
+    public function list_commits($repo = '', $owner = null)
+    {
+        if ($owner == null) {
+            $owner = $this->owner;
+        }
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits'; // get specific file data
+        // dd($url);
+        return $this->get_request_json($url);
+    }
+
+
+    public function fork($repo = '')
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/forks'; // fork this repo
         return $this->post_request($url);
@@ -94,10 +107,10 @@ class GitHub
     //handle the entire request
     public function get_request_json($url)
     {
-        $url = str_replace(' ', '%20', $url); //remove white space in the url
+        // $url = str_replace(' ', '%20', $url); //remove white space in the url
 
         $response = Curl::to($url)
-            ->withHeader("Authorization: token " . $this->token())
+            // ->withHeader("Authorization: token " . $this->token())
             ->withHeader("User-Agent: " . $this->user_agent)
             ->asJson()
             ->get();

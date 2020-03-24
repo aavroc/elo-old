@@ -6,6 +6,7 @@ use App\Classroom;
 use App\User;
 use App\Task;
 use App\Module;
+use App\GitHub;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -76,16 +77,17 @@ class AdminController extends Controller
      */
     public function show(User $user)
     {
-        $tasks          = $user->exercises;
-        $all_tasks      = Task::all();
         $all_modules    = Module::all();
 
+        $github = new GitHub();
+        $commits = $github->list_commits('PHP-BASIC', $user->github_nickname);
+
+        // dd($commits);
+
         $data = [
-            'exercises'     => $tasks,
             'user'          => $user,
-            'all_exercises' => $all_tasks,
             'all_modules'   => $all_modules,
-            'classrooms'    => Classroom::all()
+            'commits'       => $commits
         ];
 
         // $data = [

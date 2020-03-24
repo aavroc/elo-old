@@ -2,25 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Exercise;
 use Illuminate\Http\Request;
 
-use App\Level;
+use App\Module;
 use App\User;
-use App\Code;
+use App\GitHub;
 use Illuminate\Support\Facades\Auth;
-
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 class StudentController extends Controller
 {
 
     public function dashboard()
     {
         $data = [
-            'levels' => Level::all(),
+            'modules' => Module::all(),
             'user'   => Auth::user(),
 
         ];
         return view('dashboards.student', $data);
+    }
+
+    public function show_module(Request $request)
+    {
+        $name = $request->repo;
+        $path = $request->path;
+        $repo = Module::where('name', $name)->first();
+        $github = new GitHub();
+        $github->fork($repo->name);
+
+        if ($path != null) {
+            $readme = $github->get_specific_readme($repo->name, $path);
+        } else {
+            $readme = $github->get_global_readme($repo->name);
+
+            if (isset($readme->message)) {
+                if ($readme->message == "Bad credentials") {
+                    die('please connect with GitHub');
+                }
+            }
+        }
+        $readme_content = base64_decode($readme->content);
+
+        $data = [
+            'full_repo_data' => $github->get_contents($repo->name, $path),
+            'readme_content' => $this->converter->convertToHtml($readme_content),
+            'repo' => $repo->name,
+        ];
+        return view('modules.show', $data);
     }
 
     /**
@@ -30,7 +58,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $levels = Level::all();
+        $levels = Module::all();
         $users  = User::where('role', 3)->get();
         $exercises = Exercise::all();
 
@@ -73,17 +101,17 @@ class StudentController extends Controller
      */
     public function show(User $student)
     {
-        $exercises     = $student->exercises;
-        $all_exercises = Exercise::all();
-        $all_levels    = Level::all();
+        // $exercises     = $student->exercises;
+        // $all_exercises = Exercise::all();
+        // $all_levels    = Level::all();
 
-        $data = [
-            'exercises'     => $exercises,
-            'user'          => $student,
-            'all_exercises' => $all_exercises,
-            'all_levels'    => $all_levels,
-        ];
-        return view('users.show', $data);
+        // $data = [
+        //     'exercises'     => $exercises,
+        //     'user'          => $student,
+        //     'all_exercises' => $all_exercises,
+        //     'all_levels'    => $all_levels,
+        // ];
+        // return view('users.show', $data);
     }
 
     /**

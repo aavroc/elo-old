@@ -13,22 +13,19 @@
 </div>
 @endif
 <div class="row mt-4">
-
-
-
-    @foreach ($levels as $level)
+    {{-- {{dd($modules)}} --}}
+    @foreach ($modules as $module)
     <div class="col">
-        @if($level->id <= $user->level_id)
-            <a href="{{route('subs.index', $level)}}" class="card level-to-choose">
-                @endif
-                <div class="card-body d-flex flex-column align-items-center justify-content-center"
-                    style="width:12rem;height:12rem;">
-                    <h5 class="card-title h1">{{$level->name}}</h5>
-                </div>
-
-                @if($level->id <= $user->level_id)
-            </a>
+        @if($module->id == $user->modules->find($module->id)['id'] )
+        <a href="{{route('modules.show', ['repo'=> $module->name ])}}" class="card module-to-choose">
             @endif
+            <div class="card-body d-flex flex-column align-items-center justify-content-center"
+                style="width:12rem;height:12rem;">
+                <h5 class="card-title h1">{{$module->name}}</h5>
+            </div>
+            @if($module->id == $user->modules->find($module->id)['id'] )
+        </a>
+        @endif
     </div>
     @endforeach
 </div>

@@ -55,5 +55,11 @@ class UserSeeder extends Seeder
                 $value
             ]);
         }
+
+
+        DB::table('users_modules')->insert([
+            'user_id' => 4,
+            'module_id' => 1,
+        ]);
     }
 }

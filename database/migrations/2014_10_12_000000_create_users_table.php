@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password')->default(bcrypt('welcome01'));
             $table->integer('role')->comment('1=admin, 2=teacher, 3=student')->default(3);
+            $table->string('github_nickname')->nullable();
+            $table->string('github_email')->nullable();
             $table->string('github_access_token')->nullable();
             $table->string('classroom')->nullable();
             $table->integer('status_id')->comment('1=member, 2=logged in')->default(1);

@@ -5,10 +5,29 @@ namespace App\Http\Controllers;
 use App\Module;
 use App\GitHub;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class ModuleController extends Controller
 {
+    protected $converter;
+
+    public function __construct()
+    {
+        $this->converter = new GithubFlavoredMarkdownConverter([
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'enable_em' => true,
+            'enable_strong' => true,
+            'use_asterisk' => true,
+            'use_underscore' => true,
+            'unordered_list_markers' => ['-', '*', '+'],
+            'max_nesting_level' => INF,
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -52,23 +71,36 @@ class ModuleController extends Controller
      */
     public function show(Request $request)
     {
+
         $name = $request->repo;
         $path = $request->path;
 
         $repo = Module::where('name', $name)->first();
-
         $github = new GitHub();
 
-        $readme = $github->get_readme($repo->name);
+
+        if ($path != null) {
+            $readme = $github->get_specific_readme($repo->name, $path);
+        } else {
+            $readme = $github->get_global_readme($repo->name);
+
+            if (isset($readme->message)) {
+                if ($readme->message == "Bad credentials") {
+                    die('please connect with GitHub');
+                }
+            }
+        }
         $readme_content = base64_decode($readme->content);
 
         $data = [
             'full_repo_data' => $github->get_contents($repo->name, $path),
-            'readme_content' => $readme_content,
+            'readme_content' => $this->converter->convertToHtml($readme_content),
             'repo' => $repo->name,
         ];
         return view('modules.show', $data);
     }
+
+    
 
     /**
      * Show the form for editing the specified resource.

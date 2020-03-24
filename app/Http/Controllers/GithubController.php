@@ -28,7 +28,14 @@ class GithubController extends Controller
     {
         $user = Socialite::driver('github')->user();
         session(['user_token' => $user->token]);
-        User::where('id', Auth::user()->id)->update(['github_access_token' =>  $user->token]);
+        // dd($user);
+        User::where('id', Auth::user()->id)->update(
+            [
+                'github_access_token' =>  $user->token,
+                'github_nickname'     =>  $user->nickname,
+                'github_email'        =>  $user->email,
+            ],
+        );
 
         if (Auth::user()->role == 3) {
             return redirect()->route('student');

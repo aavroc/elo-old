@@ -7,8 +7,30 @@ use App\Module;
 use App\Github;
 use Illuminate\Http\Request;
 
+use League\CommonMark\GithubFlavoredMarkdownConverter;
+
 class TaskController extends Controller
 {
+
+    protected $converter;
+
+    public function __construct()
+    {
+        $this->converter = new GithubFlavoredMarkdownConverter([
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'enable_em' => true,
+            'enable_strong' => true,
+            'use_asterisk' => true,
+            'use_underscore' => true,
+            'unordered_list_markers' => ['-', '*', '+'],
+            'max_nesting_level' => INF,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -53,18 +75,29 @@ class TaskController extends Controller
         $repo = Module::where('name', $name)->first();
         $github = new GitHub();
 
+
+
         $data = [];
-        if ($path == "README.md") {
-            $file_data = $github->get_readme($repo->name);
-            $content = base64_decode($file_data->content);
-            $data['content'] =  $content;
+        if ($this->contains("README.md", $path)) {
+
+            if ($path != null) {
+                $readme = $github->get_specific_readme($repo->name, $path);
+            } else {
+                $readme = $github->get_global_readme($repo->name);
+            }
+            $readme_content = base64_decode($readme->content);
+
+            $data['readme_content'] = $this->converter->convertToHtml($readme_content);
             $data['repo'] =  $repo->name;
-        } else {
-
-
-        }
+        } 
 
         return view('tasks.show', $data);
+    }
+
+    // returns true if $needle is a substring of $haystack
+    protected function contains($needle, $haystack)
+    {
+        return strpos($haystack, $needle) !== false;
     }
 
     /**
