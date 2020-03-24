@@ -59,14 +59,14 @@ class ModuleController extends Controller
 
         $github = new GitHub();
 
-        // dd($repo->name);
+        $readme = $github->get_readme($repo->name);
+        $readme_content = base64_decode($readme->content);
 
         $data = [
             'full_repo_data' => $github->get_contents($repo->name, $path),
-            'readme' => $github->get_contents($repo->name),
+            'readme_content' => $readme_content,
             'repo' => $repo->name,
         ];
-
         return view('modules.show', $data);
     }
 

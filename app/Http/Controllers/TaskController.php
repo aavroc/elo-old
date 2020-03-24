@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\Module;
+use App\Github;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -44,10 +46,25 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show(Request $request)
     {
-        //
-        return view('tasks.show');
+        $name = $request->repo;
+        $path = $request->path;
+        $repo = Module::where('name', $name)->first();
+        $github = new GitHub();
+
+        $data = [];
+        if ($path == "README.md") {
+            $file_data = $github->get_readme($repo->name);
+            $content = base64_decode($file_data->content);
+            $data['content'] =  $content;
+            $data['repo'] =  $repo->name;
+        } else {
+
+
+        }
+
+        return view('tasks.show', $data);
     }
 
     /**

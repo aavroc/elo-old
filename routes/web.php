@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index');
     Route::get('modules/{repo}/{path?}', 'ModuleController@show')->name('modules.show');
-    Route::get('modules/{repo}/{path}', 'TaskController@show')->where('path', '.*')->name('tasks.show');
+    Route::get('modules/{repo}/file/{path}', 'TaskController@show')->where('path', '.*')->name('tasks.show');
 
 
     //Github
