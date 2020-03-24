@@ -32,7 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
     Route::get('classrooms/{classroom}/student_level', 'ClassroomController@show_levels')->name('classrooms.show_levels')->middleware('teacher');
-    Route::get('classrooms/{classroom}/exercises', 'ClassroomController@show_exercises')->name('classrooms.show_exercises')->middleware('teacher');
 
     //DASHBOARDS
     Route::get('/student', 'StudentController@dashboard')->name('student')->middleware('student'); //1

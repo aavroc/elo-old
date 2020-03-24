@@ -23,19 +23,19 @@
             </span>
             @endif
         </p>
-        @isset($all_levels)
+        @isset($all_modules)
         <p>
             <div id="message"></div>
             <td>
-                @foreach($all_levels as $level)
+                @foreach($all_modules as $module)
                 <div class="form-check form-check-inline">
-                    <label class="form-radio-label fancy-radio" for="user_{{$user->id}}_level_{{$level->id}}">
-                        <input class="form-radio-input" type="radio" name="level_user_{{$user->id}}"
-                            id="user_{{$user->id}}_level_{{$level->id}}" data-student="{{$user->id}}"
-                            data-level="{{$level->id}}" @if($level->id==$user->level_id) checked @endif>
+                    <label class="form-radio-label fancy-radio" for="user_{{$user->id}}_level_{{$module->id}}">
+                        <input class="form-radio-input" type="radio" name="module_user_{{$user->id}}"
+                            id="user_{{$user->id}}_module_{{$module->id}}" data-student="{{$user->id}}"
+                            data-module="{{$module->id}}" @if($module->id==$user->module_id) checked @endif>
                         <i class="fas fa-award text-danger"></i>
                         <i class="fas fa-award text-success"></i>
-                        {{$level->name}}
+                        {{$module->name}}
                     </label>
                 </div>
                 @endforeach
@@ -46,50 +46,26 @@
         <a href="{{route('users.edit', $user)}}" class="btn btn-warning">Edit gebruiker</a>
         @endif
         @if($user->role == 3)
-        @foreach ($all_levels as $level)
-        <h3 class="mt-4">{{$level->name}}</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>student status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($level->exercises->sortBy('challenge') as $exercise)
-                <tr>
-                    <td>{{$exercise->id}}</td>
-                    <td>
-                        <a
-                            href="{{route('exercises.view_code', ['exercise'=> $exercise->id, 'student' => $user->id])}}">
-                            {{$exercise->name}} @if($exercise->challenge ==1) <span class="text-danger"><i
-                                    class="fas fa-exclamation text-danger"></i> CHALLENGE - level {{$exercise->level}}
-                            </span>
-                            @endif
-                        </a>
-                    </td>
-                    <td>
-                        <?php 
-                        $current_status = $user->code->where('exercise_id', $exercise->id)->first()['student_status'];
-                        $states = [
-                            ['Niet bekeken'          => 'badge-danger'],
-                            ['Bekeken'               => 'badge-warning'], 
-                            ['Ingeleverd'            => 'badge-info'], 
-                            ['Goed gekeurd!'         => 'badge-success'],
-                            ['Probeer het opnieuw!'  => 'badge-primary'], 
-                        ];
-                        if (array_key_exists($current_status, $states)) :?>
-                        <span
-                            class="badge badge <?php echo current($states[$current_status]);?>"><?php echo key($states[$current_status]); ?></span>
-                        <?php endif;?>
-
-                    </td>
-                </tr>
+        <div class="row">
+            <div class="d-flex flex-row justify-content-around">
+                @foreach ($all_modules as $module)
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$module->name}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the
+                                card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
-            </tbody>
-        </table>
-        @endforeach
+            </div>
+        </div>
         @endif
     </div>
 </div>

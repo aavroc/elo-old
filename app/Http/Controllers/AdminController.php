@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Classroom;
 use App\User;
+use App\Task;
+use App\Module;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -22,8 +24,7 @@ class AdminController extends Controller
     public function dashboard()
     {
 
-        $data = [
-        ];
+        $data = [];
         return view('dashboards.admin', $data);
     }
 
@@ -75,16 +76,16 @@ class AdminController extends Controller
      */
     public function show(User $user)
     {
-        $exercises     = $user->exercises;
-        $all_exercises = Exercise::all();
-        $all_levels    = Level::all();
+        $tasks          = $user->exercises;
+        $all_tasks      = Task::all();
+        $all_modules    = Module::all();
 
         $data = [
-            'exercises'     => $exercises,
+            'exercises'     => $tasks,
             'user'          => $user,
-            'all_exercises' => $all_exercises,
-            'all_levels'    => $all_levels,
-            'classrooms' => Classroom::all()
+            'all_exercises' => $all_tasks,
+            'all_modules'   => $all_modules,
+            'classrooms'    => Classroom::all()
         ];
 
         // $data = [

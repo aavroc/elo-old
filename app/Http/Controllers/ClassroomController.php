@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Classroom;
-use App\Level;
+use App\Module;
 use App\User;
-use App\Exercise;
+use App\Task;
 use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
@@ -24,27 +24,6 @@ class ClassroomController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  \App\Classroom  $classroom
@@ -52,7 +31,7 @@ class ClassroomController extends Controller
      */
     public function show_levels(Classroom $classroom)
     {
-        $levels = Level::all();
+        $levels = Module::all();
         $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
 
         // dd($exercises);
@@ -60,26 +39,26 @@ class ClassroomController extends Controller
         $data = [
             'users'               => $users,
             'levels'              => $levels,
-            'number_of_exercises' => Exercise::count()
+            'number_of_exercises' => Task::count()
         ];
 
         return view('classrooms.show', $data);
     }
 
-    public function show_exercises(Classroom $classroom)
-    {
-        $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
+    // public function show_exercises(Classroom $classroom)
+    // {
+    //     $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
 
-        $exercises = Exercise::where('status', 1)->orderBy('level', 'asc')->get();
+    //     $exercises = Task::where('status', 1)->orderBy('level', 'asc')->get();
 
-        $data = [
-            'users'      => $users,
-            'exercises'  => $exercises,
+    //     $data = [
+    //         'users'      => $users,
+    //         'exercises'  => $exercises,
 
-        ];
+    //     ];
 
-        return view('classrooms.show', $data);
-    }
+    //     return view('classrooms.show', $data);
+    // }
 
     /**
      * Show the form for editing the specified resource.
