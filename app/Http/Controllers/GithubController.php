@@ -6,7 +6,7 @@ use Socialite;
 
 use Illuminate\Http\Request;
 
-use App\Level;
+use App\Module;
 use App\GitHub;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +39,7 @@ class GithubController extends Controller
     public function index()
     {
         $data = [
-            'modules' => Level::all()
+            'modules' => Module::all()
         ];
         return view('github.index', $data);
     }
@@ -49,7 +49,7 @@ class GithubController extends Controller
         $name = $request->repo;
         $path = $request->path;
 
-        $repo = Level::where('name', $name)->first();
+        $repo = Module::where('name', $name)->first();
 
         $github = new GitHub();
 

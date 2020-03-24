@@ -39,6 +39,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin', 'AdminController@dashboard')->name('admin')->middleware('admin');
     Route::get('/teacher', 'TeacherController@dashboard')->name('teacher')->middleware('teacher');
 
+    //Modules
+    Route::get('modules', 'ModuleController@index')->name('modules.index');
+    Route::get('modules/{repo}/{path?}', 'ModuleController@show')->name('modules.show');
+    Route::get('modules/{repo}/{path}', 'TaskController@show')->where('path', '.*')->name('tasks.show');
+
+
     //Github
     Route::get('github', 'GithubController@index')->name('github.index');
     Route::get('github/{repo}/fork', 'GithubController@fork')->name('github.fork');
@@ -46,9 +52,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('github/{repo}/edit-file/{path}', 'GithubController@edit')->where('path', '.*')->name('github.edit-file');
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');
+
+    //LOGOUT
+    Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 });
 
 Auth::routes(['register' => false]);
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

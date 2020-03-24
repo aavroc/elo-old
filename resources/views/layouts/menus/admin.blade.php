@@ -19,7 +19,7 @@
                     Gebruikers</a>
             </li>
             <li class="nav-item">
-                <a href="{{route('github.index')}}" class="nav-link text-danger"><i class="fas fa-users"></i>
+                <a href="{{route('modules.index')}}" class="nav-link text-danger"><i class="fas fa-users"></i>
                     Modules</a>
             </li>
 

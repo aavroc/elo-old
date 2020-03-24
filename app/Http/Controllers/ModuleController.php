@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Module;
+use App\GitHub;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ModuleController extends Controller
 {
@@ -14,8 +16,12 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        $data = [
+            'modules' => Module::all()
+        ];
+        return view('modules.index', $data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,9 +50,24 @@ class ModuleController extends Controller
      * @param  \App\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
+    public function show(Request $request)
     {
-        //
+        $name = $request->repo;
+        $path = $request->path;
+
+        $repo = Module::where('name', $name)->first();
+
+        $github = new GitHub();
+
+        // dd($repo->name);
+
+        $data = [
+            'full_repo_data' => $github->get_contents($repo->name, $path),
+            'readme' => $github->get_contents($repo->name),
+            'repo' => $repo->name,
+        ];
+
+        return view('modules.show', $data);
     }
 
     /**

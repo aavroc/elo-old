@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Classroom;
 use App\User;
-use App\CSVData;
-use App\Exercise;
-use App\Level;
-use App\Code;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
