@@ -53,13 +53,8 @@
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">{{$module->name}}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the
-                                card's content.</p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
+                            <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
+                                class="card-link">Check user module</a>
                         </div>
                     </div>
                 </div>
@@ -67,19 +62,28 @@
             </div>
         </div>
         <div class="row mt-3">
+            @if(is_array($user_events))
             <div class="col">
-
-                <h4>last commits</h4>
-                {{-- {{dd($commits)}} --}}
-                <ul class="list-group">
-                    @foreach($commits as $commit)
-                    <li class="list-group-item">
-                        <a href="#">{{$commit->commit->message}}</a>
-                        {{$commit->sha}}
-                    </li>
-                    @endforeach
-                </ul>
+                <div class="row">
+                    <div class="col">
+                        <h4>last pushed commits</h4>
+                        <ul class="list-group">
+                            @foreach($user_events as $event)
+                            @if($event->type == "PushEvent")
+                            @foreach($event->payload->commits as $commit)
+                            <li class="list-group-item">
+                                {{$commit->message}}
+                            </li>
+                            @endforeach
+                            @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
+            @else
+            <p>No events recored yet</p>
+            @endif
         </div>
         @endif
     </div>

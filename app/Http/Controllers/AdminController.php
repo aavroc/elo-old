@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
 use Illuminate\Support\Str;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class AdminController extends Controller
 {
@@ -80,23 +81,144 @@ class AdminController extends Controller
         $all_modules    = Module::all();
 
         $github = new GitHub();
-        $commits = $github->list_commits('PHP-BASIC', $user->github_nickname);
 
-        // dd($commits);
+        $user_events = null;
+        if ($user->github_nickname != null) {
+            $user_events = $github->get_user_events($user->github_nickname);
+        }
+
+
 
         $data = [
             'user'          => $user,
             'all_modules'   => $all_modules,
-            'commits'       => $commits
+            'user_events'   => $user_events
         ];
 
-        // $data = [
-        //     'user' => $user,
-
-        // ];
-        //show all users
         return view('users.show', $data);
     }
+
+    public function show_module(User $user, Module $module, Request $request)
+    {
+        $github = new GitHub();
+
+        $commits = null;
+        $commit_activity = null;
+        $user_events = null;
+        $levels = null;
+        $tasks_level_1 = null;
+        $tasks_level_2 = null;
+        $tasks_level_3 = null;
+        if ($user->github_nickname != null) {
+            $commits = $github->list_user_commits($module->name, $user->github_nickname, $user->github_nickname);
+            // $commit_activity = $github->get_last_year_commit_activity($module->name, $user->github_nickname);
+
+            $user_events = $github->get_user_events($user->github_nickname);
+            $levels = $github->get_contents($module->name, '', $user->github_nickname);
+            $tasks_level_1 = $github->get_contents($module->name, 'niveau1', $user->github_nickname);
+            $tasks_level_2 = $github->get_contents($module->name, 'niveau2', $user->github_nickname);
+            $tasks_level_3 = $github->get_contents($module->name, 'niveau3', $user->github_nickname);
+        }
+        // dd($tasks_level_3);
+        $data = [
+            'user'              => $user,
+            'module'            => $module,
+            'commits'           => $commits,
+            'commit_activity'   => $commit_activity, //nog niet toonbaar op het scherm
+            'user_events'       => $user_events,
+            'levels'            => $levels,
+            'tasks_level_1'     => $tasks_level_1,
+            'tasks_level_2'     => $tasks_level_2,
+            'tasks_level_3'     => $tasks_level_3,
+        ];
+
+        return view('users.repo', $data);
+    }
+
+    public function show_task(User $user, Module $module, Request $request)
+    {
+        $github = new GitHub();
+
+        $commits = null;
+        $contents = null;
+        if ($user->github_nickname != null) {
+            $commits = $github->list_commits_path($module->name, $user->github_nickname, $request->path);
+            $contents = $github->get_contents($module->name,  $request->path, $user->github_nickname);
+        }
+
+        if ($request->path != null) {
+            $readme = $github->get_specific_readme($module->name, $request->path);
+        } else {
+            $readme = $github->get_global_readme($module->name);
+
+            if (isset($readme->message)) {
+                if ($readme->message == "Bad credentials") {
+                    die('please connect with GitHub');
+                }
+            }
+        }
+        $readme_content = base64_decode($readme->content);
+        $converter = $this->converter();
+        $data = [
+            'user'      => $user,
+            'module'    => $module,
+            'commits'   => $commits,
+            'contents'  => $contents,
+            'readme_content' => $converter->convertToHtml($readme_content),
+        ];
+
+        return view('users.task', $data);
+    }
+
+    public function converter()
+    {
+        return new GithubFlavoredMarkdownConverter([
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'enable_em' => true,
+            'enable_strong' => true,
+            'use_asterisk' => true,
+            'use_underscore' => true,
+            'unordered_list_markers' => ['-', '*', '+'],
+            'max_nesting_level' => INF,
+        ]);
+    }
+
+    public function show_code(User $user, Module $module, Request $request)
+    {
+        $github = new GitHub();
+
+        $commits = null;
+        $contents = null;
+        $code = null;
+        if ($user->github_nickname != null) {
+            // $commits = $github->list_commits_path($module->name, $user->github_nickname, $request->path);
+            $contents = $github->get_contents($module->name,  $request->path, $user->github_nickname); //get content
+            $code = $github->get_contents($module->name,  $request->path, $user->github_nickname, TRUE); //get raw content
+        }
+
+        $path_splitted = explode( '/', $request->path);
+
+        $level      =  $path_splitted[0];
+        $task       =  $path_splitted[1];
+
+        // dd($contents);
+        
+        $data = [
+            'user'      => $user,
+            'level'     => $level,
+            'task'      => $task,
+            'module'    => $module,
+            'contents'  => $contents,
+            'code'      => $code,
+        ];
+
+        return view('users.code', $data);
+    }
+    
 
     /**
      * Show the form for editing the specified resource.

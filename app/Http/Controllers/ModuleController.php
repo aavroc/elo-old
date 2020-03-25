@@ -78,29 +78,33 @@ class ModuleController extends Controller
         $repo = Module::where('name', $name)->first();
         $github = new GitHub();
 
+        $data = [];
 
         if ($path != null) {
             $readme = $github->get_specific_readme($repo->name, $path);
         } else {
             $readme = $github->get_global_readme($repo->name);
-
-            if (isset($readme->message)) {
-                if ($readme->message == "Bad credentials") {
-                    die('please connect with GitHub');
-                }
+        }
+        
+        if (isset($readme->message)) {
+            if ($readme->message == "Bad credentials") {
+                die('please connect with GitHub');
+            }
+            if ($readme->message == "Not Found") {
+                die('no readme file found');
             }
         }
         $readme_content = base64_decode($readme->content);
+        // dd($readme);
 
-        $data = [
-            'full_repo_data' => $github->get_contents($repo->name, $path),
-            'readme_content' => $this->converter->convertToHtml($readme_content),
-            'repo' => $repo->name,
-        ];
+        $data['readme_content'] = $this->converter->convertToHtml($readme_content);
+        $data['full_repo_data'] = $github->get_contents($repo->name, $path);
+        $data['repo'] = $repo->name;
+
         return view('modules.show', $data);
     }
 
-    
+
 
     /**
      * Show the form for editing the specified resource.

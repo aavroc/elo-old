@@ -17,6 +17,9 @@ Route::get('/', 'Auth\LoginController@welcome');
 
 Route::group(['middleware' => ['auth']], function () {
 
+    //Tasks
+    Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
+    
     //Users
     Route::get('users/upload_data', 'AdminController@select_file')->name('users.select_file')->middleware('admin');
     Route::post('users/upload_data', 'AdminController@upload_data')->name('users.upload_data')->middleware('admin');
@@ -26,8 +29,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users', 'AdminController@index')->name('users.index')->middleware('teacher'); //docent mag gebruikers lijst zien
     Route::post('users', 'AdminController@store')->name('users.store')->middleware('admin');
     Route::get('users/{user}', 'AdminController@show')->name('users.show')->middleware('teacher'); //docent mag gebruiker details bekijken
+
+    Route::get('users/{user}/module/{module}', 'AdminController@show_module')->name('users.repo')->middleware('teacher'); //docent mag gebruiker details bekijken
+    Route::get('users/{user}/module/{module}/task/{path?}', 'AdminController@show_task')->where('path', '.*')->name('users.task')->middleware('teacher'); //docent mag gebruiker details bekijken
+    
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
+    
+    
+    
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
@@ -44,7 +54,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('modules/{repo}/{path?}', 'ModuleController@show')->where('path', '.*')->name('modules.show');
 
     // Route::get('modules/{repo}/{path?}', 'StudentController@show_module')->where('path', '.*')->name('modules-students.show');
-
 
     //Github
     Route::get('github', 'GithubController@index')->name('github.index');

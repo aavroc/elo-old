@@ -15,7 +15,7 @@
         <ul class="list-group">
             @if(is_array($full_repo_data))
             @foreach($full_repo_data as $content)
-            @if($content->type == 'dir')
+            @if($content->type == 'dir' )
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{$content->name}}</h5>
