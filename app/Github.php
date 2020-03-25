@@ -107,7 +107,7 @@ class GitHub
 
 
     //show user specific commits of specific repo
-    public function list_user_commits($repo = '', $owner = null, $author = '')
+    public function list_user_commits($repo = '', $owner = null, $author = '', $since = null)
     {
         if ($owner == null) {
             $owner = $this->owner;
@@ -116,8 +116,9 @@ class GitHub
         if ($author != '') {
             $author = '?author=' . $author;
         }
-        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits' . $author;
-        return $this->get_request_json($url);
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits' . $author. $since;
+        return $this->get_request_json_secured($url);
     }
 
     public function get_last_year_commit_activity($repo = '', $owner = null)

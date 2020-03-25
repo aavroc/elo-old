@@ -23,10 +23,35 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        $github = new GitHub();
 
-        $data = [];
+        $users = User::where(
+            [
+                ['role', 3],
+                ['github_nickname', '!=', NULL]
+
+            ]
+        )
+            ->get();
+        $modules = Module::all();
+
+        $commits = [];
+        foreach ($modules as $module) {
+            foreach ($users as $user) {
+                $commits[$module->name][$user->firstname . ' ' .  $user->lastname] =
+                    $github->list_user_commits($module->name, $user->github_nickname, $user->github_nickname, '&since=2020-03-23T00:00:00Z');
+            }
+        }
+
+        // dd($commits);
+
+        $data = [
+            'users' => $users,
+            'commits' => $commits,
+            'modules' => $modules,
+        ];
         return view('dashboards.admin', $data);
     }
 
@@ -200,13 +225,13 @@ class AdminController extends Controller
             $code = $github->get_contents($module->name,  $request->path, $user->github_nickname, TRUE); //get raw content
         }
 
-        $path_splitted = explode( '/', $request->path);
+        $path_splitted = explode('/', $request->path);
 
         $level      =  $path_splitted[0];
         $task       =  $path_splitted[1];
 
         // dd($contents);
-        
+
         $data = [
             'user'      => $user,
             'level'     => $level,
@@ -218,7 +243,7 @@ class AdminController extends Controller
 
         return view('users.code', $data);
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
