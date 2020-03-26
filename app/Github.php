@@ -55,11 +55,13 @@ class GitHub
     //get content of a specific repo
     public function get_contents($repo = '', $path = '', $owner = null, $raw = FALSE)
     {
+
         if ($owner == null) {
             $owner = $this->owner;
         }
 
         $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/contents/' . $path; //get contents
+        // dd($url);
         return $this->get_request_json_secured($url, $raw);
     }
 
@@ -105,6 +107,16 @@ class GitHub
         return $this->get_request_json_secured($url);
     }
 
+    public function list_repo_events($repo = '', $owner = null)
+    {
+        if ($owner == null) {
+            $owner = $this->owner;
+        }
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/events';
+        return $this->get_request_json_secured($url);
+    }
+
 
     //show user specific commits of specific repo
     public function list_user_commits($repo = '', $owner = null, $author = '', $since = null)
@@ -117,7 +129,7 @@ class GitHub
             $author = '?author=' . $author;
         }
 
-        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits' . $author. $since;
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits' . $author . $since;
         return $this->get_request_json_secured($url);
     }
 

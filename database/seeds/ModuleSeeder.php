@@ -14,18 +14,27 @@ class ModuleSeeder extends Seeder
         $modules = [
             [
                 'name' => 'PHP Basic',
+                'slug' => 'php-basic',
             ],
             [
                 'name' => 'PHP Advanced',
+                'slug' => 'php-advanced',
             ],
             [
                 'name' => 'PHP Expert',
+                'slug' => 'php-expert',
             ],
             [
                 'name' => 'MySQL BASIC',
+                'slug' => 'mysql-basic',
             ],
             [
                 'name' => 'MySQL Advanced',
+                'slug' => 'mysql-advanced',
+            ],
+            [
+                'name' => 'Database Design',
+                'slug' => 'database-design',
             ],
 
         ];

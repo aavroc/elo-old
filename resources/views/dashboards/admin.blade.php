@@ -42,22 +42,31 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($commits as $module => $student_data)
-                @foreach($student_data as $student_name => $commits)
+              
+                {{-- {{dd($data_generated)}} --}}
+                @foreach($data_generated as $data)
+               
 
-                @foreach($commits as $commit)
-                <tr>
-                    @if(isset($commit->commit->message))
-
-                    <td>
-                        {{$student_name}}: {{$commit->commit->message}}
-                    </td>
-                    @endif
-                </tr>
-                @endforeach
-
-                @endforeach
-
+                
+                    @foreach($data as $user_id => $content)
+                        <tr>
+                            @if(!isset($content['events']->message))
+                                <td>
+                                    {{$content['user_data']->firstname}}
+                            @endif
+                            @foreach($content['events'] as $events)
+                                @if(property_exists( $events, 'payload'))
+                                    @foreach($events->payload->commits as $commit)
+                                        
+                                        <a href="users/{{$user_id}}">{{$commit->message}} </a>
+                                </td>
+                                    @endforeach
+                                @endif
+                                @php break; @endphp
+                            @endforeach
+                            
+                    @endforeach
+                        </tr>
                 @endforeach
             </tbody>
         </table>

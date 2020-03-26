@@ -20,7 +20,8 @@
 
     </div>
     <div class="col">
-        
+        <a href="" class="btn btn-success">Goedgekeurd!</a>
+        <a href="" class="btn btn-danger">Afgekeurd!</a>
     </div>
 
 </div>

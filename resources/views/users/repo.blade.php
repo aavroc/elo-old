@@ -15,6 +15,8 @@
     <div class="row">
         <div class="col">
             <div class="row mt-3">
+                
+                @if(is_array($levels))
                 @foreach($levels as $level)
                 @if($level->type == 'dir')
                 <div class="card" style="width: 18rem;">
@@ -62,6 +64,9 @@
                 </div>
                 @endif
                 @endforeach
+                @else
+                Geen werk gemaakt tot dusver
+                @endif
             </div>
         </div>
         <div class="col">

@@ -38,9 +38,9 @@ class UserSeeder extends Seeder
                 'status_id' => 1,
             ],
             [
-                'firstname' => 'Amba',
-                'lastname' => 'Amba',
-                'email' => 'amba@amba.com',
+                'firstname' => 'Willem',
+                'lastname' => 'van Oranje',
+                'email' => 'willem@oranje.com',
                 'password' => bcrypt('welcome01'),
                 'role' => 3,
                 'classroom' => 'LCTAOO9C',

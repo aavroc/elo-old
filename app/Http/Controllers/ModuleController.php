@@ -74,18 +74,18 @@ class ModuleController extends Controller
 
         $name = $request->repo;
         $path = $request->path;
+        // dd($name);
 
-        $repo = Module::where('name', $name)->first();
+        $repo = Module::where('slug', $name)->first();
         $github = new GitHub();
 
         $data = [];
-
+        // dd($repo);
         if ($path != null) {
-            $readme = $github->get_specific_readme($repo->name, $path);
+            $readme = $github->get_specific_readme($repo->slug, $path);
         } else {
-            $readme = $github->get_global_readme($repo->name);
+            $readme = $github->get_global_readme($repo->slug);
         }
-        
         if (isset($readme->message)) {
             if ($readme->message == "Bad credentials") {
                 die('please connect with GitHub');
@@ -95,12 +95,13 @@ class ModuleController extends Controller
             }
         }
         $readme_content = base64_decode($readme->content);
-        // dd($readme);
-
+        
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
-        $data['full_repo_data'] = $github->get_contents($repo->name, $path);
-        $data['repo'] = $repo->name;
-
+        $data['full_repo_data'] = $github->get_contents($repo->slug, $path);
+        $data['repo'] = $repo->slug;
+        
+        // dd($data['repo']);
+        // dd($data['full_repo_data']);
         return view('modules.show', $data);
     }
 

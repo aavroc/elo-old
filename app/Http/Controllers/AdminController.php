@@ -37,20 +37,26 @@ class AdminController extends Controller
             ->get();
         $modules = Module::all();
 
-        $commits = [];
+        $data_generated = [];
         foreach ($modules as $module) {
             foreach ($users as $user) {
-                $commits[$module->name][$user->firstname . ' ' .  $user->lastname] =
-                    $github->list_user_commits($module->name, $user->github_nickname, $user->github_nickname, '&since=2020-03-23T00:00:00Z');
+              
+                $data_generated[$module->slug][$user->id]['user_data'] = $user;
+                $data_generated[$module->slug][$user->id]['events'] = 
+                    $github->list_repo_events($module->slug, $user->github_nickname);
+
+                // $data_generated[$user->id]['events'] = 
+                //                 $github->list_repo_events($module->slug, $user->github_nickname);
             }
         }
-
-        // dd($commits);
+ 
+        // dd($data_generated);
 
         $data = [
             'users' => $users,
-            'commits' => $commits,
+            'data_generated' => $data_generated,
             'modules' => $modules,
+            
         ];
         return view('dashboards.admin', $data);
     }
@@ -135,14 +141,14 @@ class AdminController extends Controller
         $tasks_level_2 = null;
         $tasks_level_3 = null;
         if ($user->github_nickname != null) {
-            $commits = $github->list_user_commits($module->name, $user->github_nickname, $user->github_nickname);
+            $commits = $github->list_user_commits($module->slug, $user->github_nickname, $user->github_nickname);
             // $commit_activity = $github->get_last_year_commit_activity($module->name, $user->github_nickname);
 
             $user_events = $github->get_user_events($user->github_nickname);
-            $levels = $github->get_contents($module->name, '', $user->github_nickname);
-            $tasks_level_1 = $github->get_contents($module->name, 'niveau1', $user->github_nickname);
-            $tasks_level_2 = $github->get_contents($module->name, 'niveau2', $user->github_nickname);
-            $tasks_level_3 = $github->get_contents($module->name, 'niveau3', $user->github_nickname);
+            $levels = $github->get_contents($module->slug, '', $user->github_nickname);
+            $tasks_level_1 = $github->get_contents($module->slug, 'niveau1', $user->github_nickname);
+            $tasks_level_2 = $github->get_contents($module->slug, 'niveau2', $user->github_nickname);
+            $tasks_level_3 = $github->get_contents($module->slug, 'niveau3', $user->github_nickname);
         }
         // dd($tasks_level_3);
         $data = [
@@ -167,14 +173,14 @@ class AdminController extends Controller
         $commits = null;
         $contents = null;
         if ($user->github_nickname != null) {
-            $commits = $github->list_commits_path($module->name, $user->github_nickname, $request->path);
-            $contents = $github->get_contents($module->name,  $request->path, $user->github_nickname);
+            $commits = $github->list_commits_path($module->slug, $user->github_nickname, $request->path);
+            $contents = $github->get_contents($module->slug,  $request->path, $user->github_nickname);
         }
 
         if ($request->path != null) {
-            $readme = $github->get_specific_readme($module->name, $request->path);
+            $readme = $github->get_specific_readme($module->slug, $request->path);
         } else {
-            $readme = $github->get_global_readme($module->name);
+            $readme = $github->get_global_readme($module->slug);
 
             if (isset($readme->message)) {
                 if ($readme->message == "Bad credentials") {
@@ -221,8 +227,8 @@ class AdminController extends Controller
         $code = null;
         if ($user->github_nickname != null) {
             // $commits = $github->list_commits_path($module->name, $user->github_nickname, $request->path);
-            $contents = $github->get_contents($module->name,  $request->path, $user->github_nickname); //get content
-            $code = $github->get_contents($module->name,  $request->path, $user->github_nickname, TRUE); //get raw content
+            $contents = $github->get_contents($module->slug,  $request->path, $user->github_nickname); //get content
+            $code = $github->get_contents($module->slug,  $request->path, $user->github_nickname, TRUE); //get raw content
         }
 
         $path_splitted = explode('/', $request->path);

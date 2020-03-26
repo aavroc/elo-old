@@ -17,7 +17,7 @@
     @foreach ($modules as $module)
     <div class="col">
         @if($module->id == $user->modules->find($module->id)['id'] )
-        <a href="{{route('modules.show', ['repo'=> $module->name ])}}" class="card module-to-choose">
+        <a href="{{route('modules.show', ['repo'=> $module->slug ])}}" class="card module-to-choose">
             @endif
             <div class="card-body d-flex flex-column align-items-center justify-content-center"
                 style="width:12rem;height:12rem;">
