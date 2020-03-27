@@ -19,8 +19,14 @@
                     Gebruikers</a>
             </li>
             <li class="nav-item">
-                <a href="{{route('modules.index')}}" class="nav-link text-danger"><i class="fas fa-users"></i>
+                <a href="{{route('modules.index')}}" class="nav-link text-danger"><i class="fas fa-project-diagram"></i>
                     Modules</a>
+            </li>
+
+            </li>
+            <li class="nav-item">
+                <a href="{{route('tasks.retrieve')}}" class="nav-link text-danger"><i class="fas fa-tasks"></i>
+                    Tasks</a>
             </li>
 
         </ul>

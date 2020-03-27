@@ -25,63 +25,73 @@ class AdminController extends Controller
 
     public function dashboard(Request $request)
     {
-        $github = new GitHub();
-
         $users = User::where(
             [
                 ['role', 3],
                 ['github_nickname', '!=', NULL]
 
             ]
-        )
-            ->get();
+        )->get();
+
         $modules = Module::all();
 
+
+        $data = [
+            'users' => $users,
+
+            'modules' => $modules,
+
+        ];
+        return view('dashboards.admin', $data);
+    }
+
+    public function tasks()
+    {
+        $github = new GitHub();
+        $modules = Module::all();
+        //retrieve github repo content
         $niveaus = ['niveau1', 'niveau2', 'niveau3'];
 
         $data_generated = [];
         foreach ($modules as $module) {
             $x = 0;
-            foreach ($users as $user) {
-              
-                // $data_generated[$module->slug][$user->id]['commits'] = $github->list_commits_path($module->slug, $user->github_nickname, '');
-
-                $data_generated[$module->id] = $github->get_contents($module->slug, $niveaus[$x]);
-                
-                // $data_generated[$module->slug][$user->id]['user_data'] = $user;
-                // $data_generated[$module->slug][$user->id]['events'] = 
-                //     $github->list_commits($module->slug, $user->github_nickname);
-
-                // $data_generated[$user->id]['events'] = 
-                //                 $github->list_repo_events($module->slug, $user->github_nickname);
-            }
+            $data_generated[$module->id] = $github->get_contents($module->slug, $niveaus[$x]);
             $x++;
         }
+        // dd($data_generated);
 
-        foreach($data_generated as $module_id => $data){
-            if($data['type'] == 'dir'){
-                DB::table('tasks')->insert(
-                    [
-                        'name' => $data['name'],
-                        'module_id' => $module_id,
-                        'status' => 1,
-                        'points' => 3,
-                    ]
-                );
+        //store all tasks
+        if (is_array($data_generated)) {
+            for ($x = 1; $x <= 6; $x++) {
+                if (is_array($data_generated[$x])) {
+                    foreach ($data_generated[$x] as $data) {
+                        $module_slug = Module::find($x)->slug;
+                        if (property_exists($data, 'type')) {
+                            if ($data->type == 'dir') {
+                                // dd($data);
+                                if (property_exists($data, 'path')) {
+                                    Task::updateOrInsert(
+
+                                        [
+                                            'name' => $data->name,
+                                            'module_id' => $x
+                                        ],
+                                        [
+                                            'readme' => $github->get_specific_readme($module_slug, $data->path)->content,
+                                            'url' => $data->url,
+                                            'status' => 1,
+                                            'points' => 3,
+                                        ]
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        dd($data_generated);
-        // $commit = $github->get_single_commit('php-basic', 'dedaaf', '7f1ef191c86bed6b3ad00686a005dd341b813609');
-        // dd($commit);
-
-        $data = [
-            'users' => $users,
-            'data_generated' => $data_generated,
-            'modules' => $modules,
-            
-        ];
-        return view('dashboards.admin', $data);
+        // dd($data_generated);
+        return redirect()->route('admin');
     }
 
     public function index()

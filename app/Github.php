@@ -123,7 +123,7 @@ class GitHub
             $owner = $this->owner;
         }
 
-        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits/'. $ref;
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits/' . $ref;
         return $this->get_request_json_secured($url);
     }
 
