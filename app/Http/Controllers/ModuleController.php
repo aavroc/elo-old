@@ -101,7 +101,7 @@ class ModuleController extends Controller
         $data['repo'] = $repo->slug;
         
         // dd($data['repo']);
-        // dd($data['full_repo_data']);
+        dd($data['full_repo_data']);
         return view('modules.show', $data);
     }
 

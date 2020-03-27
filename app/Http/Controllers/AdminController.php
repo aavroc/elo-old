@@ -37,20 +37,43 @@ class AdminController extends Controller
             ->get();
         $modules = Module::all();
 
+        $niveaus = ['niveau1', 'niveau2', 'niveau3'];
+
         $data_generated = [];
         foreach ($modules as $module) {
+            $x = 0;
             foreach ($users as $user) {
               
-                $data_generated[$module->slug][$user->id]['user_data'] = $user;
-                $data_generated[$module->slug][$user->id]['events'] = 
-                    $github->list_repo_events($module->slug, $user->github_nickname);
+                // $data_generated[$module->slug][$user->id]['commits'] = $github->list_commits_path($module->slug, $user->github_nickname, '');
+
+                $data_generated[$module->id] = $github->get_contents($module->slug, $niveaus[$x]);
+                
+                // $data_generated[$module->slug][$user->id]['user_data'] = $user;
+                // $data_generated[$module->slug][$user->id]['events'] = 
+                //     $github->list_commits($module->slug, $user->github_nickname);
 
                 // $data_generated[$user->id]['events'] = 
                 //                 $github->list_repo_events($module->slug, $user->github_nickname);
             }
+            $x++;
         }
- 
-        // dd($data_generated);
+
+        foreach($data_generated as $module_id => $data){
+            if($data['type'] == 'dir'){
+                DB::table('tasks')->insert(
+                    [
+                        'name' => $data['name'],
+                        'module_id' => $module_id,
+                        'status' => 1,
+                        'points' => 3,
+                    ]
+                );
+            }
+        }
+
+        dd($data_generated);
+        // $commit = $github->get_single_commit('php-basic', 'dedaaf', '7f1ef191c86bed6b3ad00686a005dd341b813609');
+        // dd($commit);
 
         $data = [
             'users' => $users,

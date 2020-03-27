@@ -44,7 +44,7 @@
             <tbody>
               
                 {{-- {{dd($data_generated)}} --}}
-                @foreach($data_generated as $data)
+                {{-- @foreach($data_generated as $slug => $data)
                
 
                 
@@ -58,7 +58,8 @@
                                 @if(property_exists( $events, 'payload'))
                                     @foreach($events->payload->commits as $commit)
                                         
-                                        <a href="users/{{$user_id}}">{{$commit->message}} </a>
+                                <a href="users/{{$user_id}}/module/{{$slug}}">{{$commit->message}} </a>
+                                
                                 </td>
                                     @endforeach
                                 @endif
@@ -67,7 +68,7 @@
                             
                     @endforeach
                         </tr>
-                @endforeach
+                @endforeach --}}
             </tbody>
         </table>
     </div>

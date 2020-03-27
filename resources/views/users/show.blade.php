@@ -53,7 +53,7 @@
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">{{$module->name}}</h5>
-                            <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
+                            <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
                                 class="card-link">Check user module</a>
                         </div>
                     </div>

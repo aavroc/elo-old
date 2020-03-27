@@ -117,6 +117,16 @@ class GitHub
         return $this->get_request_json_secured($url);
     }
 
+    public function get_single_commit($repo = '', $owner = null, $ref = '')
+    {
+        if ($owner == null) {
+            $owner = $this->owner;
+        }
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/commits/'. $ref;
+        return $this->get_request_json_secured($url);
+    }
+
 
     //show user specific commits of specific repo
     public function list_user_commits($repo = '', $owner = null, $author = '', $since = null)
