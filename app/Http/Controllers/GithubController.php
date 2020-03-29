@@ -34,7 +34,7 @@ class GithubController extends Controller
                 'github_access_token' =>  $user->token,
                 'github_nickname'     =>  $user->nickname,
                 'github_email'        =>  $user->email,
-            ],
+            ]
         );
 
         if (Auth::user()->role == 3) {
