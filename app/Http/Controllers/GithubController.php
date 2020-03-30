@@ -48,7 +48,7 @@ class GithubController extends Controller
         $data = [
             'modules' => Module::all()
         ];
-        return view('github.index', $data);
+        return view('module.index', $data);
     }
 
     public function show(Request $request)
@@ -101,7 +101,7 @@ class GithubController extends Controller
 
 
         $github->fork($repo->name, $path);
-        return view('github');
+        return view('module.index');
     }
 
     // public function set(Request $request)
