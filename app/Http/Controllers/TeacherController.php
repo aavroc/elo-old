@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Code;
+use App\Module;
 
 class TeacherController extends Controller
 {
@@ -20,20 +20,40 @@ class TeacherController extends Controller
 
     public function dashboard()
     {
-        $data = [
-            'logged_in_users' => User::where(
-                [
-                    ['status_id', 2],
-                    ['role', 3],
-                ]
-            )->count(),
 
-            'amount_of_seen_exercises'      => Code::where('student_status', 1)->count(),
-            'amount_of_exercises_delivered' => Code::where('student_status', 2)->count(),
-            'amount_of_approved_exercises'  => Code::where('student_status', 3)->count(),
-            'assignments_to_be_appproved'   => Code::where('student_status', 2)->orderBy('delivery', 'asc')->limit(10)->get(),
+        $users = User::where(
+            [
+                ['role', 3],
+                ['github_nickname', '!=', NULL]
+
+            ]
+        )->get();
+
+        $modules = Module::all();
+
+
+        $data = [
+            'users' => $users,
+
+            'modules' => $modules,
+
         ];
-        return view('dashboards.teacher', $data);
+        return view('dashboards.admin', $data);
+
+        // $data = [
+        //     'logged_in_users' => User::where(
+        //         [
+        //             ['status_id', 2],
+        //             ['role', 3],
+        //         ]
+        //     )->count(),
+
+        // 'amount_of_seen_exercises'      => Code::where('student_status', 1)->count(),
+        // 'amount_of_exercises_delivered' => Code::where('student_status', 2)->count(),
+        // 'amount_of_approved_exercises'  => Code::where('student_status', 3)->count(),
+        // 'assignments_to_be_appproved'   => Code::where('student_status', 2)->orderBy('delivery', 'asc')->limit(10)->get(),
+        // ];
+        return view('dashboards.admin', $data);
     }
 
 
