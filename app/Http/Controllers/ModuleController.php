@@ -74,13 +74,11 @@ class ModuleController extends Controller
 
         $name = $request->repo;
         $path = $request->path;
-        // dd($name);
 
         $repo = Module::where('slug', $name)->first();
         $github = new GitHub();
 
         $data = [];
-        // dd($repo);
         if ($path != null) {
             $readme = $github->get_specific_readme($repo->slug, $path);
         } else {
@@ -95,13 +93,11 @@ class ModuleController extends Controller
             }
         }
         $readme_content = base64_decode($readme->content);
-        
+
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
         $data['full_repo_data'] = $github->get_contents($repo->slug, $path);
         $data['repo'] = $repo->slug;
-        
-        // dd($data['repo']);
-        dd($data['full_repo_data']);
+
         return view('modules.show', $data);
     }
 
