@@ -40,7 +40,7 @@ class GithubController extends Controller
         if (Auth::user()->role == 3) {
             return redirect()->route('student');
         }
-        return redirect()->route('github.index');
+        return redirect()->route('modules.index');
     }
 
     public function index()
@@ -48,7 +48,7 @@ class GithubController extends Controller
         $data = [
             'modules' => Module::all()
         ];
-        return view('github.index', $data);
+        return view('module.index', $data);
     }
 
     public function show(Request $request)
@@ -101,7 +101,7 @@ class GithubController extends Controller
 
 
         $github->fork($repo->name, $path);
-        return view('github');
+        return view('modules.index');
     }
 
     // public function set(Request $request)
