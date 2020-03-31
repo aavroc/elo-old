@@ -31,10 +31,11 @@
 
         </ul>
         <ul class="navbar-nav ml-auto">
-
+            @if(Auth::user()->github_access_token == null)
             <li class="nav-item pull-right">
                 <a class="btn btn-success" href="{{route('github.call')}}">Github Connection</a>
             </li>
+            @endif
 
 
             <li class="nav-item pull-right">

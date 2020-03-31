@@ -69,26 +69,26 @@ class GithubController extends Controller
         return view('github.show', $data);
     }
 
-    public function edit(Request $request)
-    {
-        $path = $request->path;
-        $repo = $request->repo;
+    // public function edit(Request $request)
+    // {
+    //     $path = $request->path;
+    //     $repo = $request->repo;
 
-        $github = new GitHub();
-        $file_data = $github->get_file_data($repo, $path);
-        $content = base64_decode($file_data->content);
-        $commitMessage = "Updated file " . $file_data->name;
+    //     $github = new GitHub();
+    //     $file_data = $github->get_file_data($repo, $path);
+    //     $content = base64_decode($file_data->content);
+    //     $commitMessage = "Updated file " . $file_data->name;
 
-        $data = [
-            'file' => $file_data,
-            'path' => $path,
-            'repo' => $repo,
-            'content' => $content,
-            'commitMessage' => $commitMessage
-        ];
+    //     $data = [
+    //         'file' => $file_data,
+    //         'path' => $path,
+    //         'repo' => $repo,
+    //         'content' => $content,
+    //         'commitMessage' => $commitMessage
+    //     ];
 
-        return view('github.edit', $data);
-    }
+    //     return view('github.edit', $data);
+    // }
 
     public function fork(Request $request)
     {
