@@ -100,6 +100,7 @@ class ModuleController extends Controller
 
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
         $data['full_repo_data'] = $github->get_contents($repo->slug, $path);
+        $data['module'] = $module;
         $data['repo'] = $repo->slug;
 
         return view('modules.show', $data);

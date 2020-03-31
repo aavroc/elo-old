@@ -10,4 +10,9 @@ class Module extends Model
     {
         return 'slug';
     }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
+    }
 }
