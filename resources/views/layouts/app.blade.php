@@ -19,7 +19,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
     <script src="https://kit.fontawesome.com/37009c676e.js" crossorigin="anonymous"></script>
-    <title>DeepDive - PHP - {{Request::path()}}</title>
+    <title>AppName - PHP - {{Request::path()}}</title>
 
     <!-- Scripts -->
 
@@ -72,6 +72,7 @@
             @yield('content')
 
         </div>
+        <footer></footer>
 </body>
 
 </html>
