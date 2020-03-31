@@ -14,7 +14,7 @@ class AddLevelToTasks extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->unsignedBigInteger('level')->after('module_id')->nullable();
+            $table->string('level')->after('module_id')->nullable();
         });
     }
 

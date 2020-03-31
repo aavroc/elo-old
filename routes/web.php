@@ -18,7 +18,9 @@ Route::get('/', 'Auth\LoginController@welcome');
 Route::group(['middleware' => ['auth']], function () {
 
     //Tasks
+    Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
+    Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('teacher'); //haal de taken op van github
     Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
     
     //Users

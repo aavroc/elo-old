@@ -25,7 +25,7 @@
 
             </li>
             <li class="nav-item">
-                <a href="{{route('tasks.retrieve')}}" class="nav-link text-danger"><i class="fas fa-tasks"></i>
+                <a href="{{route('tasks.index')}}" class="nav-link text-danger"><i class="fas fa-tasks"></i>
                     Tasks</a>
             </li>
 

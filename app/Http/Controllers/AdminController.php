@@ -45,7 +45,7 @@ class AdminController extends Controller
         return view('dashboards.admin', $data);
     }
 
-    //retrieve all modules readme's from github
+    //retrieve all modules readme's from github and store in db
     public function modules()
     {
         $github = new GitHub();
@@ -68,7 +68,7 @@ class AdminController extends Controller
     }
 
 
-    //retrieve all tasks from github
+    //retrieve all tasks from github and store them in db
     public function tasks()
     {
         $github = new GitHub();
@@ -78,35 +78,40 @@ class AdminController extends Controller
 
         $data_generated = [];
         foreach ($modules as $module) {
-            $x = 0;
-            $data_generated[$module->id] = $github->get_contents($module->slug, $niveaus[$x]);
-            $x++;
+            foreach($niveaus as $niveau){
+                $data_generated[$module->id][$niveau] = $github->get_contents($module->slug, $niveau);
+            }
+            
         }
+
+        
         // dd($data_generated);
 
         //store all tasks
         if (is_array($data_generated)) {
-            for ($x = 1; $x <= 6; $x++) {
-                if (is_array($data_generated[$x])) {
-                    foreach ($data_generated[$x] as $data) {
-                        $module_slug = Module::find($x)->slug;
-                        if (property_exists($data, 'type')) {
-                            if ($data->type == 'dir') {
-                                // dd($data);
-                                if (property_exists($data, 'path')) {
-                                    Task::updateOrInsert(
-
-                                        [
-                                            'name' => $data->name,
-                                            'module_id' => $x
-                                        ],
-                                        [
-                                            'readme' => $github->get_specific_readme($module_slug, $data->path)->content,
-                                            'url' => $data->url,
-                                            'status' => 1,
-                                            'points' => 3,
-                                        ]
-                                    );
+            foreach($data_generated as $module_id => $module_content){
+                if (is_array($module_content)) {
+                    foreach ($module_content as $niveau => $data) {
+                        $module_slug = Module::find($module_id)->slug;
+                        foreach($data as $content){
+                            if (property_exists($content, 'type')) {
+                                if ($content->type == 'dir') {
+                                    // dd($data);
+                                    if (property_exists($content, 'path')) {
+                                        Task::updateOrInsert(
+                                            [
+                                                'name' => $content->name,
+                                                'module_id' => $module_id,
+                                                'level'  => $niveau,
+                                            ],
+                                            [
+                                                'readme' => $github->get_specific_readme($module_slug, $content->path)->content,
+                                                'url' => $content->html_url,
+                                                'status' => 1,
+                                                'points' => 3,
+                                                ]
+                                            );
+                                    }
                                 }
                             }
                         }
