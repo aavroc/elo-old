@@ -72,27 +72,31 @@ class ModuleController extends Controller
     public function show(Request $request)
     {
 
-        $name = $request->repo;
         $path = $request->path;
 
-        $repo = Module::where('slug', $name)->first();
+        $repo = Module::where('slug', $request->repo)->first();
         $github = new GitHub();
 
-        $data = [];
-        if ($path != null) {
-            $readme = $github->get_specific_readme($repo->slug, $path);
-        } else {
-            $readme = $github->get_global_readme($repo->slug);
-        }
-        if (isset($readme->message)) {
-            if ($readme->message == "Bad credentials") {
-                die('please connect with GitHub');
-            }
-            if ($readme->message == "Not Found") {
-                die('no readme file found');
-            }
-        }
-        $readme_content = base64_decode($readme->content);
+        // $data = [];
+        // if ($path != null) {
+        //     $readme = $github->get_specific_readme($repo->slug, $path);
+        // } else {
+        //     $readme = $github->get_global_readme($repo->slug);
+        // }
+        // if (isset($readme->message)) {
+        //     if ($readme->message == "Bad credentials") {
+        //         die('please connect with GitHub');
+        //     }
+        //     if ($readme->message == "Not Found") {
+        //         die('no readme file found');
+        //     }
+        // }
+        // $readme_content = base64_decode($readme->content);
+       
+        $module = Module::where('slug', $request->repo)->first();
+        $github = new GitHub();
+        $readme_content = base64_decode($module->readme);
+
 
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
         $data['full_repo_data'] = $github->get_contents($repo->slug, $path);

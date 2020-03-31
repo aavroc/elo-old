@@ -45,6 +45,30 @@ class AdminController extends Controller
         return view('dashboards.admin', $data);
     }
 
+    //retrieve all modules readme's from github
+    public function modules()
+    {
+        $github = new GitHub();
+        $modules = Module::all();
+        $readmees = [];
+        foreach($modules as $module){
+            Module::updateOrInsert(
+
+                [
+                    'id' => $module->id,
+                    // 'slug' => $module->slug,
+                ],
+                [
+                    'readme' =>  $github->get_global_readme($module->slug)->content,
+                ]
+                );
+        }
+        return redirect()->route('admin');
+        
+    }
+
+
+    //retrieve all tasks from github
     public function tasks()
     {
         $github = new GitHub();

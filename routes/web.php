@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index');
+    Route::get('modules/retrieve', 'AdminController@modules')->name('modules.retrieve')->middleware('teacher'); //haal de taken op van github
+    
     // Route::get('modules/{repo}/file/{path}', 'ModuleController@show')->where('path', '.*')->name('tasks.show');
     Route::get('modules/{repo}/{path?}', 'ModuleController@show')->where('path', '.*')->name('modules.show');
 
@@ -60,7 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('github', 'GithubController@index')->name('github.index');
     // Route::get('github/{repo}/fork', 'GithubController@fork')->name('github.fork');
     Route::get('github/{repo}/{path?}', 'GithubController@show')->name('github.show');
-    Route::get('github/{repo}/edit-file/{path}', 'GithubController@edit')->where('path', '.*')->name('github.edit-file');
+    // Route::get('github/{repo}/edit-file/{path}', 'GithubController@edit')->where('path', '.*')->name('github.edit-file');
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');
 
