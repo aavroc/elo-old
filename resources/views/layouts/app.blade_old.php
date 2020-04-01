@@ -71,8 +71,43 @@
             {{-- @endif --}}
             @yield('content')
 
+                        <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Github linkje leggen</h5>
+                    {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> --}}
+                    </div>
+                    <div class="modal-body">
+                        Je bent nog niet aangemeld bij GitHub. Doe dit nog even via onderstaande knop. 
+                        Doe je het niet dan gaat het universum imploden
+                        
+                    </div>
+                    <div class="modal-footer">
+                    @auth
+                        @if(Auth::user()->github_access_token == null)
+                            <a class="btn btn-success" href="{{route('github.call')}}">Github Connection</a>
+                        @endif
+                    @endauth
+                    </div>
+                </div>
+                </div>
+            </div>
+
         </div>
-        <footer></footer>
+        @auth
+            @if(Auth::user()->github_access_token == null)
+            <script>
+                $( document ).ready(function() {
+                    $('#staticBackdrop').modal();
+                });
+                    
+            </script>
+            @endif
+        @endauth
 </body>
 
 </html>

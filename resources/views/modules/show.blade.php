@@ -11,26 +11,24 @@
             @endisset
         </div>
     </div>
+    {{-- {{dd($module->tasks->sortBy('name')->sortBy('level'))  }} --}}
     <div class="col-6">
-        <ul class="list-group">
-            @if(is_array($full_repo_data))
-            @foreach($full_repo_data as $content)
-            @if($content->type == 'dir' )
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{$content->name}}</h5>
-                    <a href="{{route('modules.show', ['repo'=> $repo, 'path'=> $content->path])}}"
-                        class="card-link">Check it out</a>
-                </div>
-            </div>
+        @php $level = null ; @endphp
+        @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
+            @if($level != $content->level)
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">{{$content->level}}</div>
+                        <ul class="list-group list-group-flush">
             @endif
-
-            @endforeach
+                            <li class="list-group-item">{{$content->name}}</li>
+              
+           
+          @php $level = $content->level; @endphp
+            @if($level != $content->level)
+                        </ul>            
+                    </div>
             @endif
-        </ul>
+        @endforeach
     </div>
-</div>
-
-
 
 @endsection
