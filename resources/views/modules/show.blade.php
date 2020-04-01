@@ -20,7 +20,7 @@
                     <div class="card-header">{{$content->level}}</div>
                         <ul class="list-group list-group-flush">
             @endif
-                            <li class="list-group-item">{{$content->name}}</li>
+                            <li class="list-group-item"><a href="{{route('tasks.show', $content)}}" class="text-success">{{$content->name}}</a></li>
               
            
           @php $level = $content->level; @endphp
