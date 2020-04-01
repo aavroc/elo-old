@@ -85,10 +85,13 @@ class ModuleController extends Controller
     public function check_repo(Module $module)
     {
         $github = new GitHub();
-        $repo = $github->repo($module->slug, Auth::user()->github_nickname);
-        
-        if(isset($repo->message)){
-            $github->fork($module->slug);
+        if(Auth::user()->role == 3){
+
+            $repo = $github->repo($module->slug, Auth::user()->github_nickname);
+            
+            if(isset($repo->message)){
+                $github->fork($module->slug);
+            }
         }
     }
 
