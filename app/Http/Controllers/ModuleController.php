@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Module;
 use App\GitHub;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class ModuleController extends Controller
@@ -69,42 +69,30 @@ class ModuleController extends Controller
      * @param  \App\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show( Module $module)
     {
 
-        $path = $request->path;
+        $this->check_repo($module);
 
-        $repo = Module::where('slug', $request->repo)->first();
-        $github = new GitHub();
-
-        // $data = [];
-        // if ($path != null) {
-        //     $readme = $github->get_specific_readme($repo->slug, $path);
-        // } else {
-        //     $readme = $github->get_global_readme($repo->slug);
-        // }
-        // if (isset($readme->message)) {
-        //     if ($readme->message == "Bad credentials") {
-        //         die('please connect with GitHub');
-        //     }
-        //     if ($readme->message == "Not Found") {
-        //         die('no readme file found');
-        //     }
-        // }
-        // $readme_content = base64_decode($readme->content);
-       
-        $module = Module::where('slug', $request->repo)->first();
-        $github = new GitHub();
         $readme_content = base64_decode($module->readme);
 
-
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
-        $data['full_repo_data'] = $github->get_contents($repo->slug, $path);
         $data['module'] = $module;
-        $data['repo'] = $repo->slug;
 
         return view('modules.show', $data);
     }
+
+    public function check_repo(Module $module)
+    {
+        $github = new GitHub();
+        $repo = $github->repo($module->slug, Auth::user()->github_nickname);
+        
+        if(isset($repo->message)){
+            $github->fork($module->slug);
+        }
+    }
+
+    
 
 
 

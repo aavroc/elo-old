@@ -2,8 +2,7 @@
 
 @section('content')
 
-<h3 class="mt-3">{{$repo}} Repository</h3>
-<div class="row">
+<div class="row mt-1">
     <div class="col">
         <div class="jumbotron">
             @isset($readme_content)

@@ -39,9 +39,13 @@ class GitHub
     }
 
     //get a user specific repo
-    public function repo($repo = '', $type = 'public')
+    public function repo($repo = '', $owner = null)
     {
-        $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo; //retrieve specific repo
+        if ($owner == null) {
+            $owner = $this->owner;
+        }
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo; //retrieve specific repo
         return $this->get_request_json($url);
     }
 
@@ -163,6 +167,7 @@ class GitHub
         return $this->get_request_json_secured($url);
     }
 
+  
     public function fork($repo = '')
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/forks'; // fork this repo

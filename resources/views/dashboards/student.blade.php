@@ -17,16 +17,23 @@
     @foreach ($modules as $module)
     {{-- {{dd($user->modules->find($module->id)['id'])}} --}}
     <div class="col">
-        {{-- @if($module->id == $user->modules()->find($module->id)['id'] ) --}}
-        <a href="{{route('modules.show', ['repo'=> $module->slug ])}}" class="card module-to-choose">
-            {{-- @endif --}}
+        @if($user->modules()->find($module->id) != null )
+        @if($module->id == $user->modules()->find($module->id)['id'] )
+        <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="card module-to-choose">
+            @endif
             <div class="card-body d-flex flex-column align-items-center justify-content-center"
                 style="width:12rem;height:12rem;">
                 <h5 class="card-title h1">{{$module->name}}</h5>
             </div>
-            {{-- @if($module->id == $user->modules->find($module->id)['id'] ) --}}
+            @if($module->id == $user->modules->find($module->id)['id'] )
         </a>
-        {{-- @endif --}}
+        @endif
+        @else
+        <div class="card-body d-flex flex-column align-items-center justify-content-center"
+                style="width:12rem;height:12rem;">
+                <h5 class="card-title h1">{{$module->name}}</h5>
+            </div>
+        @endif
     </div>
     @endforeach
 </div>
