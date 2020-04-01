@@ -33,38 +33,3 @@
         </ul>
     </div>
 </nav>
-
-<script>
-    setInterval(look_for_change, 2000);
-
-    function look_for_change(){
-        // console.log(  $.trim($("#message").html()== ''));
-        if( $.trim($("#message").html())=='' ){
-        
-            $.ajax({
-                method: "POST",
-                url: "/students/check_assignment_status",
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: { 
-                        
-                    },
-                success: function(response){ // What to do if we succeed
-                    // console.log(response); 
-                },
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    // console.log(JSON.stringify(jqXHR));
-                    // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            })
-            .done(function( msg ) {
-                $("#message").html(
-                
-                msg.msg
-                
-            );
-                
-            });
-        }
-    }
-                    
-</script>
