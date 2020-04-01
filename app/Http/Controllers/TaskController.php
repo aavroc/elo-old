@@ -38,7 +38,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('module_id') ->orderBy('level', 'asc')->get();
+        $tasks = Task::orderBy('module_id')->orderBy('level', 'asc')->orderBy('name', 'asc')->get();
 
         $data = [
             'tasks' => $tasks

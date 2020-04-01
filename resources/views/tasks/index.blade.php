@@ -9,7 +9,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>name</th>
                     <th>module</th>
                     <th>level</th>
@@ -20,9 +19,6 @@
             <tbody>
                 @foreach($tasks as $task)
                 <tr>
-                    <td>
-                        {{$task->id}}
-                    </td>
                     <td>
                         {{$task->name}}
                     </td>
