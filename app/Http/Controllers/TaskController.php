@@ -38,7 +38,13 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::orderBy('module_id') ->orderBy('level', 'asc')->get();
+
+        $data = [
+            'tasks' => $tasks
+        ];
+
+        return view('tasks.index', $data);
     }
 
     /**
@@ -68,28 +74,12 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Task $task)
     {
-        $name = $request->repo;
-        $path = $request->path;
-        $repo = Module::where('name', $name)->first();
-        $github = new GitHub();
 
+        $readme_content = base64_decode($task->readme);
+        $data['readme_content'] = $this->converter->convertToHtml($readme_content);
 
-
-        $data = [];
-        if ($this->contains("README.md", $path)) {
-
-            if ($path != null) {
-                $readme = $github->get_specific_readme($repo->name, $path);
-            } else {
-                $readme = $github->get_global_readme($repo->name);
-            }
-            $readme_content = base64_decode($readme->content);
-
-            $data['readme_content'] = $this->converter->convertToHtml($readme_content);
-            $data['repo'] =  $repo->name;
-        } 
 
         return view('tasks.show', $data);
     }
