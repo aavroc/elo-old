@@ -62,6 +62,7 @@
             </div>
         </div>
         <div class="row mt-3">
+            {{-- {{dd($user_events)}} --}}
             @if(is_array($user_events))
             <div class="col">
                 <div class="row">
@@ -71,8 +72,13 @@
                             @foreach($user_events as $event)
                             @if($event->type == "PushEvent")
                             @foreach($event->payload->commits as $commit)
+                            @php $module = explode('/', $event->repo->name)[1]; @endphp
                             <li class="list-group-item">
-                                {{$commit->message}}
+                                check module: <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
+                                class="card-link">{{$module}}</a>
+                            check commit on github: <a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> 
+                            |
+                                
                             </li>
                             @endforeach
                             @endif

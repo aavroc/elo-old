@@ -21,9 +21,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
-    // Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
     
     //Users
+    Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
     Route::get('users/upload_data', 'AdminController@select_file')->name('users.select_file')->middleware('admin');
     Route::post('users/upload_data', 'AdminController@upload_data')->name('users.upload_data')->middleware('admin');
     Route::post('users/change_passwords', 'AdminController@change_password')->name('users.change_password')->middleware('admin');
@@ -33,8 +33,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('users', 'AdminController@store')->name('users.store')->middleware('admin');
     Route::get('users/{user}', 'AdminController@show')->name('users.show')->middleware('teacher'); //docent mag gebruiker details bekijken
 
-    // Route::get('users/{user}/module/{module}', 'AdminController@show_module')->name('users.repo')->middleware('teacher'); //docent mag gebruiker details bekijken
-    // Route::get('users/{user}/module/{module}/task/{path?}', 'AdminController@show_task')->where('path', '.*')->name('users.task')->middleware('teacher'); //docent mag gebruiker details bekijken
+    Route::get('users/{user}/module/{module}', 'AdminController@show_module')->name('users.repo')->middleware('teacher'); //docent mag gebruiker details bekijken
+    Route::get('users/{user}/module/{module}/task/{path?}', 'AdminController@show_task')->where('path', '.*')->name('users.task')->middleware('teacher'); //docent mag gebruiker details bekijken
     
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
