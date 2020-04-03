@@ -62,7 +62,7 @@ class ClassroomController extends Controller
                             'user_id' => $student->id,
                             'module_id' => $module->id,
                             'status' => 1,
-                        ],
+                        ]
                     );
                     //update basic_status of modules-table
                     Module::where('id', $module->id)->update(
@@ -76,7 +76,7 @@ class ClassroomController extends Controller
                             'user_id' => $student->id,
                             'module_id' => $module->id,
                             'status' => 0,
-                        ],
+                        ]
                     );
 
                     //update basic_status of modules-table
