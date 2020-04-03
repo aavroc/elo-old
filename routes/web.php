@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Tasks
     Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
-    Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
+    // Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
     Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
     
@@ -49,12 +49,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     
+    Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('admin');
     
     
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
-    Route::get('classrooms/{classroom}/student_level', 'ClassroomController@show_levels')->name('classrooms.show_levels')->middleware('teacher');
+    Route::get('classrooms/{classroom}', 'ClassroomController@show')->name('classrooms.show')->middleware('teacher');
+    Route::post('classrooms/{classroom}/reset_levels', 'ClassroomController@reset_levels')->name('reset_levels')->middleware('admin');
 
     //DASHBOARDS
     Route::get('/student', 'StudentController@dashboard')->name('student')->middleware('student'); //1
@@ -63,8 +65,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index');
-    Route::get('modules/retrieve', 'AdminController@modules')->name('modules.retrieve')->middleware('teacher'); //haal de taken op van github
+    // Route::get('modules/retrieve', 'AdminController@modules')->name('modules.retrieve')->middleware('teacher'); //haal de taken op van github
     Route::get('modules/{module}', 'ModuleController@show')->name('modules.show');
+    
+    
+    Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //haal de taken op van github
     
     // Route::get('modules/{repo}/file/{path}', 'ModuleController@show')->where('path', '.*')->name('tasks.show');
 

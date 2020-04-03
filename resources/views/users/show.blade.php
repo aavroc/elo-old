@@ -43,22 +43,62 @@
                             </div>
                             <div class="col">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="closed_{{$module->slug}}" value="0">
-                                    <label class="form-check-label" for="closed_{{$module->slug}}">Closed</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_closed" value="0">
+                                    <label class="form-check-label" for="{{$module->slug}}_closed">Closed</label>
                                   </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="open_{{$module->slug}}" value="1">
-                                    <label class="form-check-label" for="open_{{$module->slug}}">Open</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_open" value="1">
+                                    <label class="form-check-label" for="{{$module->slug}}_open">Open</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="done_{{$module->slug}}" value="3">
-                                    <label class="form-check-label" for="done_{{$module->slug}}">Done</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_done" value="3">
+                                    <label class="form-check-label" for="{{$module->slug}}_done">Done</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+                <script>
+                    $('input[type=radio][name=user_level_{{$module->slug}}').change(function() {
+                    console.log(this.id);
+                    var status = this.id;
+                    $.ajax({
+                        method: "POST",
+                        url: "/students/update_level",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        data: { 
+                                'student': {{$user->id}}, 
+                                'status': status,
+                            },
+                        success: function(response){ // What to do if we succeed
+                            console.log(response); 
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                            console.log(JSON.stringify(jqXHR));
+                            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                        }
+                    })
+                    .done(function( msg ) {
+                        var messageType = '';
+                        if(msg.level == 1){
+                            messageType = 'secondary';
+                        }
+                        if(msg.level == 2){
+                            messageType = 'warning';
+                        }
+                        if(msg.level == 3){
+                            messageType = 'success';
+                        }
+                        $("#message").html(
+                            
+                            '<div class="alert alert-'+messageType+'" role="alert">'+ msg.msg+'</div>'
+                            
+                        );
+                    });
+                // Run code
+                });
+                                    
+                </script>
                 @endforeach
         </div>
         <div class="row mt-3">
@@ -94,49 +134,7 @@
     </div>
 </div>
 
-<script>
-    $('input[type=radio][name=level_user_{{$user->id}}').change(function() {
-    console.log(this.id);
-    let level_id = $(this).attr('data-level');
-    let student_id = $(this).attr('data-student');
-    console.log(student_id);
-    $.ajax({
-        method: "POST",
-        url: "/students/update_level",
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        data: { 
-                'student': student_id, 
-                'level': level_id,
-            },
-        success: function(response){ // What to do if we succeed
-            console.log(response); 
-        },
-        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-            console.log(JSON.stringify(jqXHR));
-            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-        }
-    })
-    .done(function( msg ) {
-        var messageType = '';
-        if(msg.level == 1){
-            messageType = 'secondary';
-        }
-        if(msg.level == 2){
-            messageType = 'warning';
-        }
-        if(msg.level == 3){
-            messageType = 'success';
-        }
-        $("#message").html(
-            
-            '<div class="alert alert-'+messageType+'" role="alert">'+ msg.msg+'</div>'
-            
-        );
-    });
-// Run code
-});
-                    
-</script>
+
 
 
 
