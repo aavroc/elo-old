@@ -85,13 +85,7 @@ class ClassroomController extends Controller
     
                     );
                 }
-
-               
-                
-                    
             }
-            
-            
         }
         return redirect()->route('classrooms.show', $classroom);
     }
