@@ -43,7 +43,7 @@
                             </div>
                             <div class="col">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_closed" value="0">
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_closed" value="0" @if($module->basic_status ==1) checked @endif>
                                     <label class="form-check-label" for="{{$module->slug}}_closed">Closed</label>
                                   </div>
                                 <div class="form-check form-check-inline">
