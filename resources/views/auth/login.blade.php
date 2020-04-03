@@ -1,59 +1,56 @@
+@section('title') 
+Booster - Login
+@endsection
 @extends('layouts.main')
+@section('style')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+@endsection
+<div class="xp-authenticate-bg"></div>
+<!-- Start XP Container -->
+<div id="xp-container" class="xp-container">
+    <!-- Start Container -->
+    <div class="container">
+        <!-- Start XP Row -->
+        <div class="row vh-100 align-items-center">
+            <!-- Start XP Col -->
+            <div class="col-lg-12 ">
+                <!-- Start XP Auth Box -->
+                <div class="xp-auth-box">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="text-center mt-0 m-b-15">
+                                <a href="index.html" class="xp-web-logo"><img src="assets/images/logo.svg" height="40" alt="logo"></a>
+                            </h3>
+                            <div class="p-3">
+                            <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                                    <div class="text-center mb-3">
+                                        <h4 class="text-black">{{ __('Login') }}</h4> 
+                                    </div>                  
+                                    <div class="form-group">
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <div class="custom-control custom-checkbox">
+                                              <input type="checkbox" class="custom-control-input" id="rememberme">
+                                              <label class="custom-control-label" for="rememberme">{{ __('Remember Me') }}</label>
+                                            </div>                                
+                                        </div>                  
+                                  <button type="submit" class="btn btn-primary btn-rounded btn-lg btn-block">
                                     {{ __('Login') }}
                                 </button>
 
@@ -62,12 +59,21 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
                 </div>
+                <!-- End XP Auth Box -->
             </div>
+            <!-- End XP Col -->
         </div>
+        <!-- End XP Row -->
     </div>
+    <!-- End Container -->
 </div>
-@endsection
+<!-- End XP Container -->
+@section('script')
+
+@endsection 

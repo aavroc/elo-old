@@ -16,7 +16,7 @@
                 </div> 
                 <!-- End XP Col -->
                 <!-- Start XP Col -->
-                <div class="col-12 col-md-5 col-lg-3 order-3 order-md-2">
+                <!-- <div class="col-12 col-md-5 col-lg-3 order-3 order-md-2">
                     <div class="xp-searchbar">
                         <form>
                             <div class="input-group">
@@ -27,10 +27,10 @@
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>-->
                 <!-- End XP Col -->
                 <!-- Start XP Col -->
-                <div class="col-9 col-md-5 col-lg-7 order-2 order-md-3">
+                <div class="col-12 col-md-5 col-lg-10 order-1 order-md-2">
                     <div class="xp-profilebar text-right">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item">
@@ -133,16 +133,27 @@
                                 </div>
                             </li>
                             <li class="list-inline-item mr-0">
-                                <div class="dropdown xp-userprofile">
-                                    <a class="dropdown-toggle user-profile-img" href="#" role="button" id="xp-userprofile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/topbar/user.jpg" alt="user-profile" class="rounded-circle img-fluid"><span class="xp-user-live"></span></a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-userprofile">
-                                        <a class="dropdown-item" href="#">Welcome, John Doe</a>
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-account mr-2"></i> Profile</a>
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-credit-card mr-2"></i> Billing</a>
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Setting</a>
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-lock mr-2"></i> Lock Screen</a>
+                                <div class="dropdown">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @if(Auth::check()) Welcome, {{Auth::user()->firstname}}
+                                    @else
+                                    Account
+                                    @endif
+                                    </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                    @if(Auth::check())
+                                        @if(Auth::user()->github_access_token == null)
+                                        <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
+                                        @else
+                                        <a class="dropdown-item" href="#"><i class="ion ion-logo-github mr-2"></i> You're connected!</a>
+                                        @endif
+                                        <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a>
+                                        @endif
+
                                         <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Logout</a>
                                     </div>
+                                    
                                 </div>                                   
                             </li>
                             <li class="list-inline-item xp-horizontal-menu-toggle">
