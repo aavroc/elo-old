@@ -20,10 +20,20 @@ Route::group(['middleware' => ['auth']], function () {
     //Tasks
     Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
-    Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('teacher'); //haal de taken op van github
-    Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
+    Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
+    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
+    
+    //Tags
+    Route::get('tags', 'TagController@index')->name('tags.index')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags/create', 'TagController@create')->name('tags.create')->middleware('teacher'); //haal de taken op van github
+    Route::post('tags', 'TagController@store')->name('tags.store')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags/{tag}', 'TagController@edit')->name('tags.edit')->middleware('teacher'); //haal de taken op van github
+    Route::put('tags/{tag}/update', 'TagController@update')->name('tags.update')->middleware('teacher'); //haal de taken op van github
+    Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); //haal de taken op van github
+    
     
     //Users
+    Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
     Route::get('users/upload_data', 'AdminController@select_file')->name('users.select_file')->middleware('admin');
     Route::post('users/upload_data', 'AdminController@upload_data')->name('users.upload_data')->middleware('admin');
     Route::post('users/change_passwords', 'AdminController@change_password')->name('users.change_password')->middleware('admin');
@@ -54,16 +64,16 @@ Route::group(['middleware' => ['auth']], function () {
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index');
     Route::get('modules/retrieve', 'AdminController@modules')->name('modules.retrieve')->middleware('teacher'); //haal de taken op van github
+    Route::get('modules/{module}', 'ModuleController@show')->name('modules.show');
     
     // Route::get('modules/{repo}/file/{path}', 'ModuleController@show')->where('path', '.*')->name('tasks.show');
-    Route::get('modules/{repo}/{path?}', 'ModuleController@show')->where('path', '.*')->name('modules.show');
 
     // Route::get('modules/{repo}/{path?}', 'StudentController@show_module')->where('path', '.*')->name('modules-students.show');
 
     //Github
-    Route::get('github', 'GithubController@index')->name('github.index');
+    // Route::get('github', 'GithubController@index')->name('github.index');
     // Route::get('github/{repo}/fork', 'GithubController@fork')->name('github.fork');
-    Route::get('github/{repo}/{path?}', 'GithubController@show')->name('github.show');
+    // Route::get('github/{repo}/{path?}', 'GithubController@show')->name('github.show');
     // Route::get('github/{repo}/edit-file/{path}', 'GithubController@edit')->where('path', '.*')->name('github.edit-file');
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');

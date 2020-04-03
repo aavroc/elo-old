@@ -5,7 +5,7 @@ namespace App;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-
+use App\Module;
 
 class GitHub
 {
@@ -39,9 +39,13 @@ class GitHub
     }
 
     //get a user specific repo
-    public function repo($repo = '', $type = 'public')
+    public function repo($repo = '', $owner = null)
     {
-        $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo; //retrieve specific repo
+        if ($owner == null) {
+            $owner = $this->owner;
+        }
+
+        $url = 'https://api.github.com/repos/' . $owner . '/' . $repo; //retrieve specific repo
         return $this->get_request_json($url);
     }
 
@@ -163,10 +167,58 @@ class GitHub
         return $this->get_request_json_secured($url);
     }
 
+  
     public function fork($repo = '')
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/forks'; // fork this repo
+        // dd($url);
+        dd($this->post_request($url));
         return $this->post_request($url);
+    }
+
+    public function retrieve_tasks(){
+        $modules = Module::all();
+        //retrieve github repo content
+        $niveaus = ['niveau1', 'niveau2', 'niveau3'];
+
+        $data_generated = [];
+        foreach ($modules as $module) {
+            foreach($niveaus as $niveau){
+                $data_generated[$module->id][$niveau] = $this->get_contents($module->slug, $niveau);
+            }
+        }
+        //store all tasks
+        if (is_array($data_generated)) {
+            foreach($data_generated as $module_id => $module_content){
+                if (is_array($module_content)) {
+                    foreach ($module_content as $niveau => $data) {
+                        $module_slug = Module::find($module_id)->slug;
+                        foreach($data as $content){
+                            if (property_exists($content, 'type')) {
+                                if ($content->type == 'dir') {
+                                    // dd($data);
+                                    if (property_exists($content, 'path')) {
+                                        Task::updateOrInsert(
+                                            [
+                                                'name' => $content->name,
+                                                'module_id' => $module_id,
+                                                'level'  => $niveau,
+                                            ],
+                                            [
+                                                'readme' => $this->get_specific_readme($module_slug, $content->path)->content,
+                                                'url' => $content->html_url,
+                                                'status' => 1,
+                                                'points' => 3,
+                                                ]
+                                            );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

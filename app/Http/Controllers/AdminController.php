@@ -72,55 +72,10 @@ class AdminController extends Controller
     public function tasks()
     {
         $github = new GitHub();
-        $modules = Module::all();
-        //retrieve github repo content
-        $niveaus = ['niveau1', 'niveau2', 'niveau3'];
-
-        $data_generated = [];
-        foreach ($modules as $module) {
-            foreach($niveaus as $niveau){
-                $data_generated[$module->id][$niveau] = $github->get_contents($module->slug, $niveau);
-            }
-            
-        }
-
+        $github->retrieve_tasks();
         
         // dd($data_generated);
-
-        //store all tasks
-        if (is_array($data_generated)) {
-            foreach($data_generated as $module_id => $module_content){
-                if (is_array($module_content)) {
-                    foreach ($module_content as $niveau => $data) {
-                        $module_slug = Module::find($module_id)->slug;
-                        foreach($data as $content){
-                            if (property_exists($content, 'type')) {
-                                if ($content->type == 'dir') {
-                                    // dd($data);
-                                    if (property_exists($content, 'path')) {
-                                        Task::updateOrInsert(
-                                            [
-                                                'name' => $content->name,
-                                                'module_id' => $module_id,
-                                                'level'  => $niveau,
-                                            ],
-                                            [
-                                                'readme' => $github->get_specific_readme($module_slug, $content->path)->content,
-                                                'url' => $content->html_url,
-                                                'status' => 1,
-                                                'points' => 3,
-                                                ]
-                                            );
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        // dd($data_generated);
-        return redirect()->route('admin');
+        return view('tasks.index');
     }
 
     public function index()

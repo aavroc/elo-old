@@ -2,9 +2,8 @@
 
 @section('content')
 
-<h3 class="mt-3">{{$repo}} Repository</h3>
-<div class="row">
-    <div class="col-6">
+<div class="row mt-1">
+    <div class="col">
         <div class="jumbotron">
             @isset($readme_content)
             <p>{!!$readme_content!!}</p>
@@ -12,7 +11,7 @@
         </div>
     </div>
     {{-- {{dd($module->tasks->sortBy('name')->sortBy('level'))  }} --}}
-    <div class="col-6">
+    <div class="col">
         @php $level = null ; @endphp
         @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
             @if($level != $content->level)
@@ -20,7 +19,7 @@
                     <div class="card-header">{{$content->level}}</div>
                         <ul class="list-group list-group-flush">
             @endif
-                            <li class="list-group-item">{{$content->name}}</li>
+                            <li class="list-group-item"><a href="{{route('tasks.show', $content)}}" class="text-success">{{$content->name}}</a></li>
               
            
           @php $level = $content->level; @endphp

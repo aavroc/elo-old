@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Module;
+use App\GitHub;
 
 class TaskSeeder extends Seeder
 {
@@ -11,6 +13,6 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
+
 }

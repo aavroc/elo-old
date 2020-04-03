@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\Tag;
 use App\Module;
 use App\Github;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use League\CommonMark\GithubFlavoredMarkdownConverter;
@@ -38,7 +40,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('module_id') ->orderBy('level', 'asc')->get();
+        $tasks = Task::orderBy('module_id')->orderBy('level', 'asc')->orderBy('name', 'asc')->get();
 
         $data = [
             'tasks' => $tasks
@@ -54,7 +56,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -76,12 +78,21 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        $tags = Tag::all();
 
         $readme_content = base64_decode($task->readme);
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
+        $data['tags'] = $tags;
+        $data['task'] = $task;
 
 
         return view('tasks.show', $data);
+    }
+
+    public function tag(Request $request, Task $task)
+    {
+        $task->tags()->sync($request->tags);
+        return redirect()->route('tasks.show', ['task' => $task ]);
     }
 
     // returns true if $needle is a substring of $haystack
