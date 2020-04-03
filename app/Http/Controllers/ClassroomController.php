@@ -47,10 +47,11 @@ class ClassroomController extends Controller
         return view('classrooms.show', $data);
     }
 
-    public function reset_levels(Classroom $classroom, array $options = [1,4,6])
+    public function reset_levels(Classroom $classroom, Request $request)
     {
-        // dd($classroom);
-        // dd($classroom->students);
+        $options = $request->basic_modules;
+        // dd($options);
+
         $modules = Module::all();
         DB::table('users_modules')->truncate();
         foreach($classroom->students as $student){
@@ -63,6 +64,12 @@ class ClassroomController extends Controller
                             'status' => 1,
                         ],
                     );
+                    //update basic_status of modules-table
+                    Module::where('id', $module->id)->update(
+                        ['basic_status' => 1]
+    
+                    );
+
                 }else{
                     DB::table('users_modules')->insert(
                         [
@@ -71,7 +78,15 @@ class ClassroomController extends Controller
                             'status' => 0,
                         ],
                     );
+
+                    //update basic_status of modules-table
+                    Module::where('id', $module->id)->update(
+                        ['basic_status' => 0]
+    
+                    );
                 }
+
+               
                 
                     
             }

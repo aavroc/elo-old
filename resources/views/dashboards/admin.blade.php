@@ -9,6 +9,7 @@
 <div class="row mt-3 mb-3">
     <div class="col">
         <a class="btn btn-success" href="{{route('retrieve')}}">Retrieve all modules and tasks</a>
+        <a class="btn btn-success" href="{{route('users.select_file')}}">Upload Users</a>
         
     </div>
 </div>

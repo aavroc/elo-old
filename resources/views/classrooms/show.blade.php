@@ -6,13 +6,14 @@
     <div class="col">
         <h6>Start Modules</h6>
         <form action="{{route('reset_levels', $classroom)}}" method="post">
+            @csrf
             @foreach($modules as $module)
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="{{$module->name}}" value="{{$module->id}}">
+                <input class="form-check-input" type="checkbox" name="basic_modules[]" id="{{$module->name}}" value="{{$module->id}}" @if($module->basic_status == 1) checked @endif>
                 <label class="form-check-label" for="{{$module->name}}">{{$module->name}}</label>
             </div>
             @endforeach
-            <a class="btn btn-danger" href="{{route('reset_levels', [ 'classroom' => $classroom, 'options' =>  'dfds' ]  )}}">Set all users to start</a>
+            <button class="btn btn-danger" name="submit" >Set all users to start</button>
         </form>
     </div>
 </div>
