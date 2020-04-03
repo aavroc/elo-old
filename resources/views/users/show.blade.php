@@ -23,43 +23,43 @@
             </span>
             @endif
         </p>
-        @isset($all_modules)
-        <p>
-            <div id="message"></div>
-            <td>
-                @foreach($all_modules as $module)
-                <div class="form-check form-check-inline">
-                    <label class="form-radio-label fancy-radio" for="user_{{$user->id}}_level_{{$module->id}}">
-                        <input class="form-radio-input" type="radio" name="module_user_{{$user->id}}"
-                            id="user_{{$user->id}}_module_{{$module->id}}" data-student="{{$user->id}}"
-                            data-module="{{$module->id}}" @if($module->id==$user->module_id) checked @endif>
-                        <i class="fas fa-award text-danger"></i>
-                        <i class="fas fa-award text-success"></i>
-                        {{$module->name}}
-                    </label>
-                </div>
-                @endforeach
-            </td>
-        </p>
-        @endif
         @if(Auth::user()->role == 1)
         <a href="{{route('users.edit', $user)}}" class="btn btn-warning">Edit gebruiker</a>
         @endif
+    </div>
+</div>
+<div class="row">
+    <div class="col">
         @if($user->role == 3)
         <div class="row mt-3">
-            <div class="d-flex flex-row justify-content-around">
                 @foreach ($all_modules as $module)
-                <div class="col-2">
-                    <div class="card" style="width: 18rem;">
+                <div class="col">
+                    <div class="card" style="width: 20rem;">
                         <div class="card-body">
-                            <h5 class="card-title">{{$module->name}}</h5>
-                            <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
-                                class="card-link">Check user module</a>
+                            <div class="col">
+                                <h5 class="card-title">{{$module->name}}</h5>
+                                <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
+                                    class="card-link">Check user module</a>
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="closed_{{$module->slug}}" value="0">
+                                    <label class="form-check-label" for="closed_{{$module->slug}}">Closed</label>
+                                  </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="open_{{$module->slug}}" value="1">
+                                    <label class="form-check-label" for="open_{{$module->slug}}">Open</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="done_{{$module->slug}}" value="3">
+                                    <label class="form-check-label" for="done_{{$module->slug}}">Done</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
                 @endforeach
-            </div>
         </div>
         <div class="row mt-3">
             {{-- {{dd($user_events)}} --}}
@@ -86,7 +86,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
             @else
             <p>No events recored yet</p>
             @endif
@@ -95,6 +94,49 @@
     </div>
 </div>
 
+<script>
+    $('input[type=radio][name=level_user_{{$user->id}}').change(function() {
+    console.log(this.id);
+    let level_id = $(this).attr('data-level');
+    let student_id = $(this).attr('data-student');
+    console.log(student_id);
+    $.ajax({
+        method: "POST",
+        url: "/students/update_level",
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data: { 
+                'student': student_id, 
+                'level': level_id,
+            },
+        success: function(response){ // What to do if we succeed
+            console.log(response); 
+        },
+        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+            console.log(JSON.stringify(jqXHR));
+            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+        }
+    })
+    .done(function( msg ) {
+        var messageType = '';
+        if(msg.level == 1){
+            messageType = 'secondary';
+        }
+        if(msg.level == 2){
+            messageType = 'warning';
+        }
+        if(msg.level == 3){
+            messageType = 'success';
+        }
+        $("#message").html(
+            
+            '<div class="alert alert-'+messageType+'" role="alert">'+ msg.msg+'</div>'
+            
+        );
+    });
+// Run code
+});
+                    
+</script>
 
 
 
