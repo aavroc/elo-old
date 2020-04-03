@@ -15,4 +15,9 @@ class Module extends Model
     {
         return $this->hasMany('App\Task');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'users_modules');
+    }
 }

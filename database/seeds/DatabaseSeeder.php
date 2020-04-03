@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
                 ClassroomSeeder::class,
                 ModuleSeeder::class,
                 UserSeeder::class,
+                TaskSeeder::class,
+                TagsSeeder::class,
             ]
         );
     }

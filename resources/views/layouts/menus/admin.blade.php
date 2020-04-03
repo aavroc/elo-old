@@ -28,6 +28,10 @@
                 <a href="{{route('tasks.index')}}" class="nav-link text-danger"><i class="fas fa-tasks"></i>
                     Tasks</a>
             </li>
+            <li class="nav-item">
+                <a href="{{route('tags.index')}}" class="nav-link text-danger"><i class="fas fa-tags"></i></i>
+                    Tags</a>
+            </li>
 
         </ul>
         <ul class="navbar-nav ml-auto">
