@@ -22,6 +22,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
     
+    //Tags
+    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
+    
+    
     //Users
     Route::get('users/{user}/module/{module}/task/code/{path?}', 'AdminController@show_code')->where('path', '.*')->name('tasks.code')->middleware('teacher'); //docent mag gebruiker details bekijken
     Route::get('users/upload_data', 'AdminController@select_file')->name('users.select_file')->middleware('admin');
