@@ -7,6 +7,7 @@ use App\Module;
 use App\User;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClassroomController extends Controller
 {
@@ -29,36 +30,56 @@ class ClassroomController extends Controller
      * @param  \App\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function show_levels(Classroom $classroom)
+    public function show(Classroom $classroom)
     {
-        $levels = Module::all();
+        $modules = Module::all();
         $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
 
         // dd($exercises);
 
         $data = [
             'users'               => $users,
-            'levels'              => $levels,
+            'classroom'           => $classroom,
+            'modules'             => $modules,
             'number_of_exercises' => Task::count()
         ];
 
         return view('classrooms.show', $data);
     }
 
-    // public function show_exercises(Classroom $classroom)
-    // {
-    //     $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
-
-    //     $exercises = Task::where('status', 1)->orderBy('level', 'asc')->get();
-
-    //     $data = [
-    //         'users'      => $users,
-    //         'exercises'  => $exercises,
-
-    //     ];
-
-    //     return view('classrooms.show', $data);
-    // }
+    public function reset_levels(Classroom $classroom, array $options = [1,4,6])
+    {
+        // dd($classroom);
+        // dd($classroom->students);
+        $modules = Module::all();
+        DB::table('users_modules')->truncate();
+        foreach($classroom->students as $student){
+            foreach($modules as $module){
+                if(in_array($module->id, $options)){
+                    DB::table('users_modules')->insert(
+                        [
+                            'user_id' => $student->id,
+                            'module_id' => $module->id,
+                            'status' => 1,
+                        ],
+                    );
+                }else{
+                    DB::table('users_modules')->insert(
+                        [
+                            'user_id' => $student->id,
+                            'module_id' => $module->id,
+                            'status' => 0,
+                        ],
+                    );
+                }
+                
+                    
+            }
+            
+            
+        }
+        return redirect()->route('classrooms.show', $classroom);
+    }
 
     /**
      * Show the form for editing the specified resource.
