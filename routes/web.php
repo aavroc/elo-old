@@ -21,9 +21,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/retrieve', 'AdminController@tasks')->name('tasks.retrieve')->middleware('teacher'); //haal de taken op van github
     Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
+    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
     
     //Tags
-    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags', 'TagController@index')->name('tags.index')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags/create', 'TagController@create')->name('tags.create')->middleware('teacher'); //haal de taken op van github
+    Route::post('tags', 'TagController@store')->name('tags.store')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags/{tag}', 'TagController@edit')->name('tags.edit')->middleware('teacher'); //haal de taken op van github
+    Route::put('tags/{tag}/update', 'TagController@update')->name('tags.update')->middleware('teacher'); //haal de taken op van github
+    Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); //haal de taken op van github
     
     
     //Users
