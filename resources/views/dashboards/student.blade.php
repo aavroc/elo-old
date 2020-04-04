@@ -19,6 +19,7 @@
     <div class="col">
         @if($user->modules()->find($module->id) != null )
         @if($module->id == $user->modules()->find($module->id)['id'] )
+        
         <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="card module-to-choose">
             @endif
             <div class="card-body d-flex flex-column align-items-center justify-content-center"

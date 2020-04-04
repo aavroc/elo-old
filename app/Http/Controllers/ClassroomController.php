@@ -53,14 +53,17 @@ class ClassroomController extends Controller
         // dd($options);
 
         $modules = Module::all();
-        DB::table('users_modules')->truncate();
         foreach($classroom->students as $student){
             foreach($modules as $module){
+                
                 if(in_array($module->id, $options)){
-                    DB::table('users_modules')->insert(
+                    DB::table('users_modules')->updateOrInsert(
                         [
                             'user_id' => $student->id,
                             'module_id' => $module->id,
+                        ],
+                        [
+                            
                             'status' => 1,
                         ]
                     );
@@ -71,10 +74,14 @@ class ClassroomController extends Controller
                     );
 
                 }else{
-                    DB::table('users_modules')->insert(
+                    DB::table('users_modules')->updateOrInsert(
                         [
                             'user_id' => $student->id,
                             'module_id' => $module->id,
+                            
+                        ],
+                        [
+                            
                             'status' => 0,
                         ]
                     );

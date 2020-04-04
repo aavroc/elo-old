@@ -32,24 +32,27 @@
     <div class="col">
         @if($user->role == 3)
         <div class="row mt-3">
-                @foreach ($all_modules as $module)
+            @foreach ($user->modules as $module)
                 <div class="col">
-                    <div class="card" style="width: 20rem;">
+                    <div class="card @if($module->pivot->status ==0) bg-danger mb-3 @elseif($module->pivot->status == 1) bg-success mb-3 @else bg-info mb-3 @endif" style="width: 20rem;">
                         <div class="card-body">
                             <div class="col">
                                 <h5 class="card-title">{{$module->name}}</h5>
                                 <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
                                     class="card-link">Check user module</a>
                             </div>
+
                             <div class="col">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_closed" value="0" >
                                     <label class="form-check-label" for="{{$module->slug}}_closed">Closed</label>
                                   </div>
+                               
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_open" value="1">
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_open" value="1" @if($module->pivot->status ==1) checked @endif>
                                     <label class="form-check-label" for="{{$module->slug}}_open">Open</label>
                                 </div>
+                            
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->slug}}_done" value="3">
                                     <label class="form-check-label" for="{{$module->slug}}_done">Done</label>
