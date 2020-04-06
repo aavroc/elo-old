@@ -9,8 +9,8 @@
                 <div class="col-3 col-md-2 col-lg-2 order-1 order-md-1 align-self-center">
                     <!-- Start XP Logobar -->
                     <div class="xp-logobar">
-                        <a href="index{{url('/ui-kits-alerts')}}" class="xp-small-logo"><img src="assets/images/mobile-logo.svg" class="img-fluid" alt="logo"></a>
-                        <a href="index{{url('/ui-kits-alerts')}}" class="xp-main-logo"><img src="assets/images/logo.svg" class="img-fluid" alt="logo"></a>
+                        <a href="{{URL::to('/')}}" class="xp-small-logo"><img src="{{asset('assets/images/mobile-logo.svg')}}" class="img-fluid" alt="logo"></a>
+                        <a href="{{URL::to('/')}}" class="xp-main-logo"><img src="{{asset('assets/images/logo.svg')}}" class="img-fluid" alt="logo"></a>
                     </div>                        
                     <!-- End XP Logobar -->
                 </div> 
