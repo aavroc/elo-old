@@ -51,9 +51,7 @@ Booster - Data Table
                                     {{$user->prefix}}
                                 </td>-->
                                 <td>
-                                    <a href="{{route('users.show', $user)}}" class="alert-link">
                                         {{$user->lastname}}
-                                    </a>
                                 </td>
                                 <td>
                                     {{-- <a href="{{route('classrooms.show_exercises', $user->classroom)}}" class="alert-link"> --}}

@@ -1,5 +1,5 @@
 @section('title') 
-Booster - Starter
+Dashboard
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -47,7 +47,7 @@ Booster - Starter
                 <div class="card-body">
                     <div class="xp-to-do-list">
                         <ul id="list-group" class="list-group list-group-flush">
-                        <!-- back-end toevoegen -->
+                        <!-- @David, hiervoor zouden we een simpele tabel kunnen maken, of nog even weglaten back-end toevoegen -->
                             <li class="list-group-item">
                                 <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input checkbox" id="customCheckItem1" checked="checked">

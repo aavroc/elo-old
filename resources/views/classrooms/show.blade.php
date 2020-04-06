@@ -1,5 +1,5 @@
 @section('title') 
-Booster - Data Table
+Klassen
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -15,37 +15,40 @@ Booster - Data Table
 <!-- End XP Breadcrumbbar -->
 <!-- Start XP Contentbar --> 
 <div class="xp-contentbar">
-@if(Auth::user()->role == 1)
-    <!-- Start XP Row -->    
+    <!-- Start XP Row -->
+    @if(Auth::user()->role == 1)
     <div class="row">
-        <!-- Start XP Col -->
-        <div class="col-md-12 col-lg-12 col-xl-12">
-            <div class="text-center mt-3 mb-5">
-                <h4>Start Modules</h4>
+        <div class="col-lg-12">
+        <div class="card m-b-30">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-black">Reset levels {{$classroom->name}}</h5>
+                </div>
+                <div class="card-body">
+                <h6>Start Modules</h6>
+                <form action="{{route('reset_levels', $classroom)}}" method="post">
+                    @csrf
+                    @foreach($modules as $module)
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="basic_modules[]" id="{{$module->name}}" value="{{$module->id}}" @if($module->basic_status == 1) checked @endif>
+                        <label class="form-check-label" for="{{$module->name}}">{{$module->name}}</label>
+                    </div>
+                    @endforeach
+                    <button class="btn btn-danger" name="submit" >Set all users to start</button>
+                </form>
+                </div>
             </div>
         </div>
-        <form action="{{route('reset_levels', $classroom)}}" method="post">
-            @csrf
-            @foreach($modules as $module)
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="basic_modules[]" id="{{$module->name}}" value="{{$module->id}}" @if($module->basic_status == 1) checked @endif>
-                <label class="form-check-label" for="{{$module->name}}">{{$module->name}}</label>
-            </div>
-            @endforeach
-            <button class="btn btn-danger" name="submit" >Set all users to start</button>
-        </form>
+        <!-- End XP Col -->
     </div>
-    <!-- End XP Row -->  
+    <!-- End XP Row -->
     @endif
 
     <!-- Start XP Row -->
     <div class="row">
-        <!-- End XP Col -->
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">{{$classroom->name}}</h5>
-                    <h6 class="card-subtitle">Subtitel</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
