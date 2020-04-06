@@ -50,8 +50,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     
     
-    //Menu
-    //Route::get('menus', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
