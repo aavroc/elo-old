@@ -8,6 +8,9 @@ use App\Task;
 use App\Module;
 use App\GitHub;
 use Carbon\Carbon;
+use App\CSVData;
+use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
@@ -317,6 +320,15 @@ class AdminController extends Controller
         return redirect()->route('users.edit', $user);
     }
 
+
+    //retrieve module and task data
+    public function retrieve()
+    {
+        $this->modules();
+        $this->tasks();
+        return redirect()->route('admin');
+    }
+
     public function select_file()
     {
         $data = [
@@ -348,21 +360,6 @@ class AdminController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function change_password()
-    {
-    }
-
     protected function uploadFile(Request $request)
     {
 
@@ -385,5 +382,30 @@ class AdminController extends Controller
         }
         //if no image is selected use the current image
         return $file;
+    }
+
+    public function update_level(Request $request)
+    {
+      
+        $module_status = explode('_', $request->status);
+        $module = $module_status[0];
+        $status_text = $module_status[1];
+
+        if($status_text == 'done'){
+            $status = 3;
+        }
+        elseif($status_text == 'open' ){
+            $status = 1;
+        }
+        else{
+            $status = 0;
+        }
+
+        DB::table('users_modules')->where('user_id', $request->student)->where('module_id', $module)->update(
+            [
+                'status' => $status
+            ]
+        );
+        return $status_text;
     }
 }

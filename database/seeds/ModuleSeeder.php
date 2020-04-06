@@ -15,6 +15,7 @@ class ModuleSeeder extends Seeder
             [
                 'name' => 'PHP Basic',
                 'slug' => 'php-basic',
+                'basic_status' => 1
             ],
             [
                 'name' => 'PHP Advanced',
@@ -27,6 +28,7 @@ class ModuleSeeder extends Seeder
             [
                 'name' => 'MySQL BASIC',
                 'slug' => 'mysql-basic',
+                'basic_status' => 1
             ],
             [
                 'name' => 'MySQL Advanced',
@@ -35,6 +37,7 @@ class ModuleSeeder extends Seeder
             [
                 'name' => 'Database Design',
                 'slug' => 'database-design',
+                'basic_status' => 1
             ],
 
         ];
