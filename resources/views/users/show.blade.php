@@ -32,33 +32,36 @@
     <div class="col">
         @if($user->role == 3)
         <div class="row mt-3">
-                @foreach ($all_modules as $module)
+            @foreach ($user->modules as $module)
                 <div class="col">
-                    <div class="card" style="width: 20rem;">
+                    <div class="card @if($module->pivot->status ==0) bg-danger mb-3 @elseif($module->pivot->status == 1) bg-success mb-3 @else bg-info mb-3 @endif" style="width: 20rem;">
                         <div class="card-body">
                             <div class="col">
                                 <h5 class="card-title">{{$module->name}}</h5>
                                 <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
                                     class="card-link">Check user module</a>
                             </div>
+
                             <div class="col">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="closed_{{$module->slug}}" value="0">
-                                    <label class="form-check-label" for="closed_{{$module->slug}}">Closed</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_closed" value="0" >
+                                    <label class="form-check-label" for="{{$module->id}}_closed">Closed</label>
                                   </div>
+                               
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="open_{{$module->slug}}" value="1">
-                                    <label class="form-check-label" for="open_{{$module->slug}}">Open</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_open" value="1" @if($module->pivot->status ==1) checked @endif>
+                                    <label class="form-check-label" for="{{$module->id}}_open">Open</label>
                                 </div>
+                            
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="done_{{$module->slug}}" value="3">
-                                    <label class="form-check-label" for="done_{{$module->slug}}">Done</label>
+                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_done" value="3">
+                                    <label class="form-check-label" for="{{$module->id}}_done">Done</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+               
                 @endforeach
         </div>
         <div class="row mt-3">
@@ -95,18 +98,17 @@
 </div>
 
 <script>
-    $('input[type=radio][name=level_user_{{$user->id}}').change(function() {
-    console.log(this.id);
-    let level_id = $(this).attr('data-level');
-    let student_id = $(this).attr('data-student');
-    console.log(student_id);
+    $('input[type=radio]').change(function() {
+    console.log($(this).parent().parent().parent().parent());
+    var card =$(this).parent().parent().parent().parent();
+    var status = this.id;
     $.ajax({
         method: "POST",
         url: "/students/update_level",
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         data: { 
-                'student': student_id, 
-                'level': level_id,
+                'student': {{$user->id}}, 
+                'status': status,
             },
         success: function(response){ // What to do if we succeed
             console.log(response); 
@@ -117,28 +119,23 @@
         }
     })
     .done(function( msg ) {
-        var messageType = '';
-        if(msg.level == 1){
-            messageType = 'secondary';
+        $(card).removeClass('bg-danger bg-success bg-info' );
+        
+        if(msg == 'closed'){
+            $(card).addClass('bg-danger' );
         }
-        if(msg.level == 2){
-            messageType = 'warning';
+
+        if(msg == 'open'){
+            $(card).addClass('bg-success' );
         }
-        if(msg.level == 3){
-            messageType = 'success';
+
+        if(msg == 'done'){
+            $(card).addClass('bg-info' );
         }
-        $("#message").html(
-            
-            '<div class="alert alert-'+messageType+'" role="alert">'+ msg.msg+'</div>'
-            
-        );
     });
 // Run code
 });
                     
 </script>
-
-
-
 
 @endsection

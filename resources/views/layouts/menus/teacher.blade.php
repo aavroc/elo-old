@@ -1,185 +1,45 @@
-<div class="xp-menubar text-left">
-            <!-- Start XP Nav -->
-            <nav class="xp-horizontal-nav xp-mobile-navbar xp-fixed-navbar">
-                <div class="collapse navbar-collapse" id="navbar-menu">
-                  <ul class="xp-horizontal-menu">
-                    <li class="dropdown">
-                      <a href="{{route('admin')}}" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-view-dashboard"></i><span>Dashboard</span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="{{url('/')}}"></a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown menu-item-has-mega-menu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-layers"></i><span>UI Kits</span></a>
-                      <div class="mega-menu dropdown-menu">
-                        <ul class="mega-menu-row" role="menu">
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/ui-kits-alerts')}}">Alerts</a></li>
-                                <li><a href="{{url('/ui-kits-badges')}}">Badges</a></li>
-                                <li><a href="{{url('/ui-kits-buttons')}}">Buttons</a></li>
-                                <li><a href="{{url('/ui-kits-cards')}}">Cards</a></li>
-                                <li><a href="{{url('/ui-kits-carousel')}}">Carousel</a></li>
-                                <li><a href="{{url('/ui-kits-collapse')}}">Collapse</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/ui-kits-dropdowns')}}">Dropdowns</a></li>
-                                <li><a href="{{url('/ui-kits-grids')}}">Grids</a></li>
-                                <li><a href="{{url('/ui-kits-images')}}">Images</a></li>
-                                <li><a href="{{url('/ui-kits-media')}}">Media</a></li>
-                                <li><a href="{{url('/ui-kits-modals')}}">Modals</a></li>                                
-                                <li><a href="{{url('/ui-kits-paginations')}}">Paginations</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/ui-kits-popovers')}}">Popovers</a></li>                                
-                                <li><a href="{{url('/ui-kits-progressbars')}}">Progress Bars</a></li>
-                                <li><a href="{{url('/ui-kits-tabs')}}">Tabs</a></li>    
-                                <li><a href="{{url('/ui-kits-tooltips')}}">Tooltips</a></li>
-                                <li><a href="{{url('/ui-kits-typography')}}">Typography</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-package-variant"></i><span>Components</span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="{{url('/components-nestable')}}">Nestable</a></li>
-                        <li><a href="{{url('/components-ratings')}}">Ratings</a></li>
-                        <li><a href="{{url('/components-range-slider')}}">Range Slider</a></li>
-                        <li><a href="{{url('/components-switchery')}}">Switchery</a></li>
-                        <li><a href="{{url('/components-treeview')}}">Tree View</a></li>
-                        <li><a href="{{url('/components-widgets')}}">Widgets</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-album"></i><span>Icons</span></a>
-                      <ul class="dropdown-menu">
-                            <li><a href="{{url('/icon-material-design')}}">Material Design</a></li>
-                            <li><a href="{{url('/icon-font-awesome')}}">Font Awesome</a></li>
-                            <li><a href="{{url('/icon-simple-line')}}">Simple Line Icons</a></li>
-                            <li><a href="{{url('/icon-themify')}}">Themify Icons</a></li>
-                            <li><a href="{{url('/icon-typicons')}}">Typicons</a></li>
-                            <li><a href="{{url('/icon-ionicons')}}">Ion Icons</a></li>
-                            <li><a href="{{url('/icon-dripicons')}}">Dripicons</a></li>
-                      </ul>
-                    </li>
-                    <li class="scroll"><a href="{{url('/events')}}"><i class="mdi mdi-calendar"></i><span>Events</span></a></li>
-                    <li class="dropdown menu-item-has-mega-menu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-file-document-box"></i><span>Forms</span></a>
-                      <div class="mega-menu dropdown-menu">
-                        <ul class="mega-menu-row" role="menu">
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/form-inputs')}}">Form Inputs</a></li>
-                                <li><a href="{{url('/form-groups')}}">Form Groups</a></li>
-                                <li><a href="{{url('/form-layouts')}}">Form Layouts</a></li>
-                                <li><a href="{{url('/form-validations')}}">Form Validations</a></li>
-                                <li><a href="{{url('/form-editors')}}">Form Editors</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/form-file-uploads')}}">Form File Uploads</a></li>
-                                <li><a href="{{url('/form-colorpickers')}}">Form Color Pickers</a></li>
-                                <li><a href="{{url('/form-datepickers')}}">Form Date Pickers</a></li>
-                                <li><a href="{{url('/form-maxlength')}}">Form MaxLength</a></li>
-                                <li><a href="{{url('/form-touchspin')}}">Form Touchspin</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/form-input-mask')}}">Form Input Mask</a></li>
-                                <li><a href="{{url('/form-selects')}}">Form Selects</a></li>
-                                <li><a href="{{url('/form-xeditable')}}">Form X-editable</a></li>
-                                <li><a href="{{url('/form-wizards')}}">Form Wizards</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-chart-areaspline"></i><span>Charts</span></a>
-                      <ul class="dropdown-menu">
-                            <li><a href="{{url('/chart-chartistjs')}}">Chartist Chart</a></li> 
-                            <li><a href="{{url('/chart-chartjs')}}">Chartjs Chart</a></li>                                   
-                            <li><a href="{{url('/chart-c3')}}">C3 Chart</a></li>
-                            <li><a href="{{url('/chart-flot')}}">Flot Chart</a></li> 
-                            <li><a href="{{url('/chart-morris')}}">Morris Chart</a></li>                                
-                            <li><a href="{{url('/chart-knob')}}">Knob Chart</a></li>
-                            <li><a href="{{url('/chart-piety')}}">Piety Chart</a></li>
-                            <li><a href="{{url('/chart-sparkline')}}">Sparkline Chart</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i><span>More</span></a>
-                      <ul class="dropdown-menu">
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Email</a>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{url('/email-inbox')}}">Email Inbox</a></li>
-                            <li><a href="{{url('/email-open')}}">Email Open</a></li>
-                            <li><a href="{{url('/email-compose')}}">Email Compose</a></li>
-                          </ul>
-                        </li>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables</a>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{url('/table-bootstrap')}}">Bootstrap Table</a></li>
-                            <li><a href="{{url('/table-datatable')}}">Data Table</a></li>
-                            <li><a href="{{url('/table-editable')}}">Editable Table</a></li>
-                            <li><a href="{{url('/table-rwdtable')}}">RWD Table</a></li>
-                          </ul>
-                        </li>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Maps</a>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{url('/map-google')}}">Google Map</a></li>
-                            <li><a href="{{url('/map-vector')}}">Vector Map</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li> 
-                    <li class="dropdown menu-item-has-mega-menu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-book-open-page-variant"></i><span>Pages</span></a>
-                      <div class="mega-menu dropdown-menu">
-                        <ul class="mega-menu-row" role="menu">
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/page-login')}}">Login</a></li>
-                                <li><a href="{{url('/page-register')}}">Register</a></li>
-                                <li><a href="{{url('/page-forgotpsw')}}">Forgot Password</a></li>
-                                <li><a href="{{url('/page-lock-screen')}}">Lock Screen</a></li> 
-                                <li><a href="{{url('/page-comingsoon')}}">Coming Soon</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/page-maintenance')}}">Maintenance</a></li>                               
-                                <li><a href="{{url('/page-404')}}">Error 404</a></li>  
-                                <li><a href="{{url('/page-403')}}">Error 403</a></li>
-                                <li><a href="{{url('/page-500')}}">Error 500</a></li>  
-                                <li><a href="{{url('/page-503')}}">Error 503</a></li>
-                            </ul>
-                          </li>
-                          <li class="mega-menu-col col-md-4">
-                            <ul class="sub-menu">
-                                <li><a href="{{url('/page-starter')}}">Starter Page</a></li>
-                                <li><a href="{{url('/page-timeline')}}">Timeline</a></li>
-                                <li><a href="{{url('/page-pricing')}}">Pricing</a></li>
-                                <li><a href="{{url('/page-invoice')}}">Invoice</a></li>
-                                <li><a href="{{url('/page-faq')}}">FAQ</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </li> 
-                  </ul>
-                </div>
-            </nav>
-            <!-- End XP Nav -->
-        </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{URL::to('/admin')}}">DeepDive 2.0</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="{{route('admin')}}"><i class="fas fa-tachometer-alt"></i>
+                    Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="{{route('classrooms.index')}}"><i class="fas fa-user-friends"></i>
+                    Klassen</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('users.index')}}" class="nav-link text-danger"><i class="fas fa-users"></i>
+                    Gebruikers</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('modules.index')}}" class="nav-link text-danger"><i class="fas fa-project-diagram"></i>
+                    Modules</a>
+            </li>
+
+            </li>
+            <li class="nav-item">
+                <a href="{{route('tasks.index')}}" class="nav-link text-danger"><i class="fas fa-tasks"></i>
+                    Tasks</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('tags.index')}}" class="nav-link text-danger"><i class="fas fa-tags"></i></i>
+                    Tags</a>
+            </li>
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item pull-right">
+                <a class="btn btn-danger" href="{{route('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout
+                    {{Auth::user()->firstname}}</a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
