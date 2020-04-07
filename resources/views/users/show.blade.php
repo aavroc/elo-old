@@ -1,101 +1,179 @@
+@section('title') 
+Gebruiker
+@endsection
 @extends('layouts.main')
-
-@section('content')
-
-<div class="row">
-    <div class="col">
-        <h1>{{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h1>
-        <p>Email-> {{$user->email}}</p>
-        <p>Rol->
-            @php
-            $roles = ['','admin','docent','student'];
-            @endphp
-            {{$roles[$user->role]}}
-        </p>
-        <p>
-            Laatste activiteit-> @if(isset($user->session))
-            <span class="text-success" role="alert">
-                {{$user->session->last_activity}}
-            </span>
-            @else
-            <span class="text-danger" role="alert">
-                Nooit ingelogd geweest!
-            </span>
-            @endif
-        </p>
-        @if(Auth::user()->role == 1)
-        <a href="{{route('users.edit', $user)}}" class="btn btn-warning">Edit gebruiker</a>
-        @endif
-    </div>
+@section('style')
+<!-- DataTables CSS -->
+<link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection 
+@section('rightbar-content')
+<!-- Start XP Breadcrumbbar -->                    
+<div class="xp-breadcrumbbar text-center">
 </div>
-<div class="row">
-    <div class="col">
-        @if($user->role == 3)
-        <div class="row mt-3">
-            @foreach ($user->modules as $module)
-                <div class="col">
-                    <div class="card @if($module->pivot->status ==0) bg-danger mb-3 @elseif($module->pivot->status == 1) bg-success mb-3 @else bg-info mb-3 @endif" style="width: 20rem;">
-                        <div class="card-body">
-                            <div class="col">
-                                <h5 class="card-title">{{$module->name}}</h5>
-                                <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}"
-                                    class="card-link">Check user module</a>
-                            </div>
-
-                            <div class="col">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_closed" value="0" >
-                                    <label class="form-check-label" for="{{$module->id}}_closed">Closed</label>
-                                  </div>
-                               
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_open" value="1" @if($module->pivot->status ==1) checked @endif>
-                                    <label class="form-check-label" for="{{$module->id}}_open">Open</label>
-                                </div>
-                            
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_done" value="3">
-                                    <label class="form-check-label" for="{{$module->id}}_done">Done</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!-- End XP Breadcrumbbar -->
+<!-- Start XP Contentbar -->    
+<div class="xp-contentbar">
+    <!-- Write page content code here -->
+    <!-- Start XP Row -->    
+    <!-- Start XP Row -->    
+    <div class="row">
+        <!-- Start XP Col -->
+        <div class="col-lg-6">
+            <div class="card m-b-30">
+                <div class="card-header bg-white">
+                <h4>gebruiker: {{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h4>
                 </div>
-               
-                @endforeach
-        </div>
-        <div class="row mt-3">
-            {{-- {{dd($user_events)}} --}}
-            @if(is_array($user_events))
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <h4>last pushed commits</h4>
-                        <ul class="list-group">
+                <div class="card-body">
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Laatst actief geweest</th>
+                                @if(Auth::user()->role == 1)
+                                <th>Bewerk</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>@php
+                                    $roles = ['','admin','docent','student'];
+                                    @endphp
+                                    {{$roles[$user->role]}}</td>
+                                <td>@if(isset($user->session))<span class="text-success" role="alert">{{$user->session->last_activity}}</span>
+                                 @else
+                                <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
+                                @endif</td>
+                                @if(Auth::user()->role == 1)
+                                <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                @endif
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+                @if($user->role == 3)
+                <div class="card-body">
+                <div class="m-b-10">
+                <h6>Modules</h6>
+                </div>
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Toon user module</th>
+                                <th>Status</th>
+                                @if(Auth::user()->role == 1)
+                                <th>Bewerk</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($user->modules as $module)
+                            <tr class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
+                                <td>{{$module->name}}</td>
+                                    @if($module->pivot->status ==1) 
+                                    <td >open</td> 
+                                    @elseif ($module->pivot->status ==3) 
+                                    <td >done</td> 
+                                    @else
+                                    <td >closed</td> 
+                                    @endif
+                                <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class=""><i class="fa fa-eye"></i> toon</a></td>
+                                @if(Auth::user()->role == 1)
+                                    <td><a href="#" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                @endif
+                            </tr>
+                        @endforeach
+                            </tbody>
+                        </table>
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+            </div> <!-- end card -->
+            
+        </div><!-- End XP Col -->
+        
+        <div class="col-lg-6">
+            <div class="card m-b-30">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-black">Last pushed commits</h5>
+                </div>
+                <div class="card-body">
+                {{-- {{dd($user_events)}} --}}
+                @if(is_array($user_events))
+                <div class="table-responsive">
+                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>Commit on github</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             @foreach($user_events as $event)
                             @if($event->type == "PushEvent")
                             @foreach($event->payload->commits as $commit)
                             @php $module = explode('/', $event->repo->name)[1]; @endphp
-                            <li class="list-group-item">
-                                check module: <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
-                                class="card-link">{{$module}}</a>
-                            check commit on github: <a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> 
-                            |
-                                
-                            </li>
+                                <tr>
+                                    <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
+                                class="card-link">{{$module}}</a></td>
+                                    <td><a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> </td>
+                                </tr>
                             @endforeach
                             @endif
                             @endforeach
-                        </ul>
+                                </tbody>
+                        </table>
+                    </div>
+                    @else
+                    <p>No events recored yet</p>
+                     @endif
                     </div>
                 </div>
-            @else
-            <p>No events recored yet</p>
-            @endif
+            </div>
+@endif
         </div>
-        @endif
+        <!-- End XP Col -->
     </div>
+
+    <!-- End XP Row -->
+<!-- Start XP Row -->
+<div class="row">
+<!-- Start XP Col -->
+<div class="col-lg-6">
+            
+        <!-- End XP Col -->
+    </div>
+    <!-- End XP Row -->
 </div>
+</div>
+<!-- End XP Contentbar -->
+
+
+@endsection 
+@section('script')
+<!-- Required Datatable JS -->
+<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/js/init/table-datatable-init.js') }}"></script>
 
 <script>
     $('input[type=radio]').change(function() {
@@ -138,4 +216,5 @@
                     
 </script>
 
-@endsection
+@endsection 
+

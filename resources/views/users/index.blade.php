@@ -21,7 +21,7 @@ Booster - Data Table
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Users</h5>
+                    <h5 class="card-title text-black">Gebruikers</h5>
                     <!--<h6 class="card-subtitle">Subtitel</h6>-->
                 </div>
                 <div class="card-body">
