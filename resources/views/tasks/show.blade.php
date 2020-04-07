@@ -29,10 +29,12 @@
                                 <label class="custom-control-label" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</label>
                             @endif
                         @endif
-                        <button type="submit" class="btn btn-success">Tag you're it</button>
                     @endif
                 </div>
             @endforeach
+            @if(Auth::user()->role < 3)
+            <button type="submit" class="btn btn-success">Tag you're it</button>
+            @endif
         </form>
         
     </div>
