@@ -116,8 +116,24 @@ class AdminController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         $user->role = $request->type_gebruiker;
-
         $user->save();
+
+        if($user->role == 3){
+
+            $modules = Module::all();
+            
+            foreach ($modules as $module) {
+                DB::table('users_modules')->insert(
+                    [
+                    'user_id' => $user->id,
+                    'module_id' => $module->id,
+                    'status' => 0,
+                    
+                    ]
+                );
+            }
+        }
+
         return redirect()->route('users.edit', $user);
     }
 
