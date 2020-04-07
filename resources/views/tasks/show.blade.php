@@ -29,10 +29,10 @@
                                 <label class="custom-control-label" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</label>
                             @endif
                         @endif
+                        <button type="submit" class="btn btn-success">Tag you're it</button>
                     @endif
                 </div>
             @endforeach
-            <button type="submit" class="btn btn-success">Tag you're it</button>
         </form>
         
     </div>
