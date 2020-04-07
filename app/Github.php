@@ -172,7 +172,7 @@ class GitHub
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/forks'; // fork this repo
         // dd($url);
-        dd($this->post_request($url));
+        // dd($this->post_request($url));
         return $this->post_request($url);
     }
 

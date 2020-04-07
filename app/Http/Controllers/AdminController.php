@@ -122,7 +122,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Laat info gebruiker zien
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -149,6 +149,7 @@ class AdminController extends Controller
         return view('users.show', $data);
     }
 
+    //laat de moduels uit de db zien op het scherm
     public function show_module(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
@@ -186,6 +187,7 @@ class AdminController extends Controller
         return view('users.repo', $data);
     }
 
+    //laat de diverse taken zien op het scherm
     public function show_task(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
