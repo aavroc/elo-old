@@ -16,8 +16,7 @@ Gebruiker
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
     <!-- Write page content code here -->
-    <!-- Start XP Row -->    
-    <!-- Start XP Row -->    
+    <!-- Start XP Row -->     
     <div class="row">
         <!-- Start XP Col -->
         <div class="col-lg-6">
@@ -110,7 +109,7 @@ Gebruiker
                 {{-- {{dd($user_events)}} --}}
                 @if(is_array($user_events))
                 <div class="table-responsive">
-                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
+                        <table id="data-moduletable" class="display table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>Module</th>
@@ -159,6 +158,7 @@ Gebruiker
 
 
 @endsection 
+
 @section('script')
 <!-- Required Datatable JS -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -174,6 +174,7 @@ Gebruiker
 <script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/js/init/table-datatable-init.js') }}"></script>
+
 
 <script>
     $('input[type=radio]').change(function() {
