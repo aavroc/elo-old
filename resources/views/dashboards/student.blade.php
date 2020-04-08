@@ -108,27 +108,27 @@ Dashboard
                                             @switch($request->status)
                                                 @case(1)
                                                 <td><i class="mdi mdi-help font-18"></i></td>
-                                                <td><a href="email-open.html">Hulpverzoek</a></td> 
+                                                <td><a href="#">Hulpverzoek</a></td> 
                                                     @break
                                                 @case(2)
                                                 <td><i class="mdi mdi-school font-18"></i></td>
-                                                <td><a href="email-open.html">Module eindgesprek</a></td> 
+                                                <td><a href="#">Module eindgesprek</a></td> 
                                                     @break
                                                 @case(3)
                                                 <td><i class="mdi mdi-account-circle"></i></td>
-                                                <td><a href="email-open.html">Coachgesprek</a></td> 
+                                                <td><a href="#">Coachgesprek</a></td> 
                                                     @break   
                                                 @case(4)
                                                 <td><i class="mdi mdi-laptop"></i></td>
-                                                <td><a href="email-open.html">Workshop</a></td> 
+                                                <td><a href="#">Workshop</a></td> 
                                                     @break   
                                                 @case(5)
                                                 <td><i class="mdi mdi-sync font-18"></i></td>
-                                                <td><a href="email-open.html">In behandeling</a></td> 
+                                                <td><a href="#">In behandeling</a></td> 
                                                     @break   
                                                 @case(6)
                                                 <td><i class="mdi mdi-check-outline font-18"></i></td>
-                                                <td><a href="email-open.html">Voltooid</a></td> 
+                                                <td><a href="#">Voltooid</a></td> 
                                                     @break                                                    
                                                 @default
                                                     Default case...
