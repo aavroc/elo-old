@@ -17,13 +17,7 @@
                     @endif
                     <li><a href="{{route('modules.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Modules</span></a></li>
                     <li><a href="{{route('tasks.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Tasks</span></a></li>
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-package-variant"></i><span>Tags</span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="{{route('tags.index')}}">Toon tags</a></li>
-                        <li><a href="{{route('tags.create')}}">Create tags</a></li>
-                      </ul>
-                    </li>
+                    <li><a href="{{route('tags.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Tags</span></a></li>
                   </ul>
                 </div>
             </nav>

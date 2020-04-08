@@ -19,11 +19,11 @@ Toon Tags
     <div class="row">
         <!-- End XP Col -->
         <div class="col-lg-6">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Tags</h5>
-              </div>
+        <div class="card m-b-30">
                 <div class="card-body">
+                    <div class="m-b-20">
+                        <h6>Tags</h6>
+                    </div>
                 @if (session('status'))
                     <div class="xp-alert">
                     <div class="alert alert-danger" role="alert">
@@ -66,10 +66,10 @@ Toon Tags
         <!-- End XP Col -->
         <div class="col-lg-6">
             <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Create tag</h5>
-              </div>
                 <div class="card-body">
+                <div class="m-b-20">
+                        <h6>Maak tag</h6>
+                </div>
                 <form action="{{route('tags.store')}}" method="post">
                 @csrf
                 <div class="form-group">
