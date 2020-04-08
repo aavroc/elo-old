@@ -12,9 +12,47 @@ Dashboard
 <!-- End XP Breadcrumbbar -->
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
+    <h2>Modules</h2>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                @foreach ($modules as $module)
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
+                    @if($levelStatus == 1 )
+                    <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="card  m-b-30">
+                    @else
+                    <div class="card">
+                    @endif
+                    <div class="card-body">
+                        <div class="xp-pricing text-center">
+                            <div class="xp-pricing-top py-3">
+                                <h5 class="@if($levelStatus == 0) text-danger @elseif($levelStatus == 1) text-success @else text-info @endif mb-0">{{$module->name}}</h5>
+                            </div>
+                                <div class="xp-pricing-middle py-3">
+                                    <ul class="list-group">
+                                        @foreach($module->tasks as $task)
+                                            @foreach($task->tags as $tag)
+                                                <li class="list-group-item">{{$tag->name}}</li>   
+                                            @endforeach
+                                        @endforeach
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    @if($levelStatus == 1 )
+                    </a>
+                    @else
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
     <h2>Berichtencentrum</h2>
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-5">
             <div class="xp-email-leftbar">
                 <div class="card m-b-30">
                     <div class="card-header bg-white">
@@ -99,7 +137,7 @@ Dashboard
                 </div>
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-7">
                 <div class="xp-email-rightbar">
                     <div class="card m-b-30">
                         <div class="card-body">                                    
@@ -177,21 +215,7 @@ Dashboard
     </div>
    
 
-    <div class="row">
-    @foreach ($modules as $module)
-        @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
-        @if($levelStatus == 1 )
-        <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="card module-to-choose">
-        @endif
-            <div class="card-body d-flex flex-column align-items-center justify-content-center @if($levelStatus == 0) bg-danger @elseif($levelStatus == 1) bg-success @else bg-info @endif" 
-                style="width:12rem;height:12rem;" >
-                <h5 class="card-title h1">{{$module->name}}</h5>
-            </div>
-        @if($levelStatus == 1 )
-        </a>
-        @endif
-    @endforeach
-    </div>
+    
     <!-- End XP Row -->  
 </div>
 <!-- End XP Contentbar -->
