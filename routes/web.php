@@ -51,7 +51,6 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('admin');
     
-    
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');

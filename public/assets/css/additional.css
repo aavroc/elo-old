@@ -1,0 +1,11 @@
+/* overwrite */
+
+.xp-main-logo .img-fluid
+{
+max-width: 125px;
+}
+
+a.task-list
+{
+color:#313131;
+}
