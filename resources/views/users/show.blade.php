@@ -84,7 +84,7 @@ Gebruiker
                     <tr id="module-table-{{$module->id}}" class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
                         <td>{{$module->name}}</td> 
                             <td id="txt_module-table-{{$module->id}}">@if($module->pivot->status ==1) open @elseif ($module->pivot->status ==3) done @else closed @endif</td> 
-                        <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class=""><i class="fa fa-eye"></i> toon</a></td>
+                        <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="fa fa-eye"></i> toon</a></td>
                         @if(Auth::user()->role == 1)
                             <td>
                                 <div class="form-check form-check-inline">
