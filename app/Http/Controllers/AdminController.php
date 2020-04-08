@@ -116,13 +116,29 @@ class AdminController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         $user->role = $request->type_gebruiker;
-
         $user->save();
+
+        if($user->role == 3){
+
+            $modules = Module::all();
+            
+            foreach ($modules as $module) {
+                DB::table('users_modules')->insert(
+                    [
+                    'user_id' => $user->id,
+                    'module_id' => $module->id,
+                    'status' => 0,
+                    
+                    ]
+                );
+            }
+        }
+
         return redirect()->route('users.edit', $user);
     }
 
     /**
-     * Display the specified resource.
+     * Laat info gebruiker zien
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -149,6 +165,7 @@ class AdminController extends Controller
         return view('users.show', $data);
     }
 
+    //laat de moduels uit de db zien op het scherm
     public function show_module(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
@@ -186,6 +203,7 @@ class AdminController extends Controller
         return view('users.repo', $data);
     }
 
+    //laat de diverse taken zien op het scherm
     public function show_task(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
