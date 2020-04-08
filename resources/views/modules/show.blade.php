@@ -1,5 +1,5 @@
 @section('title') 
-Booster - FAQ
+Module: {{$module->name}}
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -18,7 +18,7 @@ Booster - FAQ
         <!-- Start XP Col -->
         <div class="col-md-12 col-lg-12 col-xl-6">
             <div class="card m-b-30">
-                <div class="card-body">
+                <div class="card-body module-readme">
                 @isset($readme_content)
                     <p>{!!$readme_content!!}</p>
                 @endisset

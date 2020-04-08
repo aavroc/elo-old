@@ -19,7 +19,7 @@ Gebruiker
     <!-- Start XP Row -->     
     <div class="row">
     <!-- Start XP Col -->
-    <div class="col-lg-6">
+    <div class="col-lg-7">
     <div class="card m-b-20">
         <div class="card-body">
         <div class="m-b-10">
@@ -32,7 +32,7 @@ Gebruiker
                     <th>Naam</th>
                     <th>Email</th>
                     <th>Rol</th>
-                    <th>Laatst actief geweest</th>
+                    <th>Laatst actief</th>
                     @if(Auth::user()->role == 1)
                     <th>Bewerk</th>
                     @endif
@@ -60,7 +60,7 @@ Gebruiker
     </div> <!-- End card body -->
     </div> <!-- end card -->
 </div><!-- End XP Col -->
-<div class="col-lg-6">
+<div class="col-lg-5">
     <div class="card m-b-20">
         @if($user->role == 3)
         <div class="card-body">
@@ -73,7 +73,7 @@ Gebruiker
                     <tr>
                         <th>Module</th>
                         <th>Status</th>
-                        <th>Toon module</th>
+                        <th>Toon</th>
                         @if(Auth::user()->role == 1)
                         <th>Bewerk</th>
                         @endif
@@ -257,9 +257,5 @@ Gebruiker
 <script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/js/init/table-datatable-init.js') }}"></script>
-
-
-
-
 @endsection 
 
