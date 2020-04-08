@@ -86,16 +86,7 @@
             </div>
 
         </div>
-        @auth
-            @if(Auth::user()->github_access_token == null)
-            <script>
-                $( document ).ready(function() {
-                    $('#staticBackdrop').modal();
-                });
-                    
-            </script>
-            @endif
-        @endauth
+        
 </body>
 
 </html>
