@@ -58,6 +58,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('classrooms/{classroom}/reset_levels', 'ClassroomController@reset_levels')->name('reset_levels')->middleware('admin');
 
     //DASHBOARDS
+    Route::post('/student', 'StudentController@form_request')->name('student.request')->middleware('student'); //1
+    // Route::post('/student/messages', 'StudentController@request')->name('student.request')->middleware('student'); //1
+
     Route::get('/student', 'StudentController@dashboard')->name('student')->middleware('student'); //1
     Route::get('/admin', 'AdminController@dashboard')->name('admin')->middleware('admin');
     Route::get('/teacher', 'TeacherController@dashboard')->name('teacher')->middleware('teacher');
