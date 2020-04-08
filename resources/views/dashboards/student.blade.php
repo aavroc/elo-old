@@ -91,7 +91,7 @@ Dashboard
                     </div>
                 </div>
             </form>
-        </div>1=hulpvraag,2=modulegesprek,3=coachgesprek,4=workshop, 5=in behandeling, 6= voltooid
+        </div>
         <div class="col-lg-6">
                 <div class="xp-email-rightbar">
                     <div class="card m-b-30">
