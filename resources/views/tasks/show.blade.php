@@ -19,13 +19,22 @@
             <h4>Tags</h4>
             @foreach($tags as $tag)
                 <div class="custom-control custom-checkbox">
-                    
+                    @if(Auth::user()->role < 3)
                     <input type="checkbox" class="custom-control-input" id="{{$tag->name}}_{{$tag->id}}" value="{{$tag->id}}"  name="tags[{{$tag->id}}]"
                     @if($task->tags->find($tag->id) != null) @if($task->tags->find($tag->id)->id == $tag->id) checked @endif @endif>
                     <label class="custom-control-label" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</label>
+                    @else
+                        @if($task->tags->find($tag->id) != null) 
+                            @if($task->tags->find($tag->id)->id == $tag->id)
+                                <label class="custom-control-label" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</label>
+                            @endif
+                        @endif
+                    @endif
                 </div>
             @endforeach
+            @if(Auth::user()->role < 3)
             <button type="submit" class="btn btn-success">Tag you're it</button>
+            @endif
         </form>
         
     </div>
