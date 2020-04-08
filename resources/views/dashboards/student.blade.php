@@ -12,92 +12,117 @@ Dashboard
 <!-- End XP Breadcrumbbar -->
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
-    <!-- Write page content code here -->
-    <!-- Start XP Row -->    
     <h2>Berichtencentrum</h2>
     <div class="row">
-        <div class="col">
-            <form action="{{route('student.request')}}" method="post">
-                @csrf
-                <div class="row">
-                    <div class="col">
-                        <h6>Wat is het onderwerp van je bericht</h6>
-                        <input type="radio" name="onderwerp" id="hulpvraag" value="hulpvraag">
-                        <label for="hulpvraag">Help of feedback nodig</label>
-                        <input type="radio" name="onderwerp" id="nakijkverzoek" value="nakijkverzoek">
-                        <label for="nakijkverzoek">Module opdracht laten beoordelen</label>
-                        <input type="radio" name="onderwerp" id="coach_gesprek" value="coach_gesprek">
-                        <label for="coach_gesprek">Coach gesprek aanvragen</label>
-                        <input type="radio" name="onderwerp" id="workshop" value="workshop">
-                        <label for="workshop">Workshop aanvragen</label>
+        <div class="col-lg-7">
+            <div class="xp-email-leftbar">
+                <div class="card m-b-30">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title text-black">Hulp verzoek aanvraag</h5>
                     </div>
-                </div>
-                <div class="row">
-                    
-                    <div class="col">
-                        <div class="task-help">
-                            <h6>Welke taak wil je samen met je coach bekijken?</h6>
-                            @foreach ($modules as $module)
-                                @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
-                                @if($levelStatus == 1 )
-                                    <select name="task_choice[]" id="module_task_choice_{{$module->id}}" class="form-control module_task_choice">
-                                    @php $level = null @endphp 
-                                    @foreach ($module->tasks as $task)
-                                        <option value=""  selected hidden>kies een taak bij {{$module->name}}</option>
-                                        @if($level  != $task->level)
-                                        <optgroup label="{{$task->level}}">
+                    <div class="card-body">                                    
+                        <form action="{{route('student.request')}}" method="post">
+                            @csrf
+                            <div class="form-group row">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="onderwerp" id="hulpvraag" value="hulpvraag" class="form-check-input">
+                                    <label for="hulpvraag" class="form-check-label">Hulp nodig?</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="onderwerp" id="nakijkverzoek" value="nakijkverzoek" class="form-check-input">
+                                    <label for="nakijkverzoek" class="form-check-label">Modulegesprek</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="onderwerp" id="coach_gesprek" value="coach_gesprek" class="form-check-input">
+                                    <label for="coach_gesprek" class="form-check-label">Coachgesprek</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="onderwerp" id="workshop" value="workshop" class="form-check-input">
+                                    <label for="workshop" class="form-check-label">Workshop</label>
+                                </div>
+                            </div>
+                            <div class="row task-help mt-3">
+                                <label for="task_choice" class="col-sm-5 col-form-label">Welke taak wil je samen met je coach bekijken?</label>
+                                <div class="col-lg-7">
+                                    @foreach ($modules as $module)
+                                        @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
+                                        @if($levelStatus == 1 )
+                                            <select name="task_choice[]" id="module_task_choice_{{$module->id}}" class="form-control module_task_choice">
+                                                @php $level = null @endphp 
+                                                @foreach ($module->tasks as $task)
+                                                    <option value=""  selected hidden>kies een taak bij {{$module->name}}</option>
+                                                    @if($level  != $task->level)
+                                                    <optgroup label="{{$task->level}}">
+                                                    @endif
+                                                    <option value="{{$module->id}}_{{$task->id}}" >{{$task->name}}</option>
+                                                    @php $level = $task->level @endphp
+                                                @endforeach
+                                            </select>
                                         @endif
-                                        <option value="{{$module->id}}_{{$task->id}}" >{{$task->name}}</option>
-                                        @php $level = $task->level @endphp
                                     @endforeach
-                                </select>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="module-feedback">
-                            <label for="module_choice">Kies een module die je wilt laten beoordelen</label>
-                            <select name="module_choice" id="module_choice" class="form-control">
-                                <option value=""  selected hidden>kies een module</option>
-                            @foreach ($modules as $module)
-                                @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
-                                @if($levelStatus == 1 )
-                                    <option value="{{$module->id}}" >{{$module->name}}</option>
-                                @endif
-                           
-                            @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="row coach">
-                    <div class="col">
-                        <label for="coach_request">Coachgesprek onderwerp</label>
-                        <input type="text" name="coach_request" id="coach_request" class="form-control">
-                    </div>
-                </div>
-                <div class="row extra">
-                   
-                    <div class="col">
-                        <h6>Geef nog eventueel extra informatie</h6>
-                        <textarea name="aanvullend" id="aanvullend" cols="10" rows="5" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-success">Doe aanvraag!</button>
+                                </div>
+                            </div>
+                            <div class="form-group row module-feedback mt-3">
+                                <label for="task_choice" class="col-sm-5 col-form-label">Kies een module die je wilt laten beoordelen</label>
+                                <div class="col-sm-7">
+                                    <label for="module_choice"></label>
+                                    <select name="module_choice" id="module_choice" class="form-control">
+                                        <option value=""  selected hidden>kies een module</option>
+                                    @foreach ($modules as $module)
+                                        @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
+                                        @if($levelStatus == 1 )
+                                            <option value="{{$module->id}}" >{{$module->name}}</option>
+                                        @endif
+                                    @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row coach mt-3">
+                                <label for="task_choice" class="col-sm-5 col-form-label">Coachgesprek onderwerp</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="coach_request" id="coach_request" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row extra mt-3">
+                                <label for="task_choice" class="col-sm-5 col-form-label">Geef nog eventueel extra informatie</label>
+                                <div class="col-sm-7">
+                                    <textarea name="aanvullend" id="aanvullend" cols="10" rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-3">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary my-1">Doe aanvraag! <i class="mdi mdi-send ml-2"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-5">
                 <div class="xp-email-rightbar">
                     <div class="card m-b-30">
                         <div class="card-body">                                    
                             <div class="table-responsive">
-                                <table class="table table-hover table-borderless">                                            
+                                <table class="table table-hover table-borderless">    
+                                    <div class="card-header bg-white">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Onderwerp
+                                                </th>
+                                                <th>
+                                                    Hulpverzoek
+                                                </th>
+                                                <th>
+                                                    Datum | Tijd
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </div>                                        
                                     <tbody>
                                         {{-- {{dd($user->verzoeken)}} --}}
                                         @isset($user->verzoeken)
