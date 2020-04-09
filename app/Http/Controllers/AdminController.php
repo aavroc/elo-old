@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
-
+use App\UsersRequest;
 use Illuminate\Support\Str;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
@@ -36,13 +36,15 @@ class AdminController extends Controller
             ]
         )->get();
 
+        $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->orderBy('updated_at')->get();
+
         $modules = Module::all();
 
 
         $data = [
             'users' => $users,
-
             'modules' => $modules,
+            'requests' => $requests,
 
         ];
         return view('dashboards.admin', $data);
