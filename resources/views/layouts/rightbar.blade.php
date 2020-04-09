@@ -65,75 +65,75 @@
                                 </div>
                             </li> --}}
                             @auth
-                            @if(Auth::user()->role < 2)
-                            <li class="list-inline-item">
-                                <div class="dropdown xp-notification mr-3">
-                                    <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="mdi mdi-bell-ring font-18 v-a-m"></i>
-                                        <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('status', '<', 5)->count()}}</span>
-                                    </a>
+                                @if(Auth::user()->role < 2)
+                                <li class="list-inline-item">
+                                    <div class="dropdown xp-notification mr-3">
+                                        <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-bell-ring font-18 v-a-m"></i>
+                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('status', '<', 5)->count()}}</span>
+                                        </a>
 
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-notification">
-                                        <ul class="list-unstyled">
-                                          <li class="media">
-                                            <div class="media-body">
-                                              <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('status', '<', 5)->count()}} Nieuwe verzoeken</h5>
-                                            </div>
-                                          </li>
-                                            @php 
-                                            $status = [
-                                                1 => 'hulpvraag',
-                                                2 => 'modulegesprek',
-                                                3 => 'coachgesprek',
-                                                4 => 'workshop',
-                                            ];
-                                            @endphp
-                                          @foreach( \App\UsersRequest::where('status', '<', 5)->limit(3)->get()  as $request)
-                                          <li class="media xp-noti">                                                
-                                            <div class="mr-3 xp-noti-icon"><i class="mdi mdi-account-plus"></i></div>
-                                            <div class="media-body">
-                                                <a href="#">  
-                                                    <h5 class="mt-0 mb-1 font-14">{{$status[$request->status]}}</h5>
-                                                    <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
-                                                </a>
-                                            </div>
-                                          </li>
-                                          @endforeach
-                                          <li class="media">
-                                            <div class="media-body">
-                                              <h5 class="mt-0 mb-0 my-3 text-black text-center font-15"><a href="{{route('admin')}}" class="text-primary">View All</a></h5>
-                                            </div>
-                                          </li>
-                                        </ul>                                            
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-notification">
+                                            <ul class="list-unstyled">
+                                            <li class="media">
+                                                <div class="media-body">
+                                                <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('status', '<', 5)->count()}} Nieuwe verzoeken</h5>
+                                                </div>
+                                            </li>
+                                                @php 
+                                                $status = [
+                                                    1 => 'hulpvraag',
+                                                    2 => 'modulegesprek',
+                                                    3 => 'coachgesprek',
+                                                    4 => 'workshop',
+                                                ];
+                                                @endphp
+                                            @foreach( \App\UsersRequest::where('status', '<', 5)->limit(3)->get()  as $request)
+                                            <li class="media xp-noti">                                                
+                                                <div class="mr-3 xp-noti-icon"><i class="mdi mdi-account-plus"></i></div>
+                                                <div class="media-body">
+                                                    <a href="#">  
+                                                        <h5 class="mt-0 mb-1 font-14">{{$status[$request->status]}}</h5>
+                                                        <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            @endforeach
+                                            <li class="media">
+                                                <div class="media-body">
+                                                <h5 class="mt-0 mb-0 my-3 text-black text-center font-15"><a href="{{route('admin')}}" class="text-primary">View All</a></h5>
+                                                </div>
+                                            </li>
+                                            </ul>                                            
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                           
+                                </li>
+                                @endif
+                            
                             <li class="list-inline-item mr-0">
                                 <div class="dropdown">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @if(Auth::check()) Welcome, {{Auth::user()->firstname}}
-                                    @endif
+                                    @if(Auth::check()) Welkom, {{Auth::user()->firstname}} @endif
                                     </button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             @if(Auth::user()->github_access_token == null)
                                                 <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
-                                                @else
-                                                <a class="dropdown-item" href="#"><i class="ion ion-logo-github mr-2"></i> You're connected!</a>
-                                                @endif
-                                                <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a>
-                                                <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Logout</a>
+                                            @else
+                                            <a class="dropdown-item" href="https://github.com/{{$user->github_nickname}}"><i class="ion ion-logo-github mr-2"></i>Je bent verbonden!</a>
+                                            @endif
+                                                {{-- <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a> --}}
+                                                <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Uitloggen</a>
                                         </div>
                                 </div>                                   
                             </li>
+                            @endauth
                             <li class="list-inline-item xp-horizontal-menu-toggle">
                                 <button type="button" class="navbar-toggle bg-transparent" data-toggle="collapse" data-target="#navbar-menu">
                                     <i class="mdi mdi-sort-variant font-24 text-white"></i>
                                 </button>                                   
                             </li>
-                            @endif
-                            @endauth
+                            
                         </ul>
                     </div>
                 </div>
