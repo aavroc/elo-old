@@ -108,30 +108,23 @@
                                     </div>
                                 </div>
                             </li>
-                            @endif
-                            @endauth
+                           
                             <li class="list-inline-item mr-0">
                                 <div class="dropdown">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @if(Auth::check()) Welcome, {{Auth::user()->firstname}}
-                                    @else
-                                    Account
                                     @endif
                                     </button>
                                         <div class="dropdown-menu dropdown-menu-right">
-
-                                            @if(Auth::check())
-                                                @if(Auth::user()->github_access_token == null)
+                                            @if(Auth::user()->github_access_token == null)
                                                 <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
                                                 @else
                                                 <a class="dropdown-item" href="#"><i class="ion ion-logo-github mr-2"></i> You're connected!</a>
                                                 @endif
                                                 <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a>
                                                 <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Logout</a>
-                                            @endif
-                                    </div>
-                                    
+                                        </div>
                                 </div>                                   
                             </li>
                             <li class="list-inline-item xp-horizontal-menu-toggle">
@@ -139,6 +132,8 @@
                                     <i class="mdi mdi-sort-variant font-24 text-white"></i>
                                 </button>                                   
                             </li>
+                            @endif
+                            @endauth
                         </ul>
                     </div>
                 </div>
