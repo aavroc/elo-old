@@ -64,6 +64,7 @@
                                     </div>
                                 </div>
                             </li> --}}
+                            @auth
                             @if(Auth::user()->role < 2)
                             <li class="list-inline-item">
                                 <div class="dropdown xp-notification mr-3">
@@ -108,6 +109,7 @@
                                 </div>
                             </li>
                             @endif
+                            @endauth
                             <li class="list-inline-item mr-0">
                                 <div class="dropdown">
                                 <div class="btn-group">
