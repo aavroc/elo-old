@@ -120,16 +120,16 @@
                                     @endif
                                     </button>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                    @if(Auth::check())
-                                        @if(Auth::user()->github_access_token == null)
-                                        <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
-                                        @else
-                                        <a class="dropdown-item" href="#"><i class="ion ion-logo-github mr-2"></i> You're connected!</a>
-                                        @endif
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a>
-                                        @endif
 
-                                        <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Logout</a>
+                                            @if(Auth::check())
+                                                @if(Auth::user()->github_access_token == null)
+                                                <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
+                                                @else
+                                                <a class="dropdown-item" href="#"><i class="ion ion-logo-github mr-2"></i> You're connected!</a>
+                                                @endif
+                                                <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a>
+                                                <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Logout</a>
+                                            @endif
                                     </div>
                                     
                                 </div>                                   
