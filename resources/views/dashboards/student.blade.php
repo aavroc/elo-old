@@ -12,11 +12,13 @@ Dashboard
 <!-- End XP Breadcrumbbar -->
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
+    
     <h2>Modules</h2>
     <div class="row">
         <div class="col-12">
             <div class="row">
                 @foreach ($modules as $module)
+                @if($user->modules()->where('module_id', $module->id)->exists())
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
                     @if($levelStatus == 1 )
@@ -46,6 +48,7 @@ Dashboard
                     </div>
                     @endif
                 </div>
+                @endif
                 @endforeach
             </div>
         </div>
@@ -83,19 +86,21 @@ Dashboard
                                 <label for="task_choice" class="col-sm-5 col-form-label">Welke taak wil je samen met je coach bekijken?</label>
                                 <div class="col-lg-7">
                                     @foreach ($modules as $module)
-                                        @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
-                                        @if($levelStatus == 1 )
-                                            <select name="task_choice[]" id="module_task_choice_{{$module->id}}" class="form-control module_task_choice">
-                                                @php $level = null @endphp 
-                                                @foreach ($module->tasks as $task)
-                                                    <option value=""  selected hidden>kies een taak bij {{$module->name}}</option>
-                                                    @if($level  != $task->level)
-                                                    <optgroup label="{{$task->level}}">
-                                                    @endif
-                                                    <option value="{{$module->id}}_{{$task->id}}" >{{$task->name}}</option>
-                                                    @php $level = $task->level @endphp
-                                                @endforeach
-                                            </select>
+                                        @if($user->modules()->where('module_id', $module->id)->exists())
+                                            @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
+                                            @if($levelStatus == 1 )
+                                                <select name="task_choice[]" id="module_task_choice_{{$module->id}}" class="form-control module_task_choice">
+                                                    @php $level = null @endphp 
+                                                    @foreach ($module->tasks as $task)
+                                                        <option value=""  selected hidden>kies een taak bij {{$module->name}}</option>
+                                                        @if($level  != $task->level)
+                                                        <optgroup label="{{$task->level}}">
+                                                        @endif
+                                                        <option value="{{$module->id}}_{{$task->id}}" >{{$task->name}}</option>
+                                                        @php $level = $task->level @endphp
+                                                    @endforeach
+                                                </select>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </div>
@@ -106,12 +111,14 @@ Dashboard
                                     <label for="module_choice"></label>
                                     <select name="module_choice" id="module_choice" class="form-control">
                                         <option value=""  selected hidden>kies een module</option>
-                                    @foreach ($modules as $module)
-                                        @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
-                                        @if($levelStatus == 1 )
-                                            <option value="{{$module->id}}" >{{$module->name}}</option>
-                                        @endif
-                                    @endforeach
+                                        @foreach ($modules as $module)
+                                            @if($user->modules()->where('module_id', $module->id)->exists())
+                                                @php $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status @endphp
+                                                @if($levelStatus == 1 )
+                                                    <option value="{{$module->id}}" >{{$module->name}}</option>
+                                                @endif
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
