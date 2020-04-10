@@ -117,11 +117,12 @@ class AdminController extends Controller
         $user->prefix = $request->prefix;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
+        
         $user->role = $request->type_gebruiker;
-        $user->save();
+        
 
         if($user->role == 3){
-
+            $user->classroom = 'LCTAO2020';
             $modules = Module::all();
             
             foreach ($modules as $module) {
@@ -135,6 +136,7 @@ class AdminController extends Controller
                 );
             }
         }
+        $user->save();
 
         return redirect()->route('users.edit', $user);
     }
