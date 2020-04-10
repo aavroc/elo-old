@@ -13,5 +13,17 @@ class UsersRequest extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function task()
+    {
+        return $this->belongsTo('App\Task');
+    }
+
+    public function module()
+    {
+        return $this->belongsTo('App\Module');
+    }
+
+
+
 }
 

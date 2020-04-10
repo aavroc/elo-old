@@ -36,15 +36,17 @@ class AdminController extends Controller
             ]
         )->get();
 
-        $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->orderBy('updated_at')->get();
+        $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->where('task_id', '!=', NULL)->with('task')->orderBy('updated_at')->get();
 
+        $task_requests = $requests->pluck('task');
+        $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
         $modules = Module::all();
-
-
         $data = [
             'users' => $users,
             'modules' => $modules,
             'requests' => $requests,
+            'task_requests' => $task_requests,
+            'counted_tasks' => $counted_tasks
 
         ];
         return view('dashboards.admin', $data);
