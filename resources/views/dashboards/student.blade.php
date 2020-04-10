@@ -33,11 +33,18 @@ Dashboard
                                 </div>
                                     <div class="xp-pricing-middle py-3">
                                         <ul class="list-group">
-                                            @foreach($module->tasks as $task)
-                                                @foreach($task->tags as $tag)
-                                                    <li class="list-group-item">{{$tag->name}}</li>   
-                                                @endforeach
-                                            @endforeach
+                                            @php 
+                                            $names = [] ;
+                                            foreach($module->tasks as $task){
+                                                if($task->tags->isNotEmpty()){
+                                                    foreach($task->tags as $tag){
+                                                        $names[$tag->name] = $tag;
+                                                    }
+                                                }
+                                            }
+                                            foreach($names as $name => $tag): @endphp
+                                                <li class="list-group-item">{{$name}}</li>   
+                                            @php endforeach; @endphp
                                         </ul>
                                     </div>
                             </div>
