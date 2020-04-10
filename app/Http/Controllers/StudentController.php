@@ -162,8 +162,8 @@ class StudentController extends Controller
     {
         // dd($request->request);
         
+        // dd($request->task_choice);
         switch ($request->onderwerp) {
-            
             case 'hulpvraag'://hulpvraag gekozen op taak niveau
                 foreach($request->task_choice as $chosen_tasks){
                     if($chosen_tasks != null)
@@ -171,22 +171,21 @@ class StudentController extends Controller
                         $module_task = explode( '_', $chosen_tasks);
                         $module = $module_task[0];
                         $task = $module_task[1];
+                    
+                        UsersRequest::updateOrInsert(
+                            [
+                                'user_id' => Auth::user()->id,
+                                'task_id' => $task,
+                                'module_id' => $module,
+                                'status'    => 1, //hulpvraag
+                            ],
+                            [  
+                                'extra'     => $request->aanvullend,
+                                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                                "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                            ]
+                        );
                     }
-    
-                    UsersRequest::updateOrInsert(
-                        [
-                            'user_id' => Auth::user()->id,
-                            'task_id' => $task,
-                            'module_id' => $module,
-                            'status'    => 1, //hulpvraag
-                        ],
-                        [  
-                            'extra'     => $request->aanvullend,
-                            "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
-                            "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
-                        ]
-                    );
-    
     
                 }
                 break;
