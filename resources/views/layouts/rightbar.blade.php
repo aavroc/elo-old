@@ -119,8 +119,7 @@
                                         <div class="dropdown-menu dropdown-menu-right">
                                             @if(Auth::user()->github_access_token == null)
                                                 <a class="dropdown-item" href="{{route('github.call')}}"><i class="ion ion-logo-github mr-2"></i> Connect to GitHub</a>
-                                            @else
-                                            <a class="dropdown-item" href="https://github.com/{{$user->github_nickname}}"><i class="ion ion-logo-github mr-2"></i>Je bent verbonden!</a>
+                                            <a class="dropdown-item" href="https://github.com/{{Auth::user()->github_nickname}}"><i class="ion ion-logo-github mr-2"></i>Je bent verbonden!</a>
                                             @endif
                                                 {{-- <a class="dropdown-item" href="#"><i class="mdi mdi-settings mr-2"></i> Settings</a> --}}
                                                 <a class="dropdown-item" href="{{route('logout')}}"><i class="mdi mdi-logout mr-2"></i> Uitloggen</a>
