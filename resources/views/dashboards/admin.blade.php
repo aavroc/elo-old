@@ -54,20 +54,18 @@ Dashboard
         </div>
         <!-- End XP Col -->
          <!-- Start XP Col -->
-         <div class="col-md-8 col-lg-8 col-xl-8">
+         <div class="col-md-6 col-lg-6 col-xl-6">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">Modules</h5>
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
-
-                    @foreach($modules as $module)
-                    <li class="nav-item">
-                        <a class="nav-link @if ($loop->first) active @endif" id="{{$module->slug}}-tab-justified" data-toggle="tab" href="#{{$module->slug}}-justified" role="tab" aria-controls="{{$module->slug}}" @if ($loop->first) aria-selected="true" @endif>
-                    {{$module->name}}</a>
-                      </li>
-
+                        @foreach($modules as $module)
+                        <li class="nav-item">
+                            <a class="nav-link @if ($loop->first) active @endif" id="{{$module->slug}}-tab-justified" data-toggle="tab" href="#{{$module->slug}}-justified" role="tab" aria-controls="{{$module->slug}}" @if ($loop->first) aria-selected="true" @endif>
+                        {{$module->name}}</a>
+                        </li>
                       @endforeach
                     </ul>
                     
@@ -108,35 +106,177 @@ Dashboard
         </div>
         <!-- End XP Col -->
         <!-- Start XP Col -->
-        <div class="col-lg-6 col-xl-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black mb-0">To do Lists</h5>
-                </div>
-                <div class="card-body">
-                    <div class="xp-to-do-list">
-                        <ul id="list-group" class="list-group list-group-flush">
-                        <!-- @David, hiervoor zouden we een simpele tabel in de database kunnen maken, of nog even weglaten back-end toevoegen -->
-                            <li class="list-group-item">
-                                <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input checkbox" id="customCheckItem1" checked="checked">
-                                <label class="custom-control-label f-w-4" for="customCheckItem1">Creating creative widgets</label>
-                                <a class="xp-to-do-list-remove"><i class="mdi mdi-close"></i></a>
-                                </div>
-                            </li>
-                            <!-- einde back-end toevoegen -->
-                        </ul>
-                        <form class="add-items">
-                            <div class="input-group mt-3">
-                                <input type="text" class="form-control" id="todo-list-item" placeholder="What do you need to do today?" aria-label="What do you need to do today?" aria-describedby="button-addon-to-do-list">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary add" id="button-addon-to-do-list" type="submit">Add to List</button>
+        <div class="col-lg-6 col-xl-6">
+            <h5>Verzoeken</h5>
+            <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" id="student-tab-justified" data-toggle="tab" href="#student-justified" role="tab" aria-controls="student" aria-selected="true">
+                    Student view</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="task-tab-justified" data-toggle="tab" href="#task-justified" role="tab" aria-controls="task" aria-selected="false">
+                    Task view</a>
+            </li>
+            </ul>
+            <div class="tab-content" id="defaultTabJustifiedContent">
+                {{-- <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified"> --}}
+                <div class="tab-pane fade show active " id="student-justified" role="tabpanel" aria-labelledby="student-tab-justified">
+                    <div class="card m-b-30">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title text-black mb-0">Studenten overzicht</h5>
+                        </div>
+                        @php 
+                            $status = [
+                                1 => 'hulpvraag',
+                                2 => 'modulegesprek',
+                                3 => 'coachgesprek',
+                                4 => 'workshop',
+                            ];
+                        
+                        @endphp
+                        <div class="xp-email-rightbar">
+                            <div class="card m-b-30">
+                                <div class="card-body">                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-borderless">    
+                                            <div class="card-header bg-white">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            #
+                                                        </th>
+                                                        
+                                                        <th>
+                                                            Onderwerp
+                                                        </th>
+                                                        <th>
+                                                            Student
+                                                        </th>
+                                                        <th>
+                                                            Datum | Tijd
+                                                        </th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                            </div>                                        
+                                            <tbody>
+                                                {{-- {{dd($user->verzoeken)}} --}}
+                                                @isset($requests)
+                                                @foreach($requests as $request)
+                                                <tr class="email-unread">
+                                                    
+                                                    
+                                                    @switch($request->status)
+                                                        @case(1)
+                                                        <td><i class="mdi mdi-help font-18"></i></td>
+                                                        <td><a href="#">Hulpverzoek</a></td> 
+                                                            @break
+                                                        @case(2)
+                                                        <td><i class="mdi mdi-school font-18"></i></td>
+                                                        <td><a href="#">Module eindgesprek</a></td> 
+                                                            @break
+                                                        @case(3)
+                                                        <td><i class="mdi mdi-account-circle"></i></td>
+                                                        <td><a href="#">Coachgesprek</a></td> 
+                                                            @break   
+                                                        @case(4)
+                                                        <td><i class="mdi mdi-laptop"></i></td>
+                                                        <td><a href="#">Workshop</a></td> 
+                                                            @break   
+                                                        @case(5)
+                                                        <td><i class="mdi mdi-sync font-18"></i></td>
+                                                        <td><a href="#">In behandeling</a></td> 
+                                                            @break   
+                                                        @case(6)
+                                                        <td><i class="mdi mdi-check-outline font-18"></i></td>
+                                                        <td><a href="#">Voltooid</a></td> 
+                                                            @break                                                    
+                                                        @default
+                                                            Default case...
+                                                    @endswitch
+   
+                                                    <td><a href="{{route('users.show', $request->user->id)}}" class="text-warning"><u>{{$request->user->firstname}}</u></a></td>
+                                                    <td>
+                                                        {{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}} 
+                                                    </td>
+                                                    <td>
+                                                        <a href="" class="btn btn-info">Afhandelen</a>
+                                                    </td>
+                                               
+                                                </tr>
+                                                @endforeach
+                                                @endisset
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="task-justified" role="tabpanel" aria-labelledby="task-tab-justified">
+                    <div class="card m-b-30">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title text-black mb-0">Taken overzicht</h5>
+                        </div>
+                        @php 
+                            $status = [
+                                1 => 'hulpvraag',
+                                2 => 'modulegesprek',
+                                3 => 'coachgesprek',
+                                4 => 'workshop',
+                            ];
+                        
+                        @endphp
+                        <div class="xp-email-rightbar">
+                            <div class="card m-b-30">
+                                <div class="card-body">                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-borderless">    
+                                            <div class="card-header bg-white">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Module
+                                                        </th>
+                                                        <th>
+                                                            Level
+                                                        </th>
+                                                        <th>
+                                                            Taak
+                                                        </th>
+                                                        <th>
+                                                            Aantal aanvragen
+                                                        </th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                            </div>                                        
+                                            <tbody>
+                                                @isset($task_requests)
+                                                @foreach($task_requests->unique() as $task)
+                                                        <tr class="email-unread">
+                                                            <td><a href="#">{{$task->module->name}}</a></td> 
+                                                            <td><a href="#">{{$task->level}}</a></td> 
+                                                            <td><a href="#">{{$task->name}}</a></td> 
+                                                            <td><a href="#">{{$counted_tasks[$task->id]}}</a></td> 
+                                                            <td>
+                                                                <a href="" class="btn btn-info">Afhandelen</a>
+                                                            </td>
+                                                    
+                                                        </tr>
+                                                @endforeach
+                                                @endisset
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+           
         </div>
         <!-- End XP Col --> 
     </div>
