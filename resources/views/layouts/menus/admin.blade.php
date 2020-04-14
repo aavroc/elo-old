@@ -10,6 +10,7 @@
                       <li><a href="{{URL::to('/classrooms/LCTAOO9A')}}">LCTAOO9A</a></li>
                       <li><a href="{{URL::to('/classrooms/LCTAOO9C')}}">LCTAOO9C</a></li>
                       <li><a href="{{URL::to('/classrooms/LCTAOO9D')}}">LCTAOO9D</a></li>
+                      <li><a href="{{URL::to('/classrooms/LCTAO2020')}}">LCTAO2020</a></li>
                       </ul>
                     </li>
                     @if(Auth::user()->role == 1)
