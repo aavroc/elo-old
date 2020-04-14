@@ -8,9 +8,12 @@ use App\Task;
 use App\Module;
 use App\GitHub;
 use Carbon\Carbon;
+use App\CSVData;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
+use App\UsersRequest;
 use Illuminate\Support\Str;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
@@ -33,13 +36,17 @@ class AdminController extends Controller
             ]
         )->get();
 
+        $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->where('task_id', '!=', NULL)->with('task')->orderBy('updated_at')->get();
+
+        $task_requests = $requests->pluck('task');
+        $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
         $modules = Module::all();
-
-
         $data = [
             'users' => $users,
-
             'modules' => $modules,
+            'requests' => $requests,
+            'task_requests' => $task_requests,
+            'counted_tasks' => $counted_tasks
 
         ];
         return view('dashboards.admin', $data);
@@ -112,14 +119,32 @@ class AdminController extends Controller
         $user->prefix = $request->prefix;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
+        
         $user->role = $request->type_gebruiker;
+        
 
+        if($user->role == 3){
+            $user->classroom = 'LCTAO2020';
+            $modules = Module::all();
+            
+            foreach ($modules as $module) {
+                DB::table('users_modules')->insert(
+                    [
+                    'user_id' => $user->id,
+                    'module_id' => $module->id,
+                    'status' => 0,
+                    
+                    ]
+                );
+            }
+        }
         $user->save();
+
         return redirect()->route('users.edit', $user);
     }
 
     /**
-     * Display the specified resource.
+     * Laat info gebruiker zien
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -146,6 +171,7 @@ class AdminController extends Controller
         return view('users.show', $data);
     }
 
+    //laat de moduels uit de db zien op het scherm
     public function show_module(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
@@ -183,6 +209,7 @@ class AdminController extends Controller
         return view('users.repo', $data);
     }
 
+    //laat de diverse taken zien op het scherm
     public function show_task(User $user, Module $module, Request $request)
     {
         $github = new GitHub();
@@ -317,6 +344,15 @@ class AdminController extends Controller
         return redirect()->route('users.edit', $user);
     }
 
+
+    //retrieve module and task data
+    public function retrieve()
+    {
+        $this->modules();
+        $this->tasks();
+        return redirect()->route('admin');
+    }
+
     public function select_file()
     {
         $data = [
@@ -348,21 +384,6 @@ class AdminController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function change_password()
-    {
-    }
-
     protected function uploadFile(Request $request)
     {
 
@@ -386,4 +407,31 @@ class AdminController extends Controller
         //if no image is selected use the current image
         return $file;
     }
+
+    public function update_level(Request $request)
+    {
+      
+        $module_status = explode('_', $request->status);
+        $module = $module_status[0];
+        $status_text = $module_status[1];
+
+        if($status_text == 'done'){
+            $status = 3;
+        }
+        elseif($status_text == 'open' ){
+            $status = 1;
+        }
+        else{
+            $status = 0;
+        }
+
+        DB::table('users_modules')->where('user_id', $request->student)->where('module_id', $module)->update(
+            [
+                'status' => $status
+            ]
+        );
+        return $status_text;
+    }
+
+    
 }

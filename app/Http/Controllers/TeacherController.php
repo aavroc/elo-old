@@ -38,22 +38,9 @@ class TeacherController extends Controller
             'modules' => $modules,
 
         ];
-        return view('dashboards.admin', $data);
+        return view('dashboards.teacher', $data);
 
-        // $data = [
-        //     'logged_in_users' => User::where(
-        //         [
-        //             ['status_id', 2],
-        //             ['role', 3],
-        //         ]
-        //     )->count(),
-
-        // 'amount_of_seen_exercises'      => Code::where('student_status', 1)->count(),
-        // 'amount_of_exercises_delivered' => Code::where('student_status', 2)->count(),
-        // 'amount_of_approved_exercises'  => Code::where('student_status', 3)->count(),
-        // 'assignments_to_be_appproved'   => Code::where('student_status', 2)->orderBy('delivery', 'asc')->limit(10)->get(),
-        // ];
-        return view('dashboards.admin', $data);
+        
     }
 
 

@@ -8,6 +8,7 @@ use App\Module;
 use App\User;
 use App\GitHub;
 use Illuminate\Support\Facades\Auth;
+use App\UsersRequest;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 class StudentController extends Controller
 {
@@ -157,14 +158,86 @@ class StudentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function form_request(Request $request)
     {
-        //
+        // dd($request->request);
+        
+        // dd($request->task_choice);
+        switch ($request->onderwerp) {
+            case 'hulpvraag'://hulpvraag gekozen op taak niveau
+                foreach($request->task_choice as $chosen_tasks){
+                    if($chosen_tasks != null)
+                    {
+                        $module_task = explode( '_', $chosen_tasks);
+                        $module = $module_task[0];
+                        $task = $module_task[1];
+                    
+                        UsersRequest::updateOrInsert(
+                            [
+                                'user_id' => Auth::user()->id,
+                                'task_id' => $task,
+                                'module_id' => $module,
+                                'status'    => 1, //hulpvraag
+                            ],
+                            [  
+                                'extra'     => $request->aanvullend,
+                                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                                "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                            ]
+                        );
+                    }
+    
+                }
+                break;
+            case 'nakijkverzoek'://module opdracht bespreken
+                UsersRequest::updateOrInsert(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'module_id' => $request->module_choice,
+                    ],
+                    [  
+                        'status'    => 2, //module gesprek
+                        'extra'     => $request->aanvullend,
+                        "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                        "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                    ]
+                );
+                
+                break;
+            case 'coach_gesprek'://coach gesprek aanvraag
+                UsersRequest::pdateOrInsert(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'status'    => 3, //coachgesprek
+                    ],
+                    [  
+                        'coach' => $request->coach_request,
+                        'extra'     => $request->aanvullend,
+                        "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                        "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                    ]
+                );
+    
+                break;
+            case 'workshop'://workshop aanvraag
+                UsersRequest::insert(
+                    [
+                        'user_id' => Auth::user()->id,
+                    
+                        'status'    => 4, //coachgesprek
+                        'workshop' => $request->workshop,
+                        'extra'     => $request->aanvullend,
+                        "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                        "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                    ]
+                );
+    
+                break;
+            default:
+                
+                break;
+        }
+
+        return redirect()->route('student');
     }
 }

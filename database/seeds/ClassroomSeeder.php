@@ -21,6 +21,9 @@ class ClassroomSeeder extends Seeder
             [
                 'name' => 'LCTAOO9D',
             ],
+            [
+                'name' => 'LCTAO2020',
+            ],
 
         ];
 

@@ -49,6 +49,17 @@ class User extends Authenticatable
 
     public function modules()
     {
-        return $this->belongsToMany('App\Module', 'users_modules');
+        return $this->belongsToMany('App\Module', 'users_modules')->withPivot('status');;
     }
+
+    public function classroom()
+    {
+         return $this->belongsTo('App\Classroom');
+    }
+
+    public function verzoeken()
+    {
+        return $this->hasMany('App\UsersRequest');
+    }
+    
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
 
@@ -11,7 +11,7 @@
         <h4>Modules</h4>
         <div class="list-group">
             @foreach ($classrooms as $classroom)
-            <a href="{{route('classrooms.show_levels', $classroom)}}"
+            <a href="{{route('classrooms.show', $classroom)}}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mt-3">
                 <div>{{$classroom->name}} <i class="fas fa-info text-warning"></i></div>
             </a>
