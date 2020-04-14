@@ -48,6 +48,7 @@ Dashboard
                     <a href="{{URL::to('/classrooms/LCTAOO9A')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9A</a>
                     <a href="{{URL::to('/classrooms/LCTAOO9C')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9C</a>
                     <a href="{{URL::to('/classrooms/LCTAOO9D')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9D</a>
+                    <a href="{{URL::to('/classrooms/LCTAO2020')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAO2020</a>
                     </div>
                 </div>
             </div>
