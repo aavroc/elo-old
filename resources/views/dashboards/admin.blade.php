@@ -174,7 +174,7 @@ Dashboard
                                                             @break
                                                         @case(2)
                                                         <td><i class="mdi mdi-school font-18"></i></td>
-                                                        <td><a href="#">Module eindgesprek</a></td> 
+                                                        <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset eindgesprek</a></td> 
                                                             @break
                                                         @case(3)
                                                         <td><i class="mdi mdi-account-circle"></i></td>
