@@ -34,7 +34,6 @@ Booster - Data Table
                                 <th>Achternaam</th>
                                 <th>Klas</th>
                                 <th>Rol</th>
-                                <th>Level</th>
                                 <th>Toon</th>
                                 @if(Auth::user()->role == 1)
                                 <th>Bewerk</th>
@@ -64,10 +63,6 @@ Booster - Data Table
                                         $data = ['', 'Admin', 'Docent', 'Student'];    
                                     ?>
                                     {{$data[$user->role]}}
-                                </td>
-                                <td>
-                                    <!-- @David er is geen level_id in de database! -->
-                                    {{$user->level_id}}
                                 </td>
                                 <td>
                                     <a href="{{route('users.show', $user)}}" class=""><i class="fa fa-eye"></i> toon</a>
