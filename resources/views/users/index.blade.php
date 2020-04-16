@@ -30,7 +30,7 @@ Booster - Data Table
                         <thead>
                             <tr>
                                 <th>Voornaam</th>
-                                <!-- <th>vv</th> -->
+                                <th>vv</th>
                                 <th>Achternaam</th>
                                 <th>Klas</th>
                                 <th>Rol</th>
@@ -45,18 +45,20 @@ Booster - Data Table
                             @foreach ($users as $user)
                             <tr>
                                 <td>
-                                        {{$user->firstname}}
+                                    {{$user->firstname}}
                                 </td>
-                                <!-- @David user prefix is nergens ingevuld dus even uit gezet<td>
+                                <td>
+                                    @isset($user->prefix)
                                     {{$user->prefix}}
-                                </td>-->
+                                    @endisset
+                                </td>
                                 <td>
                                         {{$user->lastname}}
                                 </td>
                                 <td>
-                                    {{-- <a href="{{route('classrooms.show_exercises', $user->classroom)}}" class="alert-link"> --}}
-                                    {{$user->classroom}}
-                                    {{-- </a> --}}
+                                    @isset($user->classroom)
+                                    <a href="{{route('classrooms.show', $user->classroom)}}">{{$user->classroom}}</a>
+                                    @endisset
                                 </td>
                                 <td><?php 
                                         $data = ['', 'Admin', 'Docent', 'Student'];    
