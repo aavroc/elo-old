@@ -185,7 +185,7 @@ Dashboard
                                                 @switch($request->status)
                                                     @case(1)
                                                     <td><i class="mdi mdi-help font-18"></i></td>
-                                                    <td><a href="#">@isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset</a></td> 
+                                                    <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset > @isset($request->task)<span class="text-success">{{$request->task->level}}</span> @endisset > @isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset</a></td> 
                                                         @break
                                                     @case(2)
                                                     <td><i class="mdi mdi-school font-18"></i></td>
