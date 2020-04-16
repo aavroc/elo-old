@@ -58,7 +58,7 @@ Klassen
                                 <th>Voornaam</th>
                                 <th>Achternaam</th>
                                 <th>Ingelogd</th>
-                                <th>Laatst Actief</th>
+                                <th>Laatste inlog</th>
                                 <th>Toon</th>
                                 @if(Auth::user()->role == 1)
                                 <th>Bewerk</th>
