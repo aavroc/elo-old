@@ -39,6 +39,10 @@ class ModuleSeeder extends Seeder
                 'slug' => 'database-design',
                 'basic_status' => 1
             ],
+            [
+                'name' => 'Ontwerpen 2',
+                'slug' => 'ontwerpen-2',
+            ],
 
         ];
 
