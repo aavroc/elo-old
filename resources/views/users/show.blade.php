@@ -13,376 +13,224 @@ Gebruiker
 </div>
 <div class="xp-contentbar">
     <div class="row">
-    <!-- Start XP Col -->
-    <div class="col-lg-7">
-    <div class="card m-b-20">
-        <div class="card-body">
-        <div class="m-b-10">
-            <h6>Gebruiker</h6>
-        </div>
-        <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Naam</th>
-                    <th>Email</th>
-                    <th>Rol</th>
-                    <th>Laatst actief</th>
-                    @if(Auth::user()->role == 1)
-                    <th>Bewerk</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>@php
-                        $roles = ['','admin','docent','student'];
-                        @endphp
-                        {{$roles[$user->role]}}</td>
-                    <td>@if(isset($user->session))
-                        <span class="text-success" role="alert">{{$user->session->last_activity}}</span>
-                        @else
-                        <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
-                        @endif</td>
-                    @if(Auth::user()->role == 1)
-                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
-                    @endif
-                </tr>
-                </tbody>
-            </table>
-        </div><!-- End TABLE RESPONSIVE -->
-    </div> <!-- End card body -->
-    </div> <!-- end card -->
-</div><!-- End XP Col -->
-<div class="col-lg-5">
-    <div class="card m-b-20">
-        @if($user->role == 3)
-        <div class="card-body">
-            <div class="m-b-10">
-                <h6>Modules</h6>
-            </div>
-            <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th>Status</th>
-                        <th>Toon</th>
-                        @if(Auth::user()->role == 1)
-                        <th>Bewerk</th>
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach ($user->modules as $module)
-                    <tr id="module-table-{{$module->id}}" class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
-                        <td>{{$module->name}}</td> 
-                            <td id="txt_module-table-{{$module->id}}">@if($module->pivot->status ==1) open @elseif ($module->pivot->status ==3) done @else closed @endif</td> 
-                        <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="fa fa-eye"></i> toon</a></td>
-                        @if(Auth::user()->role == 1)
-                            <td>
-                                <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_closed" value="0" @if($module->pivot->status ==0) checked @endif>
-                                <label class="form-check-label f-w-3" for="{{$module->id}}_closed">closed</label>
-                            </div>
-                        
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_open" value="1" @if($module->pivot->status ==1) checked @endif>
-                                <label class="form-check-label f-w-3" for="{{$module->id}}_open">open</label>
-                            </div>
-                        
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_done" value="3" @if($module->pivot->status ==3) checked @endif>
-                                <label class="form-check-label f-w-3" for="{{$module->id}}_done">done</label>
-                            </div>
-                        </td>
-                        @endif
-                    </tr>
-                @endforeach
-                    </tbody>
-                </table>
-            </div><!-- End TABLE RESPONSIVE -->
-        </div> <!-- End card body -->
-@endif
-    </div> <!-- end card -->
-</div><!-- End XP Col -->
 
-<!-- Start XP Col -->
-<div class="col-lg-12">
-    <div class="card m-b-20">
-    <div class="card-header bg-white">
-            <h5 class="card-title">Aanvraag</h5>
-        </div>
-    <div class="card-body">
-        <!-- requests, alerts and reviews here -->
-        <div class="table-responsive">
-            <table id="xp-default-datatable" class="display table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>Omschrijving</th>
-                <th>Link</th>
-                <th>Type</th>
-                <th>Datum</th>
-                <th>Status</th>
-                <th>Bekeken door</th>
-                <th>Opmerkingen</th>
-                <th>Bewerk</th>
-            </tr>
-            </thead>
-            <tbody>
-                <td>omschrijving</td>
-                <td>link naar taak</td>
-                <td>assistentie, nakijken, overig</td>
-                <td>datum en tijd</td>
-                <td>open, closed</td>
-                <td>naam docent</td>
-                <td>opmerkingen docent</td>
-                <td><a href="#" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
-            </tbody>
-            </table>
-            </div> <!-- end table responsive -->
-        </div> <!-- end card body -->
-    </div> <!-- end card -->
-</div><!-- End XP Col -->
-
-<div class="col-lg-12">
-<div class="card m-b-30">
-    <div class="card-body">
-    <div class="m-b-10">
-            <h6>Last pushed commits</h6>
-        </div>
-    {{-- {{dd($user_events)}} --}}
-    @if(is_array($user_events))
-    <div class="table-responsive">
-            <table id="data-moduletable" class="display table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th>Commit on github</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach($user_events as $event)
-                @if($event->type == "PushEvent")
-                @foreach($event->payload->commits as $commit)
-                @php $module = explode('/', $event->repo->name)[1]; @endphp
-                    <tr>
-                        <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
-                    class="card-link">{{$module}}</a></td>
-                        <td><a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> </td>
-                    </tr>
-                @endforeach
-                @endif
-                @endforeach
-                    </tbody>
-            </table>
-        </div>
-        @else
-        <p>No events recored yet</p>
-        <div class="col-lg-6">
-            <h4>gebruiker: {{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6"> <!-- User Profile -->
-            <div class="card m-b-30">
-                <div class="card-body">
-                    <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Naam</th>
-                                <th>Email</th>
-                                <th>Rol</th>
-                                <th>Laatst actief geweest</th>
-                                @if(Auth::user()->role == 1)
-                                <th>Bewerk</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</td>
-                                <td>{{$user->email}}</td>
-                                <td>@php
-                                    $roles = ['','admin','docent','student'];
-                                    @endphp
-                                    {{$roles[$user->role]}}</td>
-                                <td>@if(isset($user->session))<span class="text-success" role="alert">{{$user->session->last_activity}}</span>
-                                 @else
-                                <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
-                                @endif</td>
-                                @if(Auth::user()->role == 1)
-                                <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
-                                @endif
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div><!-- End User Profile -->
-            @if($user->role == 3)
-            <div class="card m-b-30">    <!-- User Modules -->
                 <div class="card-body">
                     <div class="m-b-10">
-                        <h6>Modules</h6>
+                        <h6>Gebruiker</h6>
                     </div>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Module</th>
-                                    <th>Toon user module</th>
-                                    <th>Status</th>
+                                    <th>Naam</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                    <th>Laatst actief</th>
                                     @if(Auth::user()->role == 1)
                                     <th>Bewerk</th>
                                     @endif
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach ($user->modules as $module)
-                                <tr class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
-                                    <td>{{$module->name}}</td>
-                                        @if($module->pivot->status ==1) 
-                                        <td >open</td> 
-                                        @elseif ($module->pivot->status ==3) 
-                                        <td >done</td> 
+                                <tr>
+                                    <td>{{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</td>
+                                    <td>{{$user->email}}</td>
+                                    <td>@php
+                                        $roles = ['','admin','docent','student'];
+                                        @endphp
+                                        {{$roles[$user->role]}}</td>
+                                    <td>@if(isset($user->session))<span class="text-success" role="alert">{{$user->session->last_activity}}</span>
                                         @else
-                                        <td >closed</td> 
-                                        @endif
-                                    <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class=""><i class="fa fa-eye"></i> toon</a></td>
+                                    <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
+                                    @endif</td>
                                     @if(Auth::user()->role == 1)
-                                        <td><a href="#" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
                                     @endif
                                 </tr>
-                            @endforeach
-                            </tbody>
+                                </tbody>
                         </table>
-                    </div>
-                </div>
-            </div><!-- End User Modules -->
-        </div>
-        <div class="col-lg-6"> 
-            <div class="card m-b-30"><!-- Laatste verzoeken -->
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+            </div> <!-- end card -->
+            @if($user->role == 3)
+            <div class="card m-b-20">
                 <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Laatste verzoeken</h5>
+                    <h5 class="card-title">Aanvraag</h5>
                 </div>
                 <div class="card-body">
-                    <div class="xp-email-rightbar">
-                        <div class="card m-b-30">
-                            <div class="card-body">                                    
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-borderless">    
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        #
-                                                    </th>
-                                                    <th>
-                                                        Onderwerp
-                                                    </th>
-                                                    <th>
-                                                        Hulpverzoek
-                                                    </th>
-                                                    <th>
-                                                        Datum | Tijd
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            @isset($user->verzoeken)
-                                            @foreach($user->verzoeken->sortBy('updated_at') as $request)
-                                            <tr class="email-unread">
-                                                @switch($request->status)
-                                                    @case(1)
-                                                    <td><i class="mdi mdi-help font-18"></i></td>
-                                                    <td><a href="#">Hulpverzoek</a></td> 
-                                                        @break
-                                                    @case(2)
-                                                    <td><i class="mdi mdi-school font-18"></i></td>
-                                                    <td><a href="#">Module eindgesprek</a></td> 
-                                                        @break
-                                                    @case(3)
-                                                    <td><i class="mdi mdi-account-circle"></i></td>
-                                                    <td><a href="#">Coachgesprek</a></td> 
-                                                        @break   
-                                                    @case(4)
-                                                    <td><i class="mdi mdi-laptop"></i></td>
-                                                    <td><a href="#">Workshop</a></td> 
-                                                        @break   
-                                                    @case(5)
-                                                    <td><i class="mdi mdi-sync font-18"></i></td>
-                                                    <td><a href="#">In behandeling</a></td> 
-                                                        @break   
-                                                    @case(6)
-                                                    <td><i class="mdi mdi-check-outline font-18"></i></td>
-                                                    <td><a href="#">Voltooid</a></td> 
-                                                        @break                                                    
-                                                    @default
-                                                        Default case...
-                                                @endswitch
-                                                <td>{{$request->extra}}</td>
-                                                <td>
-                                                    {{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}} 
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        @endisset
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- requests, alerts and reviews here -->
+                    <div class="table-responsive">
+                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Omschrijving</th>
+                            <th>Link</th>
+                            <th>Type</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Bekeken door</th>
+                            <th>Opmerkingen</th>
+                            <th>Bewerk</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <td>omschrijving</td>
+                            <td>link naar taak</td>
+                            <td>assistentie, nakijken, overig</td>
+                            <td>datum en tijd</td>
+                            <td>open, closed</td>
+                            <td>naam docent</td>
+                            <td>opmerkingen docent</td>
+                            <td><a href="#" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                        </tbody>
+                        </table>
+                    </div> <!-- end table responsive -->
+                </div> <!-- end card body -->
+            </div> <!-- end card -->
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <div class="m-b-10">
+                        <h6>Last pushed commits</h6>
                     </div>
-                </div>
-            </div><!-- End Laatste verzoeken -->
-            <div class="card m-b-30"><!-- Laatste commits -->
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Laatste gepushte commits</h5>
-                </div>
-            </div><!-- End Laatste commits  -->
-            <div class="card m-b-30"><!-- no records made  -->
-                <div class="card-body"> 
+                    {{-- {{dd($user_events)}} --}}
                     @if(is_array($user_events))
-                        <div class="table-responsive">
-                            <table id="data-moduletable" class="display table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Module</th>
-                                        <th>Commit on github</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($user_events as $event)
-                                    @if($event->type == "PushEvent")
-                                        @foreach($event->payload->commits as $commit)
-                                            @php $module = explode('/', $event->repo->name)[1]; @endphp
-                                            <tr>
-                                                <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
-                                            class="card-link">{{$module}}</a></td>
-                                                <td><a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                @endforeach
+                    <div class="table-responsive">
+                        <table id="data-moduletable" class="display table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>Commit on github</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($user_events as $event)
+                            @if($event->type == "PushEvent")
+                            @foreach($event->payload->commits as $commit)
+                            @php $module = explode('/', $event->repo->name)[1]; @endphp
+                                <tr>
+                                    <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}"
+                                class="card-link">{{$module}}</a></td>
+                                    <td><a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a> </td>
+                                </tr>
+                            @endforeach
+                            @endif
+                            @endforeach
                                 </tbody>
-                            </table>
-                        </div>
+                        </table>
+                    </div>
                     @else
                     <p>No events recored yet</p>
-                    @endif
+                    <div class="col-lg-6">
+                        <h4>gebruiker: {{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h4>
+                    </div>
                 </div>
-            </div><!-- End no records made  -->
+            </div>
             @endif
-        </div>
+        </div><!-- End XP Col -->
+        
+        <div class="col-lg-4">
+            <div class="card m-b-20">
+                
+                <div class="card-body">
+                    <div class="m-b-10">
+                        <h6>Modules</h6>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Status</th>
+                                <th>Toon</th>
+                                @if(Auth::user()->role == 1)
+                                <th>Bewerk</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($user->modules as $module)
+                            <tr id="module-table-{{$module->id}}" class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
+                                <td>{{$module->name}}</td> 
+                                <td id="txt_module-table-{{$module->id}}">@if($module->pivot->status ==1) open @elseif ($module->pivot->status ==3) done @else closed @endif</td> 
+                                <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="fa fa-eye"></i> toon</a></td>
+                                @if(Auth::user()->role <= 2)
+                                    <td>
+                                        <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_closed" value="0" @if($module->pivot->status ==0) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$module->id}}_closed">closed</label>
+                                    </div>
+                                
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_open" value="1" @if($module->pivot->status ==1) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$module->id}}_open">open</label>
+                                    </div>
+                                
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="{{$module->id}}_done" value="3" @if($module->pivot->status ==3) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$module->id}}_done">done</label>
+                                    </div>
+                                </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                            </tbody>
+                        </table>
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+                
+            </div> <!-- end card -->
+            <div class="card m-b-20">
+                
+                <div class="card-body">
+                    <div class="m-b-10">
+                        <h6>Challenges</h6>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Challenge</th>
+                                <th>Status</th>
+                                <th>Toon</th>
+                                @if(Auth::user()->role == 1)
+                                <th>Bewerk</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($user->challenge as $challenge)
+                            <tr>
+                                <td>{{$challenge->name}}</td>
+                                <td id="txt_module-table-{{$challenge->id}}">@if($challenge->pivot->status ==1) open @elseif ($challenge->pivot->status ==3) done @else closed @endif</td> 
+                                @if(Auth::user()->role <= 2)
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_closed" value="0" @if($challenge->pivot->status ==0) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$module->id}}_closed">closed</label>
+                                    </div>
+                                
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_open" value="1" @if($challenge->pivot->status ==1) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$module->id}}_open">open</label>
+                                    </div>
+                                
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_done" value="3" @if($challenge->pivot->status ==3) checked @endif>
+                                        <label class="form-check-label f-w-3" for="{{$challenge->id}}_done">done</label>
+                                    </div>
+                                </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                            </tbody>
+                        </table>
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+                @endif
+            </div> <!-- end card -->
+        </div><!-- End XP Col -->
     </div>
-</div>
-@endif
-</div><!-- End XP Col -->
-
-</div><!-- End XP Row -->
+    
 </div><!-- End XP Contentbar -->
 
 
