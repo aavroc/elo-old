@@ -205,18 +205,18 @@ Gebruiker
                                 @if(Auth::user()->role <= 2)
                                 <td>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_closed" value="0" @if($challenge->pivot->status ==0) checked @endif>
-                                        <label class="form-check-label f-w-3" for="{{$module->id}}_closed">closed</label>
+                                        <input class="form-check-input" type="radio" name="user_challenge_{{$challenge->name}}" id="status_{{$challenge->id}}_closed" value="0" @if($challenge->pivot->status ==0) checked @endif>
+                                        <label class="form-check-label f-w-3" for="status_{{$challenge->id}}_closed">closed</label>
                                     </div>
                                 
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_open" value="1" @if($challenge->pivot->status ==1) checked @endif>
-                                        <label class="form-check-label f-w-3" for="{{$module->id}}_open">open</label>
+                                        <input class="form-check-input" type="radio" name="user_challenge_{{$challenge->name}}" id="status_{{$challenge->id}}_open" value="1" @if($challenge->pivot->status ==1) checked @endif>
+                                        <label class="form-check-label f-w-3" for="status_{{$challenge->id}}_open">open</label>
                                     </div>
                                 
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="user_level_{{$challenge->name}}" id="{{$challenge->id}}_done" value="3" @if($challenge->pivot->status ==3) checked @endif>
-                                        <label class="form-check-label f-w-3" for="{{$challenge->id}}_done">done</label>
+                                        <input class="form-check-input" type="radio" name="user_challenge_{{$challenge->name}}" id="status_{{$challenge->id}}_done" value="3" @if($challenge->pivot->status ==3) checked @endif>
+                                        <label class="form-check-label f-w-3" for="status_{{$challenge->id}}_done">done</label>
                                     </div>
                                 </td>
                                 @endif
@@ -240,45 +240,45 @@ Gebruiker
 
 <script>
     $('input[type=radio]').change(function() {
-    console.log($(this).parent().parent().parent().parent());
-    var trID = $(this).closest('tr').attr('id'); // table row ID 
-    var status = this.id;
-    
-    $.ajax({
-        method: "POST",
-        url: "/students/update_level",
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        data: { 
-                'student': {{$user->id}}, 
-                'status': status,
+        console.log($(this).parent().parent().parent().parent());
+        var trID = $(this).closest('tr').attr('id'); // table row ID 
+        var status = this.id;
+        
+        $.ajax({
+            method: "POST",
+            url: "/students/update_level",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: { 
+                    'student': {{$user->id}}, 
+                    'status': status,
+                },
+            success: function(response){ // What to do if we succeed
+                console.log(response); 
             },
-        success: function(response){ // What to do if we succeed
-            console.log(response); 
-        },
-        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-            console.log(JSON.stringify(jqXHR));
-            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-        }
-    })
-    .done(function( msg ) {
+            error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+            }
+        })
+        .done(function( msg ) {
 
-        if(msg == 'closed'){
-            $('#' + trID).attr('class', 'table-danger');
-            $('#txt_' + trID).html('closed'); 
-        }
+            if(msg == 'closed'){
+                $('#' + trID).attr('class', 'table-danger');
+                $('#txt_' + trID).html('closed'); 
+            }
 
-        if(msg == 'open'){
-            $('#' + trID).attr('class', 'table-success');
-            $('#txt_' + trID).html('open'); 
-        }
+            if(msg == 'open'){
+                $('#' + trID).attr('class', 'table-success');
+                $('#txt_' + trID).html('open'); 
+            }
 
-        if(msg == 'done'){
-            $('#' + trID).attr('class', 'table-info');
-            $('#txt_' + trID).html('done'); 
-        }
+            if(msg == 'done'){
+                $('#' + trID).attr('class', 'table-info');
+                $('#txt_' + trID).html('done'); 
+            }
+        });
+    // Run code
     });
-// Run code
-});
                     
 </script>
 
