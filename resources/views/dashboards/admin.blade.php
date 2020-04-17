@@ -48,6 +48,7 @@ Dashboard
                     <a href="{{URL::to('/classrooms/LCTAOO9A')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9A</a>
                     <a href="{{URL::to('/classrooms/LCTAOO9C')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9C</a>
                     <a href="{{URL::to('/classrooms/LCTAOO9D')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9D</a>
+                    <a href="{{URL::to('/classrooms/LCTAO2020')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAO2020</a>
                     </div>
                 </div>
             </div>
@@ -169,11 +170,11 @@ Dashboard
                                                     @switch($request->status)
                                                         @case(1)
                                                         <td><i class="mdi mdi-help font-18"></i></td>
-                                                        <td><a href="#">Hulpverzoek</a></td> 
+                                                        <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset > @isset($request->task)<span class="text-success">{{$request->task->level}}</span> @endisset > @isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset </a></td> 
                                                             @break
                                                         @case(2)
                                                         <td><i class="mdi mdi-school font-18"></i></td>
-                                                        <td><a href="#">Module eindgesprek</a></td> 
+                                                        <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset eindgesprek</a></td> 
                                                             @break
                                                         @case(3)
                                                         <td><i class="mdi mdi-account-circle"></i></td>

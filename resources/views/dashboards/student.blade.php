@@ -116,7 +116,7 @@ Dashboard
                                     <label for="task_choice" class="col-sm-5 col-form-label">Kies een module die je wilt laten beoordelen</label>
                                     <div class="col-sm-7">
                                         <label for="module_choice"></label>
-                                        <select name="module_choice" id="module_choice" class="form-control">
+                                        <select name="module_choice" id="module_choice" class="form-control" required>
                                             <option value=""  selected hidden>kies een module</option>
                                             @foreach ($modules as $module)
                                                 @if($user->modules()->where('module_id', $module->id)->exists())
@@ -185,11 +185,11 @@ Dashboard
                                                 @switch($request->status)
                                                     @case(1)
                                                     <td><i class="mdi mdi-help font-18"></i></td>
-                                                    <td><a href="#">Hulpverzoek</a></td> 
+                                                    <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset > @isset($request->task)<span class="text-success">{{$request->task->level}}</span> @endisset > @isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset</a></td> 
                                                         @break
                                                     @case(2)
                                                     <td><i class="mdi mdi-school font-18"></i></td>
-                                                    <td><a href="#">Module eindgesprek</a></td> 
+                                                    <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset Eindgesprek</a></td> 
                                                         @break
                                                     @case(3)
                                                     <td><i class="mdi mdi-account-circle"></i></td>

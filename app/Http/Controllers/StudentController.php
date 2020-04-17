@@ -190,22 +190,25 @@ class StudentController extends Controller
                 }
                 break;
             case 'nakijkverzoek'://module opdracht bespreken
-                UsersRequest::updateOrInsert(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'module_id' => $request->module_choice,
-                    ],
-                    [  
-                        'status'    => 2, //module gesprek
-                        'extra'     => $request->aanvullend,
-                        "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
-                        "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
-                    ]
-                );
-                
-                break;
+                    if($request->module_choice != null){
+                        
+                        UsersRequest::updateOrInsert(
+                            [
+                                'user_id' => Auth::user()->id,
+                                'module_id' => $request->module_choice,
+                            ],
+                            [  
+                                'status'    => 2, //module gesprek
+                                'extra'     => $request->aanvullend,
+                                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                                "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                                ]
+                            );
+                            
+                    }
+                    break;
             case 'coach_gesprek'://coach gesprek aanvraag
-                UsersRequest::pdateOrInsert(
+                UsersRequest::updateOrInsert(
                     [
                         'user_id' => Auth::user()->id,
                         'status'    => 3, //coachgesprek
