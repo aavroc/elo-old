@@ -28,7 +28,10 @@ class AddChallengeToModules extends Migration
     public function down()
     {
         Schema::table('modules', function (Blueprint $table) {
+            $table->dropForeign('modules_challenge_id_foreign');
             $table->dropColumn('challenge_id');
+      
+
         });
     }
 }

@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function modules()
     {
-        return $this->belongsToMany('App\Module', 'users_modules')->withPivot('status');;
+        return $this->belongsToMany('App\Module', 'users_modules')->withPivot('status');
     }
 
     public function classroom()
@@ -60,6 +60,11 @@ class User extends Authenticatable
     public function verzoeken()
     {
         return $this->hasMany('App\UsersRequest');
+    }
+
+    public function challenge()
+    {
+         return $this->belongsToMany('App\Challenge', 'users_challenges')->withPivot('status');
     }
     
 }

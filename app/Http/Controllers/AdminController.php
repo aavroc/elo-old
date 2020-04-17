@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classroom;
+use App\Challenge;
 use App\User;
 use App\Task;
 use App\Module;
@@ -185,6 +186,7 @@ class AdminController extends Controller
     public function show(User $user)
     {
         $all_modules    = Module::all();
+        $all_challenges = Challenge::all();
 
         $github = new GitHub();
 
@@ -198,6 +200,7 @@ class AdminController extends Controller
         $data = [
             'user'          => $user,
             'all_modules'   => $all_modules,
+            'all_challenges'   => $all_challenges,
             'user_events'   => $user_events
         ];
 
