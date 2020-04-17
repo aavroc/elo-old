@@ -104,6 +104,7 @@ Gebruiker
                 </table>
             </div><!-- End TABLE RESPONSIVE -->
         </div> <!-- End card body -->
+        @endif
     </div> <!-- end card -->
 </div><!-- End XP Col -->
 
