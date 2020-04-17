@@ -41,10 +41,11 @@ Gebruiker
                         $roles = ['','admin','docent','student'];
                         @endphp
                         {{$roles[$user->role]}}</td>
-                    <td>@if(isset($user->session))<span class="text-success" role="alert">{{$user->session->last_activity}}</span>
+                    <td>@if(isset($user->session))
+                        <span class="text-success" role="alert">{{$user->session->last_activity}}</span>
                         @else
-                    <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
-                    @endif</td>
+                        <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
+                        @endif</td>
                     @if(Auth::user()->role == 1)
                     <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
                     @endif
@@ -104,6 +105,7 @@ Gebruiker
                 </table>
             </div><!-- End TABLE RESPONSIVE -->
         </div> <!-- End card body -->
+@endif
     </div> <!-- end card -->
 </div><!-- End XP Col -->
 
