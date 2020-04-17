@@ -13,10 +13,7 @@ Gebruiker
 </div>
 <div class="xp-contentbar">
     <div class="row">
-        
-        <!-- Start XP Col -->
-        <div class="col-lg-8">
-            <div class="card m-b-20">
+
                 <div class="card-body">
                     <div class="m-b-10">
                         <h6>Gebruiker</h6>

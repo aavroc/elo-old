@@ -39,7 +39,7 @@ class AdminController extends Controller
         )->get();
 
         $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->where('task_id', '!=', NULL)->with('task')->orderBy('updated_at')->get();
-        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('status', '!=' , 6)->with('task')->get();
+        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('type', '=' , 2)->where('status', '!=' , 6)->with('task')->get();
                 
         $task_requests = $requests->pluck('task');
         $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
@@ -60,7 +60,7 @@ class AdminController extends Controller
     public function handleRequest(User $teacher, User $student, UsersRequest $user_request){
         // dd($user_request);
         $user_request->docent_id = $teacher->id;
-        $user_request->status = 5;
+        $user_request->type = 2;
         
         $user_request->save();
 
@@ -75,7 +75,7 @@ class AdminController extends Controller
             foreach($request->todos as $todo){
                 UsersRequest::where('id', $todo)->update(
                     [
-                        'status' => 6
+                        'type' => 3
                     ]
                 );
             }

@@ -3,9 +3,28 @@ Dashboard
 @endsection
 @extends('layouts.main')
 @section('style')
-
+<!-- DataTables CSS -->
+<link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection 
 @section('rightbar-content')
+
+@php 
+    $status = [
+        1 => 'hulpvraag',
+        2 => 'modulegesprek',
+        3 => 'coachgesprek',
+        4 => 'workshop',
+    ];
+    $type = [
+        1 => 'open',
+        2 => 'in behandeling',
+        3 => 'voltooid',
+        4 => 'trash',
+    ];
+@endphp
+
 <!-- Start XP Breadcrumbbar -->                    
 <div class="xp-breadcrumbbar text-center">
 </div>
@@ -14,48 +33,238 @@ Dashboard
 <div class="xp-contentbar">
     <!-- Write page content code here -->
     <!-- Start XP Row -->    
-    <div class="row">
-        <!-- Start XP Col -->
-        <div class="col-md-12 col-lg-12 col-xl-12">
-            <div class="text-left mt-3 mb-5">
-                <h4>Welkom {{Auth::user()->firstname}} {{Auth::user()->lastname}}</h4>
-            </div>
-        </div>
-        <!-- End XP Col -->
-        <!-- Start XP Col -->               
-        <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Get started!</h5>
-                </div>
-                <div class="card-body">
-                    <div class="xp-button">
-                    <a href="{{route('retrieve')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Retrieve all modules and tasks</a>
-                    <a href="{{route('users.select_file')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Upload Users</a>
+<div class="row">     
+<!-- Start XP Col -->
+<div class="col-md-12 col-lg-12 col-xl-12">
+    <div class="text-left mt-2 mb-3">
+        <h4>Welkom {{Auth::user()->firstname}} {{Auth::user()->lastname}}</h4>
+    </div>
+</div><!-- End XP Col -->
+</div> <!-- end row -->
+<div class="row">   
+    <div class="col-md-8 col-lg-8 col-xl-8"><!-- Start XP Col --> 
+     <div class="card  m-b-30">
+        <div class="card-header bg-white">
+                <div class="row">
+                    <div class="col-lg-7 m-t-10">
+                        <h4 class="text-black">Verzoeken</h4>
                     </div>
-                </div>
-            </div>
-        </div>
-        <!-- End XP Col -->        
-        <!-- Start XP Col -->               
-        <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Klassen</h5>
-                </div>
-                <div class="card-body">
-                    <div class="xp-button">
-                    <a href="{{URL::to('/classrooms/LCTAOO9A')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9A</a>
-                    <a href="{{URL::to('/classrooms/LCTAOO9C')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9C</a>
-                    <a href="{{URL::to('/classrooms/LCTAOO9D')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9D</a>
-                    <a href="{{URL::to('/classrooms/LCTAO2020')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAO2020</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <div class="col-lg-5 text-right">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-info active">
+                                    <input type="radio" name="status" value="all" checked="checked"> Alle
+                                </label>
+                                <label class="btn btn-danger">
+                                    <input type="radio" name="status" value="type1"> Open
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="status" value="type2"> in behandeling
+                                </label>
+                                <label class="btn btn-success">
+                                    <input type="radio" name="status" value="type3"> voltooid
+                                </label>								
+                            </div> <!-- end btn group -->
+                        </div><!-- end col -->
+                </div> <!--end row -->
+            </div> <!-- end card header -->
 
-         <!-- Start XP Col -->
-         <div class="col-lg-6">
+            <div class="card-body">
+            <div class="table-responsive">
+                        <table id="xp-default-datatable" class="display table table-borderless table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Verzoek</th>
+                                    <th>Van</th>
+                                    <th>Onderwerp</th>
+                                    <th>Status</th>
+                                    <th>Datum | tijd</th>
+                                    <th>Afhandelen</th>
+                                </tr>
+                            </thead>                                        
+                            <tbody>
+                            {{-- {{dd($user->verzoeken)}} --}} 
+                            @isset($requests)
+                            @foreach($requests as $request)
+
+                            <tr data-status="type{{$request->type}}">
+                   
+                                @switch($request->status)
+                                
+                                @case(1)
+                                    <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag </span>: {{$request->extra}}</td>
+                                    <td><a href="{{route('users.show', $request->user->id)}}"><u>{{$request->user->firstname}}</u></a></td>                             
+                                    <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
+                                @break
+
+                                @case(2)
+                                    <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek </span>: {{$request->extra}}</td>
+                                    <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
+                                    <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
+                                @break
+
+                                @case(3)
+                                    <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek </span>: {{$request->extra}}</td>
+                                    <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
+                                    <td><a href="#">coachgesprek</a></td>
+                                @break
+
+                                @case(4)
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop </span>: {{$request->extra}}</td>
+                                    <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
+                                    <td><a href="#">workshop</a></td>                     
+                                @break                                                  
+
+                                @default
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop </span>: {{$request->extra}}</td>
+                                    <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
+                                    <td><a href="#">lege aanvraag</a></td>  
+                                @endswitch
+                                
+                                <td>
+                                <!-- David dit moet nog werkend gemaakt worden: Invoegen kolom type in tabel user_requests -->
+                                @if($request->type == 1)
+                                        <h5><span class="badge badge-danger"> open </span></h5>
+                                    @elseif($request->type == 2)
+                                        <h5><span class="badge badge-warning"> in behandeling </span></h5>
+                                    @elseif($request->type == 3)
+                                        <h5><span class="badge badge-success"> voltooid </span></h5>
+                                    @else
+                                        <h5><span class="badge badge-danger"> open </span></h5>
+                                    @endif
+                                </td>   
+                                <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
+                                <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
+                                    @if($request->type == 1)
+                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id] )}}" class="btn btn-warning btn-sm">Afhandelen</a>
+                                    @endif
+                                </td>
+                                            
+                            </tr>
+
+                        @endforeach
+                        @endisset
+                        </tbody>
+                        </table>
+                        </div> <!-- end table responsive -->      
+            </div> <!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- End XP Col -->
+
+     <!-- Start XP Col -->               
+     <div class="col-lg-4">
+            <div class="card m-b-30">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-black">Aangenomen verzoeken door jou</h5>
+                </div>
+                <div class="card-body">
+                    <div class="xp-to-do-list">
+                    <form action="{{route('request_to_done')}}" method="post">
+                        @csrf
+                            <div class="form-group">
+                                <ul id="list-group" class="list-group list-group-flush">
+                                    @foreach($taken_requests as $teacher_request)
+                                    <li class="list-group-item">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input checkbox" id="request_{{$teacher_request->id}}" name="todos[]" value="{{$teacher_request->id}}">
+                                        <label class="custom-control-label f-w-4" for="request_{{$teacher_request->id}}"><span class="text-warning">{{$teacher_request->user->firstname}}</span> - {{$teacher_request->module->name}} > {{$teacher_request->task->level}} > {{$teacher_request->task->name}} > {{$teacher_request->type}}</label>
+                                            <a class="xp-to-do-list-remove"><i class="mdi mdi-close"></i></a>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Markeer klaar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End XP Col -->
+</div> <!-- end row -->
+<div class="row">          
+    <!-- Start XP Col -->               
+    <div class="col-lg-4">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Get started!</h5>
+            </div>
+            <div class="card-body">
+                <div class="xp-button">
+                <a href="{{route('retrieve')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Retrieve all modules and tasks</a>
+                <a href="{{route('users.select_file')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Upload Users</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End XP Col -->        
+    <!-- Start XP Col -->               
+    <div class="col-lg-4">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Klassen</h5>
+            </div>
+            <div class="card-body">
+                <div class="xp-button">
+                <a href="{{URL::to('/classrooms/LCTAOO9A')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9A</a>
+                <a href="{{URL::to('/classrooms/LCTAOO9C')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9C</a>
+                <a href="{{URL::to('/classrooms/LCTAOO9D')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">LCTAOO9D</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End XP Col -->
+    <!-- End XP Col --> 
+    <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Modules</h5>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
+                    @foreach($modules as $module)
+                    <li class="nav-item">
+                        <a class="nav-link @if ($loop->first) active @endif" id="{{$module->slug}}-tab-justified" data-toggle="tab" href="#{{$module->slug}}-justified" role="tab" aria-controls="{{$module->slug}}" @if ($loop->first) aria-selected="true" @endif>
+                    {{$module->name}}</a>
+                    </li>
+                    @endforeach
+                </ul>
+                
+                <div class="tab-content" id="defaultTabJustifiedContent">
+                @foreach($modules as $module)
+                    <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified">
+                    <h5>{{$module->name}}</h5>
+                    <p>content</p>
+                    {{-- {{dd($data_generated)}} --}}
+                {{-- @foreach($data_generated as $slug => $data)
+
+                    @foreach($data as $user_id => $content)
+                        @if(!isset($content['events']->message))
+                        <p>
+                                {{$content['user_data']->firstname}}
+                        @endif
+
+                        @foreach($content['events'] as $events)
+                            @if(property_exists( $events, 'payload'))
+                                @foreach($events->payload->commits as $commit)
+                                    
+                            <a href="users/{{$user_id}}/module/{{$slug}}">{{$commit->message}} </a>
+                            
+                        </p>
+                                @endforeach
+                            @endif
+                            @php break; @endphp
+                        @endforeach
+                        
+                    @endforeach
+                @endforeach --}}
+                    </div>
+            @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End XP Col -->
+             <!-- Start XP Col -->
+             <div class="col-lg-6">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">Basic Form</h5>
@@ -82,268 +291,47 @@ Dashboard
             </div>
         </div> 
         <!-- End XP Col -->
-        <!-- End XP Col -->
-          <!-- Start XP Col -->               
-          <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Aangenomen verzoeken door jou</h5>
-                </div>
-                <div class="card-body">
-                    <div class="xp-to-do-list">
-                    <form action="{{route('request_to_done')}}" method="post">
-                        @csrf
-                            <div class="form-group">
-                                <ul id="list-group" class="list-group list-group-flush">
-                                    @foreach($taken_requests as $teacher_request)
-                                    <li class="list-group-item">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input checkbox" id="request_{{$teacher_request->id}}" name="todos[]" value="{{$teacher_request->id}}">
-                                        <label class="custom-control-label f-w-4" for="request_{{$teacher_request->id}}"><span class="text-warning">{{$teacher_request->user->firstname}}</span> - {{$teacher_request->module->name}} > {{$teacher_request->task->level}} > {{$teacher_request->task->name}}</label>
-                                            <a class="xp-to-do-list-remove"><i class="mdi mdi-close"></i></a>
-                                        </div>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Markeer klaar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End XP Col -->
-         <!-- Start XP Col -->
-         <div class="col-md-6 col-lg-6 col-xl-6">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Modules</h5>
-                </div>
-                <div class="card-body">
-                    <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
-                        @foreach($modules as $module)
-                        <li class="nav-item">
-                            <a class="nav-link @if ($loop->first) active @endif" id="{{$module->slug}}-tab-justified" data-toggle="tab" href="#{{$module->slug}}-justified" role="tab" aria-controls="{{$module->slug}}" @if ($loop->first) aria-selected="true" @endif>
-                        {{$module->name}}</a>
-                        </li>
-                      @endforeach
-                    </ul>
-                    
-                    <div class="tab-content" id="defaultTabJustifiedContent">
-                    @foreach($modules as $module)
-                      <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified">
-                      <h5>{{$module->name}}</h5>
-                      <p>content</p>
-                      <!-- @David, deze looped nu door alle modules heen, ik heb tabs gemaakt dus per module, moet dus nog ingebouwd worden dat hij het per module laat zien en misschien moet het ook wel gewoon een tabel worden.. -->
-                    {{-- {{dd($data_generated)}} --}}
-                    {{-- @foreach($data_generated as $slug => $data)
+    </div> <!-- end Row -->
+</div><!-- End XP Contentbar -->
 
-                        @foreach($data as $user_id => $content)
-                            @if(!isset($content['events']->message))
-                            <p>
-                                    {{$content['user_data']->firstname}}
-                            @endif
-
-                            @foreach($content['events'] as $events)
-                                @if(property_exists( $events, 'payload'))
-                                    @foreach($events->payload->commits as $commit)
-                                        
-                                <a href="users/{{$user_id}}/module/{{$slug}}">{{$commit->message}} </a>
-                                
-                            </p>
-                                    @endforeach
-                                @endif
-                                @php break; @endphp
-                            @endforeach
-                            
-                        @endforeach
-                    @endforeach --}}
-                      </div>
-                @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End XP Col -->
-        <!-- Start XP Col -->
-        <div class="col-lg-6 col-xl-6">
-            <h5>Verzoeken</h5>
-            <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
-                <li class="nav-item">
-                <a class="nav-link active" id="student-tab-justified" data-toggle="tab" href="#student-justified" role="tab" aria-controls="student" aria-selected="true">
-                    Student view</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="task-tab-justified" data-toggle="tab" href="#task-justified" role="tab" aria-controls="task" aria-selected="false">
-                    Task view</a>
-            </li>
-            </ul>
-            <div class="tab-content" id="defaultTabJustifiedContent">
-                {{-- <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified"> --}}
-                <div class="tab-pane fade show active " id="student-justified" role="tabpanel" aria-labelledby="student-tab-justified">
-                    <div class="card m-b-30">
-                        <div class="card-header bg-white">
-                            <h5 class="card-title text-black mb-0">Studenten overzicht</h5>
-                        </div>
-                        @php 
-                            $status = [
-                                1 => 'hulpvraag',
-                                2 => 'modulegesprek',
-                                3 => 'coachgesprek',
-                                4 => 'workshop',
-                            ];
-                        
-                        @endphp
-                        <div class="xp-email-rightbar">
-                            <div class="card m-b-30">
-                                <div class="card-body">                                    
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-borderless">    
-                                            <div class="card-header bg-white">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            #
-                                                        </th>
-                                                        
-                                                        <th>
-                                                            Onderwerp
-                                                        </th>
-                                                        <th>
-                                                            Student
-                                                        </th>
-                                                        <th>
-                                                            Datum | Tijd
-                                                        </th>
-                                                        <th>&nbsp;</th>
-                                                    </tr>
-                                                </thead>
-                                            </div>                                        
-                                            <tbody>
-                                                
-                                                @isset($requests)
-                                                @foreach($requests as $request)
-                                                <tr class="email-unread">
-                                                    
-                                                    
-                                                    @switch($request->status)
-                                                        @case(1)
-                                                        <td><i class="mdi mdi-help font-18"></i></td>
-                                                        <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset > @isset($request->task)<span class="text-success">{{$request->task->level}}</span> @endisset > @isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset </a></td> 
-                                                            @break
-                                                        @case(2)
-                                                        <td><i class="mdi mdi-school font-18"></i></td>
-                                                        <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset eindgesprek</a></td> 
-                                                            @break
-                                                        @case(3)
-                                                        <td><i class="mdi mdi-account-circle"></i></td>
-                                                        <td><a href="#">Coachgesprek</a></td> 
-                                                            @break   
-                                                        @case(4)
-                                                        <td><i class="mdi mdi-laptop"></i></td>
-                                                        <td><a href="#">Workshop</a></td> 
-                                                            @break   
-                                                        @case(5)
-                                                        <td><i class="mdi mdi-sync font-18"></i></td>
-                                                        <td><a href="#">In behandeling</a></td> 
-                                                            @break   
-                                                        @case(6)
-                                                        <td><i class="mdi mdi-check-outline font-18"></i></td>
-                                                        <td><a href="#">Voltooid</a></td> 
-                                                            @break                                                    
-                                                        @default
-                                                            Default case...
-                                                    @endswitch
-   
-                                                    <td><a href="{{route('users.show', $request->user->id)}}" class="text-warning"><u>{{$request->user->firstname}}</u></a></td>
-                                                    <td>
-                                                        {{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}} 
-                                                    </td>
-                                                    <td>
-                                                        
-                                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id] )}}" class="btn btn-info">Afhandelen</a>
-                                                    </td>
-                                               
-                                                </tr>
-                                                @endforeach
-                                                @endisset
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade " id="task-justified" role="tabpanel" aria-labelledby="task-tab-justified">
-                    <div class="card m-b-30">
-                        <div class="card-header bg-white">
-                            <h5 class="card-title text-black mb-0">Taken overzicht</h5>
-                        </div>
-                        @php 
-                            $status = [
-                                1 => 'hulpvraag',
-                                2 => 'modulegesprek',
-                                3 => 'coachgesprek',
-                                4 => 'workshop',
-                            ];
-                        
-                        @endphp
-                        <div class="xp-email-rightbar">
-                            <div class="card m-b-30">
-                                <div class="card-body">                                    
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-borderless">    
-                                            <div class="card-header bg-white">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            Module
-                                                        </th>
-                                                        <th>
-                                                            Level
-                                                        </th>
-                                                        <th>
-                                                            Taak
-                                                        </th>
-                                                        <th>
-                                                            Aantal aanvragen
-                                                        </th>
-                                                        <th>&nbsp;</th>
-                                                    </tr>
-                                                </thead>
-                                            </div>                                        
-                                            <tbody>
-                                                @isset($task_requests)
-                                                @foreach($task_requests->unique() as $task)
-                                                        <tr class="email-unread">
-                                                            <td><a href="#">{{$task->module->name}}</a></td> 
-                                                            <td><a href="#">{{$task->level}}</a></td> 
-                                                            <td><a href="#">{{$task->name}}</a></td> 
-                                                            <td><a href="#">{{$counted_tasks[$task->id]}}</a></td> 
-                                                            <td>
-                                                                <a href="" class="btn btn-info">Afhandelen</a>
-                                                            </td>
-                                                    
-                                                        </tr>
-                                                @endforeach
-                                                @endisset
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-        </div>
-        <!-- End XP Col --> 
-    </div>
-</div>
-<!-- End XP Contentbar -->
 @endsection
 @section('script')
+<script>
+$(document).ready(function(){
+	$(".btn-group .btn").click(function(){
+		var inputValue = $(this).find("input").val();
+		if(inputValue != 'all'){
+			var target = $('table tr[data-status="' + inputValue + '"]');
+			$("table tbody tr").not(target).hide();
+			target.fadeIn();
+		} else {
+			$("table tbody tr").fadeIn();
+		}
+	});
+	// Changing the class of status label to support Bootstrap 4
+    var bs = $.fn.tooltip.Constructor.VERSION;
+    var str = bs.split(".");
+    if(str[0] == 4){
+        $(".label").each(function(){
+        	var classStr = $(this).attr("class");
+            var newClassStr = classStr.replace(/label/g, "badge");
+            $(this).removeAttr("class").addClass(newClassStr);
+        });
+    }
+});
+</script>
 
+<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/js/init/table-datatable-init.js') }}"></script>
 @endsection 
