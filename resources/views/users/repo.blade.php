@@ -1,5 +1,5 @@
 @section('title') 
-Dashboard
+Repositories
 @endsection
 @extends('layouts.main')
 @section('style')

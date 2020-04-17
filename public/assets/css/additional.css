@@ -9,3 +9,44 @@ a.task-list
 {
 color:#313131;
 }
+
+.xp-breadcrumbbar
+{
+padding-top:130px;
+}
+
+.readme-txt h1,
+.readme-txt h2
+{
+font-size:18px;
+}
+
+.readme-txt h2
+{
+font-size:16px;
+color:#313131;
+border-bottom:1px solid #cccccc;
+padding:5px 0 5px 0;
+}
+
+.readme-txt p
+{
+line-height: normal;
+padding:0;
+margin:0 0 10px 0;
+font-size:14px;
+}
+
+.readme-txt blockquote
+{
+line-height: normal;
+padding:5px 10px;
+margin:10px 0;
+font-size:14px;
+background-color:#f9fafc;
+}
+
+.readme-txt input[type="checkbox"]:disabled
+{
+    display:none;
+}

@@ -1,22 +1,40 @@
+@section('title') 
+Booster - Starter
+@endsection
 @extends('layouts.main')
+@section('style')
 
-@section('content')
-
-<h4>Show TASK at hand!</h4>
-
-<div class="row">
-    <div class="col">
-        <div class="jumbotron">
+@endsection 
+@section('rightbar-content')
+<div class="xp-breadcrumbbar text-center">
+</div>
+<!-- Start XP Contentbar -->    
+<div class="xp-contentbar">
+    <!-- Write page content code here -->
+    <!-- Start XP Row -->     
+    <div class="row">
+        <!-- Start XP Col -->
+        <div class="col-lg-7">
+            <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title">module: {{$task->module->name}} | taak: {{$task->name}}</h5>
+            </div>
+            <div class="card-body readme-txt">
             @isset($readme_content)
             <p>{!!$readme_content!!}</p>
             @endisset
-        </div>
-
-    </div>
-    <div class="col">
-        <form action="{{route('tasks.tag', $task)}}" method="post">
+            </div> <!-- end card body -->
+        </div> <!-- end card -->
+    </div><!-- End XP Col -->
+            <!-- Start XP Col -->
+            <div class="col-lg-5">
+            <div class="card">
+            <div class="card-body">
+    <form action="{{route('tasks.tag', $task)}}" method="post">
             @csrf
-            <h4>Tags</h4>
+            <div class="m-b-20">
+            <h6>Tags</h6>
+            </div>
             @foreach($tags as $tag)
                 <div class="custom-control custom-checkbox">
                     @if(Auth::user()->role < 3)
@@ -33,13 +51,17 @@
                 </div>
             @endforeach
             @if(Auth::user()->role < 3)
-            <button type="submit" class="btn btn-success">Tag you're it</button>
+            <button type="submit" class="btn btn-success m-t-20">Tag you're it</button>
             @endif
         </form>
-        
+        </div> <!-- end card body -->
+        </div> <!-- end card -->
+    </div><!-- End XP Col -->
     </div>
+    <!-- End XP Row -->  
 </div>
-
-
+<!-- End XP Contentbar -->
+@endsection
+@section('script')
 
 @endsection
