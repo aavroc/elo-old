@@ -9,6 +9,7 @@ use App\Module;
 use App\GitHub;
 use Carbon\Carbon;
 use App\CSVData;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -37,7 +38,8 @@ class AdminController extends Controller
         )->get();
 
         $requests = UsersRequest::where('status', '!=' ,  5)->where('status', '!=', 6)->where('task_id', '!=', NULL)->with('task')->orderBy('updated_at')->get();
-
+        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('status', '!=' , 6)->with('task')->get();
+                
         $task_requests = $requests->pluck('task');
         $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
         $modules = Module::all();
@@ -46,10 +48,41 @@ class AdminController extends Controller
             'modules' => $modules,
             'requests' => $requests,
             'task_requests' => $task_requests,
-            'counted_tasks' => $counted_tasks
+            'counted_tasks' => $counted_tasks,
+            'taken_requests' => $taken_requests
 
         ];
         return view('dashboards.admin', $data);
+    }
+
+    //connect teacher to request... and update the request to being processed...
+    public function handleRequest(User $teacher, User $student, UsersRequest $user_request){
+        // dd($user_request);
+        $user_request->docent_id = $teacher->id;
+        $user_request->status = 5;
+        
+        $user_request->save();
+
+        return redirect()->route('admin');
+
+    }
+
+    public function request_to_done(Request $request)
+    {
+        // dd($request);
+        if(isset($request->todos)){
+            foreach($request->todos as $todo){
+                UsersRequest::where('id', $todo)->update(
+                    [
+                        'status' => 6
+                    ]
+                );
+            }
+
+        }
+
+        return redirect()->route('admin');
+
     }
 
     //retrieve all modules readme's from github and store in db
@@ -184,26 +217,29 @@ class AdminController extends Controller
         $tasks_level_2 = null;
         $tasks_level_3 = null;
         if ($user->github_nickname != null) {
-            $commits = $github->list_user_commits($module->slug, $user->github_nickname, $user->github_nickname);
+            $commits = $github->list_user_commits($module->slug, $user->github_nickname);
             // $commit_activity = $github->get_last_year_commit_activity($module->name, $user->github_nickname);
 
-            $user_events = $github->get_user_events($user->github_nickname);
-            $levels = $github->get_contents($module->slug, '', $user->github_nickname);
-            $tasks_level_1 = $github->get_contents($module->slug, 'niveau1', $user->github_nickname);
-            $tasks_level_2 = $github->get_contents($module->slug, 'niveau2', $user->github_nickname);
-            $tasks_level_3 = $github->get_contents($module->slug, 'niveau3', $user->github_nickname);
+            // $user_events = $github->get_user_events($user->github_nickname);
+            // $levels = $github->get_contents($module->slug, '', $user->github_nickname);
+            // $tasks_level_1 = $github->get_contents($module->slug, 'niveau1', $user->github_nickname);
+            // $tasks_level_2 = $github->get_contents($module->slug, 'niveau2', $user->github_nickname);
+            // $tasks_level_3 = $github->get_contents($module->slug, 'niveau3', $user->github_nickname);
         }
-        // dd($tasks_level_3);
+
+        // dd( $tasks_level_1 );
+        // dd( $commits );
+
         $data = [
             'user'              => $user,
             'module'            => $module,
             'commits'           => $commits,
             'commit_activity'   => $commit_activity, //nog niet toonbaar op het scherm
-            'user_events'       => $user_events,
-            'levels'            => $levels,
-            'tasks_level_1'     => $tasks_level_1,
-            'tasks_level_2'     => $tasks_level_2,
-            'tasks_level_3'     => $tasks_level_3,
+            // 'user_events'       => $user_events,
+            // 'levels'            => $levels,
+            // 'tasks_level_1'     => $tasks_level_1,
+            // 'tasks_level_2'     => $tasks_level_2,
+            // 'tasks_level_3'     => $tasks_level_3,
         ];
 
         return view('users.repo', $data);
@@ -270,7 +306,6 @@ class AdminController extends Controller
         $contents = null;
         $code = null;
         if ($user->github_nickname != null) {
-            // $commits = $github->list_commits_path($module->name, $user->github_nickname, $request->path);
             $contents = $github->get_contents($module->slug,  $request->path, $user->github_nickname); //get content
             $code = $github->get_contents($module->slug,  $request->path, $user->github_nickname, TRUE); //get raw content
         }
@@ -432,6 +467,8 @@ class AdminController extends Controller
         );
         return $status_text;
     }
+
+    
 
     
 }

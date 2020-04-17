@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
 <h3 class="mt-3">{{$module->name}}</h3>
