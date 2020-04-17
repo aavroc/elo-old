@@ -10,4 +10,9 @@ class Challenge extends Model
     {
         return $this->hasMany('App\Module');
     }
+
+    public function users()
+    {
+         return $this->belongsToMany('App\User', 'users_challenges')->withPivot('status');
+    }
 }

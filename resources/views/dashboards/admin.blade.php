@@ -7,6 +7,27 @@ Dashboard
 <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    /* Pie charts consist of solid slices where you can use this selector to override the default style. */
+.ct-series-a .ct-slice-pie {
+  /* fill of the pie slieces */
+  fill: hsl(48, 100%, 50%) !important;
+
+}
+
+.ct-series-b .ct-slice-pie {
+  /* fill of the pie slieces */
+  fill: hsl(1, 100%, 50%) !important;
+
+}
+
+.ct-series-c .ct-slice-pie {
+  /* fill of the pie slieces */
+  fill: hsl(93, 100%, 50%) !important;
+
+}
+</style>
 @endsection 
 @section('rightbar-content')
 
@@ -232,7 +253,7 @@ Dashboard
                 @foreach($modules as $module)
                     <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified">
                     <h5>{{$module->name}}</h5>
-                    <p>content</p>
+                    
                     {{-- {{dd($data_generated)}} --}}
                 {{-- @foreach($data_generated as $slug => $data)
 
@@ -263,34 +284,57 @@ Dashboard
         </div>
     </div>
     <!-- End XP Col -->
-             <!-- Start XP Col -->
-             <div class="col-lg-6">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Basic Form</h5>
-                    <h6 class="card-subtitle">Here’s a quick example to demonstrate Bootstrap’s form styles. Keep reading for documentation on required classes, form layout, and more.</h6>
-                </div>
-                <div class="card-body">
-                    <form>
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                      </div>
-                      <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                      </div>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+    <!-- Start XP Col -->
+    <div class="col-lg-6">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Basic Form</h5>
+                <h6 class="card-subtitle">Here’s a quick example to demonstrate Bootstrap’s form styles. Keep reading for documentation on required classes, form layout, and more.</h6>
             </div>
-        </div> 
-        <!-- End XP Col -->
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+    <<div class="col-lg-6">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Challenge1</h5>
+                <h6 class="card-subtitle">De stand van zaken</h6>
+            </div>
+            <div class="card-body">
+                <div class="xp-chart-label">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-danger"></i>Nog niet begonnen</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-warning"></i>Begonnen</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-success"></i>Voltooid</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="xp-chartist-simple-pie-chart" class="ct-chart ct-golden-section xp-chartist-simple-pie-chart"></div>
+            </div>
+        </div>
+    </div>
     </div> <!-- end Row -->
 </div><!-- End XP Contentbar -->
 
@@ -318,6 +362,22 @@ $(document).ready(function(){
             $(this).removeAttr("class").addClass(newClassStr);
         });
     }
+
+    
+    /* -----  Chartistjs - Simple Pie Chart  ----- */
+	function xpChartistSimplePie() {
+      var data = {
+        series: [@php echo $results['closed'] @endphp, @php echo $results['open'] @endphp, @php echo $results['done'] @endphp]
+      };
+      console.log(data);
+      var sum = function(a, b) { return a + b };
+      new Chartist.Pie('#xp-chartist-simple-pie-chart', data, {
+        labelInterpolationFnc: function(value) {
+          return Math.round(value / data.series.reduce(sum) * 100) + '%';
+        }
+      });
+	}
+	xpChartistSimplePie();
 });
 </script>
 
@@ -334,4 +394,8 @@ $(document).ready(function(){
 <script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/js/init/table-datatable-init.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/init/chartjs-init.js') }}"></script> --}}
+<script src="{{ asset('assets/plugins/chartist-js/chartist.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/chartist-js/chartist-plugin-tooltip.min.js') }}"></script>
+
 @endsection 

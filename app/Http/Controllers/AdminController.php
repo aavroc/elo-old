@@ -44,16 +44,42 @@ class AdminController extends Controller
         $task_requests = $requests->pluck('task');
         $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
         $modules = Module::all();
+        
+        // dd($results);
         $data = [
             'users' => $users,
             'modules' => $modules,
             'requests' => $requests,
             'task_requests' => $task_requests,
             'counted_tasks' => $counted_tasks,
-            'taken_requests' => $taken_requests
+            'taken_requests' => $taken_requests,
+            'results' => $this->calculateChallengeResults(),
 
         ];
         return view('dashboards.admin', $data);
+    }
+
+    protected function calculateChallengeResults() //calculate the results of challenge1
+    {
+        $challenge = Challenge::find(1);
+        $amountOfClosed = 0;
+        $amountOfOpen = 0;
+        $amountOfDone = 0;
+        
+        foreach($challenge->users as $user){
+            echo $user->pivot->status;
+            if($user->pivot->status == 0){
+                $amountOfClosed++;
+            }
+            elseif($user->pivot->status == 1){
+                $amountOfOpen++;
+            }
+            else{
+                $amountOfDone++;
+            }
+        }
+        $results = ['closed'=> $amountOfClosed,  'open'=> $amountOfOpen,  'done' => $amountOfDone];
+        return $results;
     }
 
     //connect teacher to request... and update the request to being processed...
