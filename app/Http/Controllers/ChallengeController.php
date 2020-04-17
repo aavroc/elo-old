@@ -61,8 +61,21 @@ class ChallengeController extends Controller
     }
 
     public function link_modules(Challenge $challenge, Request $request)
-    {
-        
+    {   
+        $modules = Module::all();
+        foreach($modules as $module){
+
+            $module->challenge()->dissociate();
+            foreach($request->modules as $module_id){
+                
+                if($module->id == $module_id){
+                    $module->challenge()->associate($challenge);
+                }
+                $module->save();
+            }
+        }
+
+        return redirect()->route('challenges.show', $challenge);
     }
 
     /**

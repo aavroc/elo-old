@@ -20,4 +20,9 @@ class Module extends Model
     {
         return $this->belongsToMany('App\User', 'users_modules');
     }
+
+    public function challenge()
+    {
+        return $this->belongsTo('App\Challenge');
+    }
 }

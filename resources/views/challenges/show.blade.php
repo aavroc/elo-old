@@ -26,8 +26,11 @@ Module: {{$challenge->name}}
                                 @csrf
                                 <select class="xp-select2-multi-select form-control" name="modules[]" multiple="multiple">
                                     @foreach($modules as $module)
-                                    <option value="{{$module->id}}">{{$module->name}}</option>
-                                    
+                                        @if($module->challenge_id == $challenge->id)
+                                            <option value="{{$module->id}}" selected>{{$module->name}}</option>
+                                        @else
+                                            <option value="{{$module->id}}">{{$module->name}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 <button type="submit" class="btn btn-info">Koppel Modules</button>

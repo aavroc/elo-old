@@ -15,6 +15,8 @@ class AddChallengeToModules extends Migration
     {
         Schema::table('modules', function (Blueprint $table) {
             $table->unsignedBigInteger('challenge_id')->after('slug')->nullable();
+
+            $table->foreign('challenge_id')->references('id')->on('challenges');
         });
     }
 
