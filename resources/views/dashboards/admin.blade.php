@@ -63,7 +63,7 @@ Dashboard
 </div><!-- End XP Col -->
 </div> <!-- end row -->
 <div class="row">   
-    <div class="col-md-8 col-lg-8 col-xl-8"><!-- Start XP Col --> 
+    <div class="col-md-12 col-lg-12 col-xl-12"><!-- Start XP Col --> 
      <div class="card  m-b-30">
         <div class="card-header bg-white">
                 <div class="row">
@@ -95,11 +95,12 @@ Dashboard
                             <thead>
                                 <tr>
                                     <th>Verzoek</th>
-                                    <th>Van</th>
+                                    <th>Student</th>
                                     <th>Onderwerp</th>
                                     <th>Status</th>
+                                    <th>Docent / Coach</th>
                                     <th>Datum | tijd</th>
-                                    <th>Afhandelen</th>
+                                    <th>Actie</th>
                                 </tr>
                             </thead>                                        
                             <tbody>
@@ -142,24 +143,27 @@ Dashboard
                                 @endswitch
                                 
                                 <td>
-                                <!-- David dit moet nog werkend gemaakt worden: Invoegen kolom type in tabel user_requests -->
                                 @if($request->type == 1)
-                                        <h5><span class="badge badge-danger"> open </span></h5>
+                                        <h6><span class="badge badge-danger"> open </span></h6>
                                     @elseif($request->type == 2)
-                                        <h5><span class="badge badge-warning"> in behandeling </span></h5>
+                                        <h6><span class="badge badge-warning"> in behandeling </span></h6>
                                     @elseif($request->type == 3)
-                                        <h5><span class="badge badge-success"> voltooid </span></h5>
+                                        <h6><span class="badge badge-success"> voltooid </span></h6>
                                     @else
-                                        <h5><span class="badge badge-danger"> open </span></h5>
+                                        <h6><span class="badge badge-danger"> open </span></h6>
                                     @endif
-                                </td>   
+                                </td>
+                                <td>{{$request->docent_id}} / {{$request->coach}}</td>
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
                                     @if($request->type == 1)
-                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id] )}}" class="btn btn-warning btn-sm">Afhandelen</a>
+                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="In behandeling nemen"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
+                                    @endif
+                                    @if($request->type == 2)
+                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Markeren als voltooid"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
                                     @endif
                                 </td>
-                                            
+  
                             </tr>
 
                         @endforeach
@@ -170,37 +174,6 @@ Dashboard
             </div> <!-- end card body -->
         </div><!-- end card -->
     </div><!-- End XP Col -->
-
-     <!-- Start XP Col -->               
-     <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Aangenomen verzoeken door jou</h5>
-                </div>
-                <div class="card-body">
-                    <div class="xp-to-do-list">
-                    <form action="{{route('request_to_done')}}" method="post">
-                        @csrf
-                            <div class="form-group">
-                                <ul id="list-group" class="list-group list-group-flush">
-                                    @foreach($taken_requests as $teacher_request)
-                                    <li class="list-group-item">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input checkbox" id="request_{{$teacher_request->id}}" name="todos[]" value="{{$teacher_request->id}}">
-                                        <label class="custom-control-label f-w-4" for="request_{{$teacher_request->id}}"><span class="text-warning">{{$teacher_request->user->firstname}}</span> - {{$teacher_request->module->name}} > {{$teacher_request->task->level}} > {{$teacher_request->task->name}} > {{$teacher_request->type}}</label>
-                                            <a class="xp-to-do-list-remove"><i class="mdi mdi-close"></i></a>
-                                        </div>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Markeer klaar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div><!-- End XP Col -->
-</div> <!-- end row -->
 <div class="row">          
     <!-- Start XP Col -->               
     <div class="col-lg-4">
