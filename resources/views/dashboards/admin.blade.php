@@ -83,7 +83,7 @@ Dashboard
                                 </label>
                                 <label class="btn btn-success">
                                     <input type="radio" name="status" value="type3"> voltooid
-                                </label>								
+                                </label>						
                             </div> <!-- end btn group -->
                         </div><!-- end col -->
                 </div> <!--end row -->
@@ -91,7 +91,7 @@ Dashboard
 
             <div class="card-body">
             <div class="table-responsive">
-                        <table id="xp-default-datatable" class="display table table-borderless table-hover">
+                        <table id="xp-default-datatable" class="display table table-hover">
                             <thead>
                                 <tr>
                                     <th>Verzoek</th>
@@ -108,36 +108,80 @@ Dashboard
                             @isset($requests)
                             @foreach($requests as $request)
 
+                            <!-- Modal -->
+                            <div class="modal fade" id="modal-request{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-request{{$request->id}}Title" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modal-request{{$request->id}}Title">Verzoek vraag</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{$request->extra}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                </div>
+                                </div>
+                            </div>
+
                             <tr data-status="type{{$request->type}}">
                    
                                 @switch($request->status)
                                 
                                 @case(1)
-                                    <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag </span>: {{$request->extra}}</td>
+                                    <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag : </span>
+                                     <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"></i>
+                                    </button>
+                                    </td>
                                     <td><a href="{{route('users.show', $request->user->id)}}"><u>{{$request->user->firstname}}</u></a></td>                             
                                     <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
                                 @break
 
                                 @case(2)
-                                    <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek </span>: {{$request->extra}}</td>
+                                    <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek :</span>
+                                     <!-- Button trigger modal -->
+                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"></i>
+                                    </button>                                    
+                                    </td>
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
                                 @break
 
                                 @case(3)
-                                    <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek </span>: {{$request->extra}}</td>
+                                    <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek :</span>
+                                     <!-- Button trigger modal -->
+                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"></i>
+                                    </button>                                    
+                                    </td>
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">coachgesprek</a></td>
                                 @break
 
                                 @case(4)
-                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop </span>: {{$request->extra}}</td>
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop : </span>
+                                     <!-- Button trigger modal -->
+                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"></i>
+                                    </button>                                    
+                                    </td>
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">workshop</a></td>                     
                                 @break                                                  
 
                                 @default
-                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop </span>: {{$request->extra}}</td>
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ? : </span>
+                                     <!-- Button trigger modal -->
+                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"></i>
+                                    </button>                                    
+                                    </td>
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">lege aanvraag</a></td>  
                                 @endswitch
@@ -174,6 +218,7 @@ Dashboard
             </div> <!-- end card body -->
         </div><!-- end card -->
     </div><!-- End XP Col -->
+</div> <!-- end row -->
 <div class="row">          
     <!-- Start XP Col -->               
     <div class="col-lg-4">
@@ -205,57 +250,19 @@ Dashboard
             </div>
         </div>
     </div>
-    <!-- End XP Col -->
-    <!-- End XP Col --> 
-    <div class="col-md-12 col-lg-12 col-xl-12">
+        <!-- Start XP Col -->               
+        <div class="col-lg-4">
         <div class="card m-b-30">
             <div class="card-header bg-white">
-                <h5 class="card-title text-black">Modules</h5>
+                <h5 class="card-title text-black"></h5>
             </div>
             <div class="card-body">
-                <ul class="nav nav-tabs nav-justified mb-3" id="defaultTabJustified" role="tablist">
-                    @foreach($modules as $module)
-                    <li class="nav-item">
-                        <a class="nav-link @if ($loop->first) active @endif" id="{{$module->slug}}-tab-justified" data-toggle="tab" href="#{{$module->slug}}-justified" role="tab" aria-controls="{{$module->slug}}" @if ($loop->first) aria-selected="true" @endif>
-                    {{$module->name}}</a>
-                    </li>
-                    @endforeach
-                </ul>
-                
-                <div class="tab-content" id="defaultTabJustifiedContent">
-                @foreach($modules as $module)
-                    <div class="tab-pane fade @if ($loop->first) show active @endif" id="{{$module->slug}}-justified" role="tabpanel" aria-labelledby="{{$module->slug}}-tab-justified">
-                    <h5>{{$module->name}}</h5>
-                    
-                    {{-- {{dd($data_generated)}} --}}
-                {{-- @foreach($data_generated as $slug => $data)
 
-                    @foreach($data as $user_id => $content)
-                        @if(!isset($content['events']->message))
-                        <p>
-                                {{$content['user_data']->firstname}}
-                        @endif
-
-                        @foreach($content['events'] as $events)
-                            @if(property_exists( $events, 'payload'))
-                                @foreach($events->payload->commits as $commit)
-                                    
-                            <a href="users/{{$user_id}}/module/{{$slug}}">{{$commit->message}} </a>
-                            
-                        </p>
-                                @endforeach
-                            @endif
-                            @php break; @endphp
-                        @endforeach
-                        
-                    @endforeach
-                @endforeach --}}
-                    </div>
-            @endforeach
-                </div>
             </div>
         </div>
     </div>
+    <!-- End XP Col -->
+</div> <!--end row -->
     
 </div><!-- End XP Contentbar -->
 
