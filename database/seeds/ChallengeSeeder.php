@@ -14,9 +14,11 @@ class ChallengeSeeder extends Seeder
         $challenges = [
             [
                 'name' => 'challenge1',
+                'slug' => 'challenge1',
             ],
             [
                 'name' => 'challenge2',
+                'slug' => 'challenge2',
             ],
 
         ];

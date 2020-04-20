@@ -66,16 +66,19 @@ class AdminController extends Controller
         $amountOfOpen = 0;
         $amountOfDone = 0;
         
-        foreach($challenge->users as $user){
-            echo $user->pivot->status;
-            if($user->pivot->status == 0){
-                $amountOfClosed++;
-            }
-            elseif($user->pivot->status == 1){
-                $amountOfOpen++;
-            }
-            else{
-                $amountOfDone++;
+        if ($challenge != null){
+
+            foreach($challenge->users as $user){
+                echo $user->pivot->status;
+                if($user->pivot->status == 0){
+                    $amountOfClosed++;
+                }
+                elseif($user->pivot->status == 1){
+                    $amountOfOpen++;
+                }
+                else{
+                    $amountOfDone++;
+                }
             }
         }
         $results = ['closed'=> $amountOfClosed,  'open'=> $amountOfOpen,  'done' => $amountOfDone];
@@ -116,12 +119,16 @@ class AdminController extends Controller
 
     }
 
+    public function challenges()
+    {
+
+    }
     //retrieve all modules readme's from github and store in db
     public function modules()
     {
         $github = new GitHub();
         $modules = Module::all();
-        $readmees = [];
+        
         foreach($modules as $module){
             Module::updateOrInsert(
 
@@ -416,6 +423,7 @@ class AdminController extends Controller
     //retrieve module and task data
     public function retrieve()
     {
+        $this->challenges();
         $this->modules();
         $this->tasks();
         return redirect()->route('admin');

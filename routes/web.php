@@ -48,13 +48,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Challenges
     Route::get('challenges', 'ChallengeController@index')->name('challenges.index');
-    Route::get('challenges/{challenge}', 'ChallengeController@show')->name('challenges.show');
+    Route::get('challenges/{challenge}', 'ChallengeController@show')->name('challenges.show')->middleware('student');
+    Route::get('challenges/{challenge}/edit', 'ChallengeController@edit')->name('challenges.edit')->middleware('teacher');
     Route::post('challenges/{challenge}/link-modules', 'ChallengeController@link_modules')->name('link-modules')->middleware('teacher');
     
     
     //Modules
-    Route::get('modules', 'ModuleController@index')->name('modules.index');
-    Route::get('modules/{module}', 'ModuleController@show')->name('modules.show');
+    Route::get('modules', 'ModuleController@index')->name('modules.index')->middleware('teacher');
+    Route::get('modules/{module}', 'ModuleController@show')->name('modules.show')->middleware('student');
     Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //haal de taken op van github
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');

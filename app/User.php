@@ -62,7 +62,7 @@ class User extends Authenticatable
         return $this->hasMany('App\UsersRequest');
     }
 
-    public function challenge()
+    public function challenges()
     {
          return $this->belongsToMany('App\Challenge', 'users_challenges')->withPivot('status');
     }
