@@ -66,16 +66,19 @@ class AdminController extends Controller
         $amountOfOpen = 0;
         $amountOfDone = 0;
         
-        foreach($challenge->users as $user){
-            echo $user->pivot->status;
-            if($user->pivot->status == 0){
-                $amountOfClosed++;
-            }
-            elseif($user->pivot->status == 1){
-                $amountOfOpen++;
-            }
-            else{
-                $amountOfDone++;
+        if ($challenge != null){
+
+            foreach($challenge->users as $user){
+                echo $user->pivot->status;
+                if($user->pivot->status == 0){
+                    $amountOfClosed++;
+                }
+                elseif($user->pivot->status == 1){
+                    $amountOfOpen++;
+                }
+                else{
+                    $amountOfDone++;
+                }
             }
         }
         $results = ['closed'=> $amountOfClosed,  'open'=> $amountOfOpen,  'done' => $amountOfDone];
