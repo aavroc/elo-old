@@ -86,10 +86,14 @@ class AdminController extends Controller
     }
 
     //connect teacher to request... and update the request to being processed...
-    public function handleRequest(User $teacher, User $student, UsersRequest $user_request){
+    public function handleRequest(User $teacher, User $student, UsersRequest $user_request, UsersRequest $type){
         // dd($user_request);
         $user_request->docent_id = $teacher->id;
-        $user_request->type = 2;
+
+        if($type->id == 1)
+        {$user_request->type = 2;}
+        elseif ($type->id == 2)
+        {$user_request->type = 3;}
         
         $user_request->save();
 
