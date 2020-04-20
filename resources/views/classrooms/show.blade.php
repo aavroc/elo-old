@@ -43,6 +43,49 @@ Klassen
     <!-- End XP Row -->
     @endif
 
+     <!-- Start XP Row -->
+     <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-b-30">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-black">{{$classroom->name}} - Module Overzicht</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <td>student</td>
+                                @foreach($modules as $module)
+                                <td>{{$module->name}}</td>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $status = [ 0 => 'gesloten', 1 => 'bezig', 3 => 'voldaan']; @endphp
+                            @foreach ($users as $user)
+                            <tr>
+                                <td>
+                                <a href="{{route('users.show',$user->id)}}">{{$user->firstname}} {{$user->lastname}}</a>
+                                </td>
+                                @foreach($modules as $module)
+                                <td>
+                                    @if(is_object($module->users()->where('user_id', $user->id)->first()))
+                                    {{$status[$module->users()->where('user_id', $user->id)->first()->pivot->status] }}
+                                    @endif
+                                </td>
+                                @endforeach
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End XP Col -->
+    </div>
+
     <!-- Start XP Row -->
     <div class="row">
         <div class="col-lg-12">

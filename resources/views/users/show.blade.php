@@ -198,6 +198,7 @@ Gebruiker
                             </tr>
                         </thead>
                         <tbody>
+                        @isset($user->challenge)
                         @foreach ($user->challenge as $challenge)
                             <tr>
                                 <td>{{$challenge->name}}</td>
@@ -222,6 +223,7 @@ Gebruiker
                                 @endif
                             </tr>
                         @endforeach
+                        @endisset
                             </tbody>
                         </table>
                     </div><!-- End TABLE RESPONSIVE -->
