@@ -28,6 +28,7 @@ Module: {{$module->name}}
                             <tr>
                                 <th>Voornaam</th>
                                 <th>Achternaam</th>
+                                <th>Klas</th>
                                 <th>Status</th>
                                 <th>Datum/Tijd huidige status</th>
                             </tr>
@@ -41,6 +42,9 @@ Module: {{$module->name}}
                                 </td>
                                 <td>
                                     <a href="{{route('users.show',$user->id)}}">{{$user->lastname}}</a>
+                                </td>
+                                <td>
+                                    <a href="{{route('classrooms.show',$user->classroom)}}">{{$user->classroom}}</a>
                                 </td>
                                 @if(is_object($module->users()->where('user_id', $user->id)->first()))
                                 <td>
