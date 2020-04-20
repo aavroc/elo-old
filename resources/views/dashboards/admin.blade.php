@@ -262,8 +262,58 @@ Dashboard
         </div>
     </div>
     <!-- End XP Col -->
-</div> <!--end row -->
-    
+<!-- Start XP Col -->
+<div class="col-lg-6">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Basic Form</h5>
+                <h6 class="card-subtitle">Here’s a quick example to demonstrate Bootstrap’s form styles. Keep reading for documentation on required classes, form layout, and more.</h6>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+    <div class="col-lg-6">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black">Challenge1</h5>
+                <h6 class="card-subtitle">De stand van zaken</h6>
+            </div>
+            <div class="card-body">
+                <div class="xp-chart-label">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-danger"></i>Nog niet begonnen</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-warning"></i>Begonnen</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <p><i class="mdi mdi-circle-outline text-success"></i>Voltooid</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="xp-chartist-simple-pie-chart" class="ct-chart ct-golden-section xp-chartist-simple-pie-chart"></div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- end Row -->
 </div><!-- End XP Contentbar -->
 
 @endsection
@@ -291,6 +341,22 @@ $(document).ready(function(){
         });
     }
 
+});
+
+/* -----  Chartistjs - Simple Pie Chart  ----- */
+	function xpChartistSimplePie() {
+      var data = {
+        series: [@php echo $results['closed'] @endphp, @php echo $results['open'] @endphp, @php echo $results['done'] @endphp]
+      };
+      console.log(data);
+      var sum = function(a, b) { return a + b };
+      new Chartist.Pie('#xp-chartist-simple-pie-chart', data, {
+        labelInterpolationFnc: function(value) {
+          return Math.round(value / data.series.reduce(sum) * 100) + '%';
+        }
+      });
+	}
+	xpChartistSimplePie();
 });
 </script>
 
