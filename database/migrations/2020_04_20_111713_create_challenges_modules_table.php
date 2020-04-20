@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddChallengeToModules extends Migration
+class CreateChallengesModulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class AddChallengeToModules extends Migration
      */
     public function up()
     {
-        Schema::table('modules', function (Blueprint $table) {
-            $table->unsignedBigInteger('challenge_id')->after('slug')->nullable();
-
+        Schema::create('challenges_modules', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('challenge_id');
+            $table->unsignedBigInteger('module_id');
+            $table->timestamps();
+            
             $table->foreign('challenge_id')->references('id')->on('challenges');
+            $table->foreign('module_id')->references('id')->on('modules');
         });
     }
 
@@ -27,11 +31,6 @@ class AddChallengeToModules extends Migration
      */
     public function down()
     {
-        Schema::table('modules', function (Blueprint $table) {
-            $table->dropForeign('modules_challenge_id_foreign');
-            $table->dropColumn('challenge_id');
-      
-
-        });
+        Schema::dropIfExists('challenges_modules');
     }
 }

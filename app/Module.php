@@ -18,11 +18,11 @@ class Module extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'users_modules');
+        return $this->belongsToMany('App\User', 'users_modules')->withPivot('status');
     }
 
     public function challenge()
     {
-        return $this->belongsTo('App\Challenge');
+        return $this->belongsToMany('App\Challenge', 'challenges_modules');
     }
 }

@@ -18,7 +18,8 @@ class ChallengeController extends Controller
         $challenges = Challenge::all();
 
         $data  =[
-            'challenges' => $challenges
+            'challenges' => $challenges,
+            // 'user' => Auth::user(),
         ];
         return view('challenges.index', $data);
     }
@@ -62,20 +63,9 @@ class ChallengeController extends Controller
 
     public function link_modules(Challenge $challenge, Request $request)
     {   
-        $modules = Module::all();
-        foreach($modules as $module){
+        $challenge->modules()->sync($request->modules);
 
-            $module->challenge()->dissociate();
-            foreach($request->modules as $module_id){
-                
-                if($module->id == $module_id){
-                    $module->challenge()->associate($challenge);
-                }
-                $module->save();
-            }
-        }
-
-        return redirect()->route('challenges.show', $challenge);
+        return redirect()->route('challenges.index', $challenge);
     }
 
     /**
@@ -86,7 +76,11 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        //
+        $data = [
+            'challenge' => $challenge,
+            'modules'   => Module::all()
+        ];
+        return view('challenges.edit', $data);
     }
 
     /**

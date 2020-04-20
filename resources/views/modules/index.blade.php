@@ -22,7 +22,7 @@ Gebruiker
         <div class="col-lg-4">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
-                <h4>Modules</h4>
+                    <h4>Modules</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -40,13 +40,12 @@ Gebruiker
                                 <td><a href="{{route('modules.show', Str::slug($module->name))}}"><i class="fa fa-eye"></i> toon</a></td>
                             </tr>
                             @endforeach
-                            </tbody>
-                        </table>
-                    </div><!-- End TABLE RESPONSIVE -->
+                        </tbody>
+                    </table><!-- End TABLE RESPONSIVE -->
                 </div> <!-- End card body -->
-                </div> <!-- end card -->
-            </div><!-- End XP Col -->
-    <!-- End XP Row -->
+            </div> <!-- end card -->
+        </div><!-- End XP Col -->
+<!-- End XP Row -->
     </div>
 </div>
 <!-- End XP Contentbar -->

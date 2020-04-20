@@ -19,23 +19,14 @@ Module: {{$challenge->name}}
                     <div class="card m-b-30">
                         <div class="card-header bg-white">
                             <h5 class="card-title text-black">{{$challenge->name}}</h5>
-                            <h6 class="card-subtitle">Koppel modules aan deze challenge</h6>
+                            <h6 class="card-subtitle"></h6>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('link-modules', $challenge)}}" method="post">
-                                @csrf
-                                <select class="xp-select2-multi-select form-control" name="modules[]" multiple="multiple">
-                                    @foreach($modules as $module)
-                                        @if($module->challenge_id == $challenge->id)
-                                            <option value="{{$module->id}}" selected>{{$module->name}}</option>
-                                        @else
-                                            <option value="{{$module->id}}">{{$module->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                <button type="submit" class="btn btn-info">Koppel Modules</button>
-                            </form>
-                                
+                            <ul class="list-group">
+                                @foreach($challenge->modules as $module)
+                                    <a href="{{route('modules.show', $module->slug)}}" class="list-group-item">{{$module->name}}</a>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>  
