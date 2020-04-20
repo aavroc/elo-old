@@ -19,7 +19,7 @@ Gebruiker
     <!-- Start XP Row -->     
     <div class="row">
         <!-- Start XP Col -->
-        <div class="col-lg-4">
+        <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h4>Modules</h4>
@@ -37,7 +37,14 @@ Gebruiker
                         @foreach($modules as $module)
                             <tr>
                                 <td>{{$module->name}}</td>
-                                <td><a href="{{route('modules.show', Str::slug($module->name))}}"><i class="fa fa-eye"></i> toon</a></td>
+                                <td>
+                                    @if(Auth::user()->role ==3 )
+                                    <a href="{{route('modules.show', Str::slug($module->name))}}"><i class="fa fa-eye"></i> Toon</a>
+                                    @else
+                                    <a href="{{route('modules.show', Str::slug($module->name))}}" class="btn btn-info m-2"><i class="fa fa-eye"></i> Studentenweergave</a>
+                                    <a href="{{route('modules.show_teacher', Str::slug($module->name))}}" class="btn btn-warning m-2" ><i class="fa fa-eye"></i> Docentenweergave</a>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

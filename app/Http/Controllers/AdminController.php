@@ -503,7 +503,8 @@ class AdminController extends Controller
 
         DB::table('users_modules')->where('user_id', $request->student)->where('module_id', $module)->update(
             [
-                'status' => $status
+                'status' => $status,
+                'updated_at' => DB::raw('NOW()')
             ]
         );
         return $status_text;

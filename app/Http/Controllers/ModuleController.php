@@ -71,65 +71,38 @@ class ModuleController extends Controller
      */
     public function show( Module $module)
     {
-
-        $this->check_repo($module);
-
+        if(Auth::user()->role == 3){
+            $this->check_repo($module); //if the user is a student, fork the repo to the students github account
+        }
         $readme_content = base64_decode($module->readme);
 
         $data['readme_content'] = $this->converter->convertToHtml($readme_content);
         $data['module'] = $module;
-
-        return view('modules.show', $data);
+        if(Auth::user()->role <= 2){
+            return view('modules.show', $data);
+        }
     }
 
+    public function show_teacher( Module $module)
+    {
+        $data['module'] = $module;
+        if(Auth::user()->role <= 2){
+            return view('modules.show-teacher', $data);
+        }
+    }
+
+    //if the user is a student, fork the repo to the students github account
     public function check_repo(Module $module)
     {
         $github = new GitHub();
-        if(Auth::user()->role == 3){
-
+        
             $repo = $github->repo($module->slug, Auth::user()->github_nickname);
-            
             if(isset($repo->message)){
                 $github->fork($module->slug);
             }
-        }
     }
 
     
 
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Module $module)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Module $module)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Module $module)
-    {
-        //
-    }
 }

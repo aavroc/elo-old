@@ -18,7 +18,7 @@ class Module extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'users_modules')->withPivot('status');
+        return $this->belongsToMany('App\User', 'users_modules')->withPivot('status')->withTimestamps();
     }
 
     public function challenge()

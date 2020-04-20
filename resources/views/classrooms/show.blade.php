@@ -58,7 +58,7 @@ Klassen
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                                 @foreach($modules as $module)
-                                <th><a href="">Module <i class="ti-eye"></i></a></th>
+                                <th><a href="{{route('modules.show_teacher',$module->slug)}}">Module <i class="ti-eye"></i></a></th>
                                 @endforeach
                             </tr>
                             <tr>

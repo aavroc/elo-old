@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index')->middleware('teacher');
+    Route::get('modules/{module}/teacher', 'ModuleController@show_teacher')->name('modules.show_teacher')->middleware('teacher');
     Route::get('modules/{module}', 'ModuleController@show')->name('modules.show')->middleware('student');
     Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //haal de taken op van github
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
