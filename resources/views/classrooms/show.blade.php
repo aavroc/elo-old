@@ -45,33 +45,54 @@ Klassen
 
      <!-- Start XP Row -->
      <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-8">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">{{$classroom->name}} - Module Overzicht</h5>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive table-sm">
                         <table id="xp-default-datatable" class="display table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <td>student</td>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                                 @foreach($modules as $module)
-                                <td>{{$module->name}}</td>
+                                <th><a href="">Module <i class="ti-eye"></i></a></th>
                                 @endforeach
                             </tr>
+                            <tr>
+                                <th>Voornaam</th>
+                                <th>Achternaam</th>
+                                @foreach($modules as $module)
+                                <th>{{$module->name}}</th>
+                                @endforeach
+                            </tr>
+                            
                         </thead>
                         <tbody>
-                            @php $status = [ 0 => 'gesloten', 1 => 'bezig', 3 => 'voldaan']; @endphp
+                            @php $status_words = [ 0 => 'gesloten', 1 => 'bezig', 3 => 'voldaan']; @endphp
                             @foreach ($users as $user)
                             <tr>
                                 <td>
-                                <a href="{{route('users.show',$user->id)}}">{{$user->firstname}} {{$user->lastname}}</a>
+                                <a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a>
+                                </td>
+                                <td>
+                                    <a href="{{route('users.show',$user->id)}}">{{$user->lastname}}</a>
                                 </td>
                                 @foreach($modules as $module)
                                 <td>
                                     @if(is_object($module->users()->where('user_id', $user->id)->first()))
-                                    {{$status[$module->users()->where('user_id', $user->id)->first()->pivot->status] }}
+                                        @php $status = $module->users()->where('user_id', $user->id)->first()->pivot->status; @endphp
+                                        @if( $status == 0 )
+                                            <span class="text-danger">{{$status_words[$status] }} <i class="mdi mdi-lock"></i></span>
+                                        @elseif($status == 1)
+                                            <span class="text-warning">{{$status_words[$status] }} <i class="mdi mdi-lock-open"></i></span>
+                                        @else
+                                            <span class="text-success">{{$status_words[$status] }} <i class="mdi mdi-school"></i></span>
+                                           
+                                        @endif
+                                        
                                     @endif
                                 </td>
                                 @endforeach
@@ -84,11 +105,7 @@ Klassen
             </div>
         </div>
         <!-- End XP Col -->
-    </div>
-
-    <!-- Start XP Row -->
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-4">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">{{$classroom->name}}</h5>
@@ -100,7 +117,6 @@ Klassen
                             <tr>
                                 <th>Voornaam</th>
                                 <th>Achternaam</th>
-                                <th>Ingelogd</th>
                                 <th>Laatste inlog</th>
                                 <th>Toon</th>
                                 @if(Auth::user()->role == 1)
@@ -117,17 +133,7 @@ Klassen
                                 <td>
                                     {{$user->lastname}}
                                 </td>
-                                <td>
-                                    @if($user->status_id != 2)
-                                    <span class="text-danger" role="alert">
-                                        Niet ingelogd
-                                    </span>
-                                    @else
-                                    <span class="text-success" role="alert">
-                                        Ingelogd
-                                    </span>
-                                    @endif
-                                </td>
+                                
                                 <td>
                                     @if(isset($user->session))
                                     <span class="text-success" role="alert">
