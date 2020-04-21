@@ -31,6 +31,9 @@ Module: {{$module->name}}
                                 <th>Klas</th>
                                 <th>Status</th>
                                 <th>Datum/Tijd huidige status</th>
+                                @foreach($module->tasks as $taks)
+
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
@@ -64,6 +67,8 @@ Module: {{$module->name}}
                                     {{$datetime}}
                                 </td>
                                 @endif
+                               
+                                
                             </tr>
                             @endforeach
                             </tbody>

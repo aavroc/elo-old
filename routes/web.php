@@ -55,24 +55,26 @@ Route::group(['middleware' => ['auth']], function () {
     
     //Modules
     Route::get('modules', 'ModuleController@index')->name('modules.index')->middleware('teacher');
-    Route::get('modules/{module}/teacher', 'ModuleController@show_teacher')->name('modules.show_teacher')->middleware('teacher');
     Route::get('modules/{module}', 'ModuleController@show')->name('modules.show')->middleware('student');
-    Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //haal de taken op van github
+    Route::get('modules/{module}/teacher', 'ModuleController@show_teacher')->name('modules.show_teacher')->middleware('teacher');
+    Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');
 
     //Tasks
-    Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); //haal de taken op van github
-    Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); //haal de taken op van github
-    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); //haal de taken op van github
+    Route::get('tasks', 'TaskController@index')->name('tasks.index')->middleware('teacher'); // Overzicht van alle taken
+    Route::get('tasks/{task}', 'TaskController@show')->name('tasks.show')->middleware('student'); // gebruiker ziet de inhoud van een taak en haar tags
+    Route::post('tasks/{task}/tags', 'TaskController@tag')->name('tasks.tag')->middleware('teacher'); // Geef tags op bij individuele taken
+    
+    Route::post('tasks/{task}/mark', 'TaskController@mark')->name('tasks.mark')->middleware('student'); // Student kan hier taken markeren als voldaan
     
     //Tags
-    Route::get('tags', 'TagController@index')->name('tags.index')->middleware('teacher'); //haal de taken op van github
-    Route::get('tags/create', 'TagController@create')->name('tags.create')->middleware('teacher'); //haal de taken op van github
-    Route::post('tags', 'TagController@store')->name('tags.store')->middleware('teacher'); //haal de taken op van github
-    Route::get('tags/{tag}', 'TagController@edit')->name('tags.edit')->middleware('teacher'); //haal de taken op van github
-    Route::put('tags/{tag}/update', 'TagController@update')->name('tags.update')->middleware('teacher'); //haal de taken op van github
-    Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); //haal de taken op van github
+    Route::get('tags', 'TagController@index')->name('tags.index')->middleware('teacher'); // Overzicht van alle tags
+    Route::get('tags/create', 'TagController@create')->name('tags.create')->middleware('teacher'); // Maak een tag aan
+    Route::post('tags', 'TagController@store')->name('tags.store')->middleware('teacher'); // Sla de tag op
+    Route::get('tags/{tag}', 'TagController@edit')->name('tags.edit')->middleware('teacher'); // Wijzig een tagnaam
+    Route::put('tags/{tag}/update', 'TagController@update')->name('tags.update')->middleware('teacher'); // Update een tag
+    Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); // Verwijder een tag
      
     
 

@@ -67,7 +67,7 @@ Booster - Starter
                     <h6 class="card-subtitle">Ben je klaar? <code>verander de status hieronder</code></h6>
                 </div>
                 <div class="card-body">
-                <form action="{{route('tasks.mark', ['task'=> $task, 'student' => Auth::user()])}}" method="post">
+                <form action="{{route('tasks.mark', ['task'=> $task])}}" method="post">
                         @csrf
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="radio" name="taak_status" id="busy" value="0" checked>

@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Task;
 use App\Tag;
 use App\Module;
+use App\User;
 use App\Github;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class TaskController extends Controller
@@ -101,37 +102,16 @@ class TaskController extends Controller
         return strpos($haystack, $needle) !== false;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
+    //student kan taak markeren als voldaan
+    public function mark(Task $task, Request $request)
     {
-        //
-    }
+        $user = Auth::user();
+        if($request->taak_status == 1){ // 1 = taak voldaan 
+            $user->tasks()->sync([$task->id => ['evaluation' => 1]]); //voldaan
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Task $task)
-    {
-        //
+        }elseif($request->taak_status == 0){
+            $user->tasks()->sync([$task->id => ['evaluation' => 0]]); //voldaan
+        }
+        return redirect()->route('tasks.show', $task);
     }
 }
