@@ -39,20 +39,22 @@ Module: {{$module->name}}
                             <tr>
                                 <th>Taak</th>
                                 <th>Niveau</th>
+                                <th>Check or not to check</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {{-- {{dd($module->tasks->sortBy('name')->sortBy('level'))  }} --}}
-                        @php $level = null ; @endphp
-                        @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
+                            @php $level = null ; @endphp
+                            @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
 
-                            <tr class="@if($content->level == 'niveau1') bg-info @elseif($content->level == 'niveau2') bg-success @else bg-primary @endif">
-                                <td><a href="{{route('tasks.show', $content)}}" class="task-list"><i class="fa fa-eye"></i> {{$content->name}}</a></td>
-                                <td>{{$content->level}}</td>
-                            </tr>
+                                <tr class="@if($content->level == 'niveau1') bg-info @elseif($content->level == 'niveau2') bg-success @else bg-primary @endif">
+                                    <td><a href="{{route('tasks.show', $content)}}" class="task-list"><i class="fa fa-eye"></i> {{$content->name}}</a></td>
+                                    <td>{{$content->level}}</td>
+                                    <td></td>
+                                </tr>
 
-                        @php $level = $content->level; @endphp
-                        @endforeach
+                            @php $level = $content->level; @endphp
+                            
+                            @endforeach
                             </tbody>
                         </table>
                     </div><!-- End TABLE RESPONSIVE -->
