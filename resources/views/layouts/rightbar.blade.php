@@ -70,14 +70,14 @@
                                     <div class="dropdown xp-notification mr-3">
                                         <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="mdi mdi-bell-ring font-18 v-a-m"></i>
-                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('status', '<', 5)->count()}}</span>
+                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('type', '=', 1)->count()}}</span>
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-notification">
                                             <ul class="list-unstyled">
                                             <li class="media">
                                                 <div class="media-body">
-                                                <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('status', '<', 5)->count()}} Nieuwe verzoeken</h5>
+                                                <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('type', '=', 1)->count()}} Nieuwe verzoeken</h5>
                                                 </div>
                                             </li>
                                                 @php 
@@ -88,7 +88,7 @@
                                                     4 => 'workshop',
                                                 ];
                                                 @endphp
-                                            @foreach( \App\UsersRequest::where('status', '<', 5)->limit(3)->get()  as $request)
+                                            @foreach( \App\UsersRequest::where('type', '=', 1)->limit(3)->get()  as $request)
                                             <li class="media xp-noti">                                                
                                                 <div class="mr-3 xp-noti-icon"><i class="mdi mdi-account-plus"></i></div>
                                                 <div class="media-body">
