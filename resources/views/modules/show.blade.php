@@ -18,7 +18,7 @@ Module: {{$module->name}}
         <!-- Start XP Col -->
         <div class="col-md-12 col-lg-12 col-xl-6">
             <div class="card m-b-30">
-                <div class="card-body module-readme">
+                <div class="card-body module-readme readme-txt">
                 @isset($readme_content)
                     <p>{!!$readme_content!!}</p>
                 @endisset
