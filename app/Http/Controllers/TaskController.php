@@ -106,11 +106,12 @@ class TaskController extends Controller
     public function mark(Task $task, Request $request)
     {
         $user = Auth::user();
+        $user->tasks()->detach($task->id); //voldaan
         if($request->taak_status == 1){ // 1 = taak voldaan 
-            $user->tasks()->sync([$task->id => ['evaluation' => 1]]); //voldaan
+            $user->tasks()->attach([$task->id => ['evaluation' => 1]]); //voldaan
 
         }elseif($request->taak_status == 0){
-            $user->tasks()->sync([$task->id => ['evaluation' => 0]]); //voldaan
+            $user->tasks()->attach([$task->id => ['evaluation' => 0]]); //voldaan
         }
         return redirect()->route('tasks.show', $task);
     }

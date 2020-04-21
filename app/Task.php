@@ -15,4 +15,9 @@ class Task extends Model
     {
         return $this->belongsToMany('App\Tag', 'tasks_tags');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Task', 'users_tasks')->withTimestamps()->withPivot('evaluation');
+    }
 }

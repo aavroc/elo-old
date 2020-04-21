@@ -71,14 +71,19 @@ class ModuleController extends Controller
      */
     public function show( Module $module)
     {
-        echo 'sada';
         if(Auth::user()->role == 3){
             $this->check_repo($module); //if the user is a student, fork the repo to the students github account
         }
+        
         $readme_content = base64_decode($module->readme);
 
-        $data['readme_content'] = $this->converter->convertToHtml($readme_content);
-        $data['module'] = $module;
+        $data = [
+            'readme_content' => $this->converter->convertToHtml($readme_content),
+            'module' => $module,
+            'user' => Auth::user(),
+
+        ];
+        
         return view('modules.show', $data);
     }
 
