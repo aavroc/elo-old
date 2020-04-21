@@ -38,7 +38,7 @@ class AdminController extends Controller
             ]
         )->get();
 
-        $requests = UsersRequest::where('type', '<=' ,  3)->with('task')->with('user')->orderBy('updated_at')->get();
+        $requests = UsersRequest::where('type', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
         $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('type', '=' , 2)->where('status', '!=' , 6)->with('task')->get();
         
         $usernameByID = User::pluck('lastname', 'id');
