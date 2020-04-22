@@ -33,53 +33,69 @@
                 <div class="col-12 col-md-5 col-lg-10 order-1 order-md-2">
                     <div class="xp-profilebar text-right">
                         <ul class="list-inline mb-0">
-                            {{-- <li class="list-inline-item">
-                                <div class="dropdown xp-message mr-3">
-                                    <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="mdi mdi-message font-18 v-a-m"></i>
-                                        <span class="badge badge-pill badge-success xp-badge-up">1</span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-message">
-                                        <ul class="list-unstyled">
-                                          <li class="media">
-                                            <div class="media-body">
-                                              <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">1 New Messages</h5>
-                                            </div>
-                                          </li>  
-                                          <li class="media xp-msg">
-                                            <img class="mr-3 align-self-center rounded-circle" src="assets/images/topbar/user-message-1.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <a href="#">  
-                                                    <h5 class="mt-0 mb-1 font-14">Ariel Blue<span class="font-12 f-w-4 float-right">3 min ago</span></h5>
-                                                    <p class="mb-0 font-13">Thank you for attending...<span class="badge badge-pill badge-success float-right">2</span></p>
-                                                </a>
-                                            </div>
-                                          </li>
-                                          <li class="media">
-                                            <div class="media-body">
-                                              <h5 class="mt-0 mb-0 my-3 text-black text-center font-15"><a href="#" class="text-primary">View All</a></h5>
-                                            </div>
-                                          </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li> --}}
                             @auth
+                                @if(Auth::user()->role < 2)
+                                @php 
+                                $status = [
+                                    1 => 'hulpvraag',
+                                    2 => 'modulegesprek',
+                                    3 => 'coachgesprek',
+                                    4 => 'workshop',
+                                ];
+                                @endphp
+                                    <li class="list-inline-item">
+                                        <div class="dropdown xp-message mr-3">
+                                            <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="mdi mdi-format-list-bulleted font-18 v-a-m"></i>
+                                                @if(\App\UsersRequest::where('status', '=', 2)->where('docent_id', Auth::user()->id)->count() > 0)
+                                                <span class="badge badge-pill badge-success xp-badge-up">{{\App\UsersRequest::where('status', '=', 2)->where('docent_id', Auth::user()->id)->count()}}</span>
+                                                @endif
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-message">
+                                                <ul class="list-unstyled">
+                                                    <li class="media">
+                                                        <div class="media-body">
+                                                            <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15"><span class="badge badge-pill badge-success">1</span> verzoeken in je todo lijst</h5>
+                                                        </div>
+                                                    </li>  
+                                                  
+                                                    @foreach( \App\UsersRequest::where('status', '=', 1)->limit(3)->get()  as $request)
+                                                    <li class="media xp-msg">                                                
+                                                        <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
+                                                        <div class="media-body">
+                                                            <a href="#">  
+                                                                <h5 class="mt-0 mb-1 font-14">{{$status[$request->type]}}</h5>
+                                                                <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    @endforeach
+                                                    <li class="media">
+                                                        <div class="media-body">
+                                                        <h5 class="mt-0 mb-0 my-3 text-black text-center font-15"><a href="{{route('admin')}}" class="text-primary">View All</a></h5>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endif
+                         
                                 @if(Auth::user()->role < 2)
                                 <li class="list-inline-item">
                                     <div class="dropdown xp-notification mr-3">
                                         <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="mdi mdi-bell-ring font-18 v-a-m"></i>
-                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('type', '=', 1)->count()}}</span>
+                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('status', '=', 1)->count()}}</span>
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-notification">
                                             <ul class="list-unstyled">
-                                            <li class="media">
-                                                <div class="media-body">
-                                                <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('type', '=', 1)->count()}} Nieuwe verzoeken</h5>
-                                                </div>
-                                            </li>
+                                                <li class="media">
+                                                    <div class="media-body">
+                                                    <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('status', '=', 1)->count()}} Nieuwe verzoeken</h5>
+                                                    </div>
+                                                </li>
                                                 @php 
                                                 $status = [
                                                     1 => 'hulpvraag',
@@ -88,17 +104,17 @@
                                                     4 => 'workshop',
                                                 ];
                                                 @endphp
-                                            @foreach( \App\UsersRequest::where('type', '=', 1)->limit(3)->get()  as $request)
-                                            <li class="media xp-noti">                                                
-                                                <div class="mr-3 xp-noti-icon"><i class="mdi mdi-account-plus"></i></div>
-                                                <div class="media-body">
-                                                    <a href="#">  
-                                                        <h5 class="mt-0 mb-1 font-14">{{$status[$request->status]}}</h5>
-                                                        <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                            @endforeach
+                                                @foreach( \App\UsersRequest::where('status', '=', 1)->limit(3)->get()  as $request)
+                                                <li class="media xp-noti">                                                
+                                                    <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
+                                                    <div class="media-body">
+                                                        <a href="#">  
+                                                            <h5 class="mt-0 mb-1 font-14">{{$status[$request->type]}}</h5>
+                                                            <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                @endforeach
                                             <li class="media">
                                                 <div class="media-body">
                                                 <h5 class="mt-0 mb-0 my-3 text-black text-center font-15"><a href="{{route('admin')}}" class="text-primary">View All</a></h5>
