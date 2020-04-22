@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //DASHBOARDS
     Route::post('/student', 'StudentController@form_request')->name('student.request')->middleware('student'); 
-    Route::get('/take_request/{teacher}-{student}-{user_request}-{type}', 'AdminController@handleRequest')->name('handleRequest')->middleware('teacher'); 
+    Route::get('/take_request/{user_request}', 'AdminController@handleRequest')->name('handleRequest')->middleware('teacher'); 
     Route::post('/request_to_done', 'AdminController@request_to_done')->name('request_to_done')->middleware('teacher'); 
 
     Route::get('/student', 'StudentController@dashboard')->name('student')->middleware('student'); //1

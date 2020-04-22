@@ -129,14 +129,8 @@ Dashboard
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group row coach mt-3">
-                                    <label for="task_choice" class="col-sm-5 col-form-label">Coachgesprek onderwerp</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" name="coach_request" id="coach_request" class="form-control">
-                                    </div>
-                                </div>
                                 <div class="form-group row extra mt-3">
-                                    <label for="task_choice" class="col-sm-5 col-form-label">Geef nog eventueel extra informatie</label>
+                                    <label for="task_choice" class="col-sm-5 col-form-label">Geef extra informatie</label>
                                     <div class="col-sm-7">
                                         <textarea name="aanvullend" id="aanvullend" cols="10" rows="5" class="form-control"></textarea>
                                     </div>
@@ -182,7 +176,7 @@ Dashboard
                                             <tr class="email-unread">
                                                 
                                                     
-                                                @switch($request->status)
+                                                @switch($request->type)
                                                     @case(1)
                                                     <td><i class="mdi mdi-help font-18"></i></td>
                                                     <td><a href="#">@isset($request->module->name)<span class="text-success">{{$request->module->name}}</span> @endisset > @isset($request->task)<span class="text-success">{{$request->task->level}}</span> @endisset > @isset($request->task->name)<span class="text-success">{{$request->task->name}}</span> @endisset</a></td> 

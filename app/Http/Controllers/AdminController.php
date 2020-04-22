@@ -38,14 +38,18 @@ class AdminController extends Controller
             ]
         )->get();
 
-        $requests = UsersRequest::where('type', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
-        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('type', '=' , 2)->where('status', '!=' , 6)->with('task')->get();
+        $requests = UsersRequest::where('status', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
+        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('type', '=' , 1)->where(
+                [
+                    ['status', '!=' , 4],
+                ]
+                )->with('task')->get();
         
         $usernameByID = User::pluck('lastname', 'id');
         $task_requests = $requests->pluck('task');
         $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
         $modules = Module::all();
-        
+                // dd($usernameByID );
         // dd($results);
         $data = [
             'users' => $users,
@@ -88,17 +92,19 @@ class AdminController extends Controller
     }
 
     //connect teacher to request... and update the request to being processed...
-    public function handleRequest(User $teacher, User $student, UsersRequest $user_request, UsersRequest $type){
-        // dd($user_request);
-        $user_request->docent_id = $teacher->id;
-
-        if($type->id == 1)
-        {$user_request->type = 2;}
-        elseif ($type->id == 2)
-        {$user_request->type = 3;}
+    public function handleRequest(UsersRequest $user_request){
+        
+        $user_request->docent_id = Auth::user()->id;
+        
+        if($user_request->status == 1){
+            $user_request->status = 2;
+        }elseif($user_request->status == 2){
+            $user_request->status = 3;
+        }
+        
         
         $user_request->save();
-
+        
         return redirect()->route('admin');
 
     }
@@ -110,7 +116,7 @@ class AdminController extends Controller
             foreach($request->todos as $todo){
                 UsersRequest::where('id', $todo)->update(
                     [
-                        'type' => 3
+                        'status' => 3
                     ]
                 );
             }

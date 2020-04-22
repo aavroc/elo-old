@@ -177,7 +177,7 @@ class StudentController extends Controller
                                 'user_id' => Auth::user()->id,
                                 'task_id' => $task,
                                 'module_id' => $module,
-                                'status'    => 1, //hulpvraag
+                                'type'    => 1, //hulpvraag
                             ],
                             [  
                                 'extra'     => $request->aanvullend,
@@ -198,7 +198,7 @@ class StudentController extends Controller
                                 'module_id' => $request->module_choice,
                             ],
                             [  
-                                'status'    => 2, //module gesprek
+                                'type'    => 2, //module gesprek
                                 'extra'     => $request->aanvullend,
                                 "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                                 "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
@@ -211,10 +211,9 @@ class StudentController extends Controller
                 UsersRequest::updateOrInsert(
                     [
                         'user_id' => Auth::user()->id,
-                        'status'    => 3, //coachgesprek
+                        'type'    => 3, //coachgesprek
                     ],
                     [  
-                        'coach' => $request->coach_request,
                         'extra'     => $request->aanvullend,
                         "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                         "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
@@ -227,7 +226,7 @@ class StudentController extends Controller
                     [
                         'user_id' => Auth::user()->id,
                     
-                        'status'    => 4, //coachgesprek
+                        'type'    => 4, //coachgesprek
                         'workshop' => $request->workshop,
                         'extra'     => $request->aanvullend,
                         "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()

@@ -18,9 +18,8 @@ class CreateUsersRequest extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('task_id')->nullable();
             $table->unsignedBigInteger('module_id')->nullable();
-            $table->string('coach')->nullable();
             $table->string('workshop')->nullable();
-            $table->integer('status')->comment('1=hulpvraag,2=modulegesprek,3=coachgesprek,4=workshop, 5=in behandeling, 6= voltooid')->default(1);
+            $table->integer('type')->comment('1=hulpvraag,2=modulegesprek,3=coachgesprek,4=workshop')->default(1);
             $table->text('extra')->nullable();
             $table->unsignedBigInteger('docent_id')->nullable();
 

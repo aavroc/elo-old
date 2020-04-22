@@ -64,8 +64,8 @@ Dashboard
                         <h6>hier staan alle verzoeken welke door mij in behandeling zijn genomen</h6>
                     </div>
             <div class="card-body">
-            <div class="table-responsive">
-                            <table id="xp-default-datatable2" class="display table table-hover table-myrequest">
+                <div class="table-responsive">
+                        <table id="xp-default-datatable2" class="display table table-hover table-myrequest">
                             <thead>
                                 <tr>
                                     <th>Soort</th>
@@ -83,7 +83,7 @@ Dashboard
                             @isset($requests)
                             @foreach($requests as $request)
 
-                            @if($request->docent_id == Auth::user()->id && $request->type == 2)
+                            @if($request->docent_id == Auth::user()->id && $request->status == 2)
 
                             <!-- Modal -->
                             <div class="modal fade" id="modal-myrequest{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-myrequest{{$request->id}}Title" aria-hidden="true">
@@ -159,11 +159,11 @@ Dashboard
                                 @endswitch
                                 
                                 <td>
-                                @if($request->type == 1)
+                                @if($request->status == 1)
                                         <h6><span class="badge badge-danger"> open </span></h6>
-                                    @elseif($request->type == 2)
+                                    @elseif($request->status == 2)
                                         <h6><span class="badge badge-warning"> in behandeling </span></h6>
-                                    @elseif($request->type == 3)
+                                    @elseif($request->status == 3)
                                         <h6><span class="badge badge-success"> voltooid </span></h6>
                                     @else
                                         <h6><span class="badge badge-danger"> open </span></h6>
@@ -172,21 +172,21 @@ Dashboard
                                 <td>{{$usernameByID[$request->docent_id]}}</td>
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
-                                    @if($request->type == 1)
-                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="In behandeling nemen"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
+                                    @if($request->status == 1)
+                                    <a href="{{route('handleRequest', ['user_request' => $request])}}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="In behandeling nemen"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
                                     @endif
-                                    @if($request->type == 2)
-                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Markeren als voltooid"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
+                                    @if($request->status == 2)
+                                    <a href="{{route('handleRequest', ['user_request' => $request ])}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Markeren als voltooid"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
                                     @endif
                                 </td>
   
                             </tr>
-                        @endif
-                        @endforeach
-                        @endisset
-                        </tbody>
+                            @endif
+                            @endforeach
+                            @endisset
+                            </tbody>
                         </table>
-                        </div> <!-- end table responsive -->      
+                    </div> <!-- end table responsive -->      
             </div> <!-- end card body -->
         </div><!-- end card -->
     </div><!-- End XP Col -->
@@ -224,7 +224,7 @@ Dashboard
                         <table id="xp-default-datatable" class="display table table-hover table-filter">
                             <thead>
                                 <tr>
-                                    <th>Verzoek</th>
+                                    <th colspan="2">Verzoek</th>
                                     <th>Student</th>
                                     <th>Onderwerp</th>
                                     <th>Status</th>
@@ -259,9 +259,9 @@ Dashboard
                                 </div>
                             </div>
 
-                            <tr data-status="type{{$request->type}}">
+                            <tr data-status="type{{$request->status}}">
                    
-                                @switch($request->status)
+                                @switch($request->type)
                                 
                                 @case(1)
                                     <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag : </span>
@@ -314,24 +314,29 @@ Dashboard
                                 @endswitch
                                 
                                 <td>
-                                @if($request->type == 1)
+                                    @if($request->status == 1)
                                         <h6><span class="badge badge-danger"> open </span></h6>
-                                    @elseif($request->type == 2)
+                                    @elseif($request->status == 2)
                                         <h6><span class="badge badge-warning"> in behandeling </span></h6>
-                                    @elseif($request->type == 3)
+                                    @elseif($request->status == 3)
                                         <h6><span class="badge badge-success"> voltooid </span></h6>
                                     @else
                                         <h6><span class="badge badge-danger"> open </span></h6>
                                     @endif
                                 </td>
-                                <td>{{$usernameByID[$request->docent_id]}}</td>
+                                <td>
+                                    @isset($usernameByID[$request->docent_id])
+                                        {{$usernameByID[$request->docent_id]}}
+                                    @endisset
+                                </td>
+                                {{-- <td>{{$usernameByID[$request->docent_id]}}</td> --}}
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
-                                    @if($request->type == 1)
-                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="In behandeling nemen"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
+                                    @if($request->status == 1)
+                                    <a href="{{route('handleRequest', ['user_request' => $request])}}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="In behandeling nemen"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
                                     @endif
-                                    @if($request->type == 2)
-                                    <a href="{{route('handleRequest', ['teacher' => Auth::user()->id, 'student' => $request->user->id, 'user_request'=> $request->id, 'type'=> $request->type ])}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Markeren als voltooid"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
+                                    @if($request->status == 2)
+                                    <a href="{{route('handleRequest', ['user_request'=> $request ])}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Markeren als voltooid"><i class="mdi mdi-checkbox-marked-circle-outline"></i></a>
                                     @endif
                                 </td>
   
