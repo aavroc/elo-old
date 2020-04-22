@@ -325,11 +325,14 @@ Dashboard
                                     @endif
                                 </td>
                                 <td>
-                                    @isset($usernameByID[$request->docent_id])
-                                        {{$usernameByID[$request->docent_id]}}
-                                    @endisset
+                                    @if($request->status == 1)
+                                    nog niet toegewezen
+                                    @else
+                                        @isset($usernameByID[$request->docent_id])
+                                            {{$usernameByID[$request->docent_id]}}
+                                        @endisset
+                                    @endif
                                 </td>
-                                {{-- <td>{{$usernameByID[$request->docent_id]}}</td> --}}
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
                                     @if($request->status == 1)
