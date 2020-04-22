@@ -61,7 +61,7 @@ Dashboard
             <div class="row">
                 <div class="col-lg-7 m-t-10">
                     <h5 class="text-black">Verzoeken</h5>
-                    <h6>hier staan alle verzoeken welke door mij in behandeling zijn genomen</h6>
+                    <h6>Mijn aangenomen verzoeken</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
