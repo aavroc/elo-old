@@ -89,7 +89,12 @@ class ModuleController extends Controller
 
     public function show_teacher( Module $module)
     {
-        $data['module'] = $module;
+        $data = [
+            'module' => $module,
+            'modules' => Module::all(),
+            
+        ]; 
+        
         if(Auth::user()->role <= 2){
             return view('modules.show-teacher', $data);
         }
