@@ -39,18 +39,20 @@ class AdminController extends Controller
         )->get();
 
         $requests = UsersRequest::where('status', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
-        $taken_requests = UsersRequest::where('docent_id', Auth::user()->id)->where('type', '=' , 1)->where(
+        $taken_requests = UsersRequest::where('type', '=' , 1)->where(
                 [
                     ['status', '!=' , 4],
                 ]
                 )->with('task')->get();
+
+        
         
         $usernameByID = User::pluck('lastname', 'id');
         $task_requests = $requests->pluck('task');
-        $counted_tasks = $task_requests->pluck('id')->countBy()->toArray();
+        $counted_tasks = $taken_requests->pluck('task_id')->countBy()->toArray();
         $modules = Module::all();
                 // dd($usernameByID );
-        // dd($results);
+        // dd($taken_requests);
         $data = [
             'users' => $users,
             'modules' => $modules,
