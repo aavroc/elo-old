@@ -47,19 +47,23 @@
                                         <div class="dropdown xp-message mr-3">
                                             <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="mdi mdi-format-list-bulleted font-18 v-a-m"></i>
-                                                @if(\App\UsersRequest::where('status', '=', 2)->where('docent_id', Auth::user()->id)->count() > 0)
-                                                <span class="badge badge-pill badge-success xp-badge-up">{{\App\UsersRequest::where('status', '=', 2)->where('docent_id', Auth::user()->id)->count()}}</span>
+                                                @php 
+                                                $docent_requests = \App\UsersRequest::where('status', '=', 2)->where('docent_id', Auth::user()->id)->get();
+                                                $docent_requests_amount = $docent_requests->count();
+                                                @endphp
+                                                @if( $docent_requests_amount > 0)
+                                                <span class="badge badge-pill badge-success xp-badge-up">{{$docent_requests_amount}}</span>
                                                 @endif
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-message">
                                                 <ul class="list-unstyled">
                                                     <li class="media">
                                                         <div class="media-body">
-                                                            <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15"><span class="badge badge-pill badge-success">1</span> verzoeken in je todo lijst</h5>
+                                                        <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15"><span class="badge badge-pill badge-success">{{$docent_requests_amount}}</span> verzoeken in je todo lijst</h5>
                                                         </div>
                                                     </li>  
                                                   
-                                                    @foreach( \App\UsersRequest::where('status', '=', 1)->limit(3)->get()  as $request)
+                                                    @foreach( $docent_requests  as $request)
                                                     <li class="media xp-msg">                                                
                                                         <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
                                                         <div class="media-body">
@@ -86,14 +90,18 @@
                                     <div class="dropdown xp-notification mr-3">
                                         <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="mdi mdi-bell-ring font-18 v-a-m"></i>
-                                            <span class="badge badge-pill badge-danger xp-badge-up">{{\App\UsersRequest::where('status', '=', 1)->count()}}</span>
+                                            @php 
+                                                $all_open_requests = \App\UsersRequest::where('status', '=', 1)->get();
+                                                $all_open_requests_amount = $all_open_requests->count();
+                                                @endphp
+                                            <span class="badge badge-pill badge-danger xp-badge-up">{{$all_open_requests_amount}}</span>
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="xp-notification">
                                             <ul class="list-unstyled">
                                                 <li class="media">
                                                     <div class="media-body">
-                                                    <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{\App\UsersRequest::where('status', '=', 1)->count()}} Nieuwe verzoeken</h5>
+                                                    <h5 class="mt-0 mb-0 my-3 text-dark text-center font-15">{{$all_open_requests_amount}} Nieuwe verzoeken</h5>
                                                     </div>
                                                 </li>
                                                 @php 
@@ -104,7 +112,7 @@
                                                     4 => 'workshop',
                                                 ];
                                                 @endphp
-                                                @foreach( \App\UsersRequest::where('status', '=', 1)->limit(3)->get()  as $request)
+                                                @foreach( $all_open_requests as $request)
                                                 <li class="media xp-noti">                                                
                                                     <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
                                                     <div class="media-body">
