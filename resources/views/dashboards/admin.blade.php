@@ -326,7 +326,7 @@ Dashboard
                                 </td>
                                 <td>
                                     @if($request->status == 1)
-                                    ---
+                                    nog niet toegewezen
                                     @else
                                         @isset($usernameByID[$request->docent_id])
                                             {{$usernameByID[$request->docent_id]}}
