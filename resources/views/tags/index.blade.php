@@ -48,7 +48,7 @@ Toon Tags
                                     <td><a href="{{route('tags.edit', $tag)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
                                     <td>
                                         <form action="{{route('tags.delete', $tag)}}" method="post">
-                                        <button type="submit" class="btn btn-danger" value="delete"><i class="mdi mdi-delete-sweep"></i></button>
+                                        <button type="submit" class="btn btn-danger btn-sm" value="delete"><i class="mdi mdi-delete-sweep"></i></button>
                                         @method('delete')
                                         @csrf
                                         </form>

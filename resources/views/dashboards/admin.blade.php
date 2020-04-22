@@ -54,27 +54,21 @@ Dashboard
 <div class="xp-contentbar">
     <!-- Write page content code here -->
     <!-- Start XP Row -->    
-<div class="row">     
-<!-- Start XP Col -->
-<div class="col-md-12 col-lg-12 col-xl-12">
-    <div class="text-left mt-2 mb-3">
-        <h4>Welkom {{Auth::user()->firstname}} {{Auth::user()->lastname}}</h4>
-    </div>
-</div><!-- End XP Col -->
-</div> <!-- end row -->
 <div class="row">   
     <div class="col-md-12 col-lg-12 col-xl-12"><!-- Start XP Col --> 
-     <div class="card  m-b-30">
+     <div class="card  m-b-10">
         <div class="card-header bg-white">
                 <div class="row">
                     <div class="col-lg-7 m-t-10">
-                        <h4 class="text-black">Verzoeken door mij in behandeling genomen</h4>
+                        <h5 class="text-black">Verzoeken</h5>
+                        <h6>hier staan alle verzoeken welke door mij in behandeling zijn genomen</h6>
                     </div>
             <div class="card-body">
             <div class="table-responsive">
                             <table id="xp-default-datatable2" class="display table table-hover table-myrequest">
                             <thead>
                                 <tr>
+                                    <th>Soort</th>
                                     <th>Verzoek</th>
                                     <th>Student</th>
                                     <th>Onderwerp</th>
@@ -115,56 +109,51 @@ Dashboard
                                 @switch($request->status)
                                 
                                 @case(1)
-                                    <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag : </span>
+                                    <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag</span>
                                      <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>
-                                    </td>
+                                    <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>
                                     <td><a href="{{route('users.show', $request->user->id)}}"><u>{{$request->user->firstname}}</u></a></td>                             
                                     <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
                                 @break
 
                                 @case(2)
-                                    <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek :</span>
+                                    <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
                                 @break
 
                                 @case(3)
-                                    <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek :</span>
+                                    <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                                   
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">coachgesprek</a></td>
                                 @break
 
                                 @case(4)
-                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop : </span>
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                                   
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">workshop</a></td>                     
                                 @break                                                  
 
                                 @default
-                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ? : </span>
+                                    <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ?</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-myrequest{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                                    
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">lege aanvraag</a></td>  
                                 @endswitch
@@ -180,7 +169,7 @@ Dashboard
                                         <h6><span class="badge badge-danger"> open </span></h6>
                                     @endif
                                 </td>
-                                <td>{{$request->docent_id}} / {{$request->coach}}</td>
+                                <td>{{$usernameByID[$request->docent_id]}}</td>
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
                                     @if($request->type == 1)
@@ -208,10 +197,11 @@ Dashboard
         <div class="card-header bg-white">
                 <div class="row">
                     <div class="col-lg-7 m-t-10">
-                        <h4 class="text-black">Alle verzoeken</h4>
+                        <h5 class="text-black">Alle verzoeken</h5>
+                        <h6>hier staan alle verzoeken</h6>
                     </div>
                         <div class="col-lg-5 text-right">
-                            <div class="btn-group" data-toggle="buttons">
+                            <div class="btn-group btn-filter" data-toggle="buttons">
                                 <label class="btn btn-info active">
                                     <input type="radio" name="status" value="all" checked="checked"> Alle
                                 </label>
@@ -248,6 +238,8 @@ Dashboard
                             @isset($requests)
                             @foreach($requests as $request)
 
+                            
+
                             <!-- Modal -->
                             <div class="modal fade" id="modal-request{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-request{{$request->id}}Title" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -274,10 +266,9 @@ Dashboard
                                 @case(1)
                                     <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag : </span>
                                      <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}"><u>{{$request->user->firstname}}</u></a></td>                             
                                     <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
                                 @break
@@ -285,10 +276,9 @@ Dashboard
                                 @case(2)
                                     <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek :</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
                                 @break
@@ -296,10 +286,9 @@ Dashboard
                                 @case(3)
                                     <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek :</span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">coachgesprek</a></td>
                                 @break
@@ -307,10 +296,9 @@ Dashboard
                                 @case(4)
                                     <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop : </span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">workshop</a></td>                     
                                 @break                                                  
@@ -318,10 +306,9 @@ Dashboard
                                 @default
                                     <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ? : </span>
                                      <!-- Button trigger modal -->
-                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
-                                    <i class="mdi mdi-comment-eye"></i>
-                                    </button>                                    
-                                    </td>
+                                     <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                    <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                    </button></td>                               
                                     <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                     <td><a href="#">lege aanvraag</a></td>  
                                 @endswitch
@@ -337,7 +324,7 @@ Dashboard
                                         <h6><span class="badge badge-danger"> open </span></h6>
                                     @endif
                                 </td>
-                                <td>{{$request->docent_id}} / {{$request->coach}}</td>
+                                <td>{{$usernameByID[$request->docent_id]}}</td>
                                 <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
                                 <td> <!-- een taak kan alleen afgehandeld worden als deze open is -->
                                     @if($request->type == 1)
@@ -409,7 +396,7 @@ Dashboard
 @section('script')
 <script>
 $(document).ready(function(){
-	$(".btn-group .btn").click(function(){
+	$(".btn-group.btn-filter  .btn").click(function(){
 		var inputValue = $(this).find("input").val();
 		if(inputValue != 'all'){
 			var target = $('table.table-filter tr[data-status="' + inputValue + '"]');
