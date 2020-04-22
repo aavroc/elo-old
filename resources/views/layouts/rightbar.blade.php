@@ -67,7 +67,7 @@
                                                     <li class="media xp-msg">                                                
                                                         <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
                                                         <div class="media-body">
-                                                            <a href="#">  
+                                                            <a href="{{route('admin')}}">  
                                                                 <h5 class="mt-0 mb-1 font-14">{{$status[$request->type]}}</h5>
                                                                 <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
                                                             </a>
@@ -116,7 +116,7 @@
                                                 <li class="media xp-noti">                                                
                                                     <div class="mr-3 xp-noti-icon"><i class="mdi mdi-information-variant"></i></div>
                                                     <div class="media-body">
-                                                        <a href="#">  
+                                                        <a href="{{route('admin')}}">  
                                                             <h5 class="mt-0 mb-1 font-14">{{$status[$request->type]}}</h5>
                                                             <p class="mb-0 font-12 f-w-4">{{$request->user->firstname}}</p>
                                                         </a>
