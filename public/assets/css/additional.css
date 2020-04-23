@@ -56,3 +56,17 @@ background-color:#f9fafc;
     clip: rect(0,0,0,0);
     pointer-events: none;
 }
+
+.btn-module
+{
+    font-size: 18px;
+    line-height: 40px;
+    padding: 10px 20px;
+    display: block;
+    text-align: left;
+}
+
+.btn-module .mdi{
+    float: right;
+    font-size: 30px;
+}
