@@ -413,7 +413,6 @@ Dashboard
                                         <td><a href="#">{{$task_request->task->name}}</a></td> 
                                         <td><a href="#">{{$counted_tasks[$task_request->task_id]}}</a></td> 
                                         <td>
-                                            {{$task_request->id}}
                                             <a href="#" class="btn btn-info">Afhandelen</a>
                                         </td>
                                     </tr>
