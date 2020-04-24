@@ -80,7 +80,7 @@ Gebruiker
                                 @endforeach
                             </td>
                             <td>
-                                {{$challenge->name}}
+                                <a href="{{route('challenges.show', $challenge->slug)}}">{{$challenge->name}}</a>
                             </td>
                             <td>
                                 <a href="{{route('challenges.edit', $challenge)}}"><i class="mdi mdi-pencil"></i> Edit</a>
