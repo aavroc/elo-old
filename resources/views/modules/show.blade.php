@@ -47,7 +47,7 @@ Module: {{$module->name}}
                             @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
 
                                 <tr class="@if($content->level == 'niveau1') bg-info @elseif($content->level == 'niveau2') bg-success @else bg-primary @endif">
-                                    <td><a href="{{route('tasks.show', $content)}}" class="task-list"><i class="fa fa-eye"></i> {{$content->name}}</a></td>
+                                    <td><a href="{{route('tasks.show', $content)}}" class="task-list"><i class="mdi mdi-eye"></i> {{$content->name}}</a></td>
                                     <td>{{$content->level}}</td>
                                     <td>
                                         @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp

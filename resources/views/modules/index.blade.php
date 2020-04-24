@@ -39,10 +39,10 @@ Gebruiker
                                 <td>{{$module->name}}</td>
                                 <td>
                                     @if(Auth::user()->role ==3 )
-                                    <a href="{{route('modules.show', Str::slug($module->name))}}"><i class="fa fa-eye"></i> Toon</a>
+                                    <a href="{{route('modules.show', Str::slug($module->name))}}"><i class="mdi mdi-eye"></i> Toon</a>
                                     @else
-                                    <a href="{{route('modules.show', Str::slug($module->name))}}" class="btn btn-info m-2"><i class="fa fa-eye"></i> Studentenweergave</a>
-                                    <a href="{{route('modules.show_teacher', Str::slug($module->name))}}" class="btn btn-warning m-2" ><i class="fa fa-eye"></i> Docentenweergave</a>
+                                    <a href="{{route('modules.show', Str::slug($module->name))}}" class="btn btn-info m-2"><i class="mdi mdi-eye"></i> Studentenweergave</a>
+                                    <a href="{{route('modules.show_teacher', Str::slug($module->name))}}" class="btn btn-warning m-2" ><i class="mdi mdi-eye"></i> Docentenweergave</a>
                                     @endif
                                 </td>
                             </tr>
