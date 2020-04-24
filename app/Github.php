@@ -65,7 +65,6 @@ class GitHub
         }
 
         $url = 'https://api.github.com/repos/' . $owner . '/' . $repo . '/contents/' . $path; //get contents
-        // dd($url);
         return $this->get_request_json_secured($url, $raw);
     }
 

@@ -131,8 +131,38 @@ class AdminController extends Controller
 
     public function challenges()
     {
+        $github = new GitHub();
+        $challenges = Challenge::all();
+        
+        $challenge1 = $github->get_global_readme('PGO-CHALLENGE');
+        
+        foreach($challenges as $challenge){
+            switch($challenge->id){
 
+                case 1:
+                    $readme = $challenge1->content;
+                    break;
+                
+                default:
+                    $readme = '';
+                    break;
+
+            }
+            
+            Challenge::updateOrInsert(
+                [
+                'id' => $challenge->id,
+                ],
+                [
+                    'readme' =>  $readme,
+                ]
+            );
+        }
+       
+        return redirect()->route('admin');
     }
+
+
     //retrieve all modules readme's from github and store in db
     public function modules()
     {

@@ -5,9 +5,28 @@ namespace App\Http\Controllers;
 use App\Challenge;
 use App\Module;
 use Illuminate\Http\Request;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class ChallengeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->converter = new GithubFlavoredMarkdownConverter([
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'enable_em' => true,
+            'enable_strong' => true,
+            'use_asterisk' => true,
+            'use_underscore' => true,
+            'unordered_list_markers' => ['-', '*', '+'],
+            'max_nesting_level' => INF,
+        ]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -53,10 +72,14 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge)
     {
-        
+        $readme_ = $challenge->readme;
+        $readme_content = base64_decode($readme_);
+
         $data = [
             'challenge' => $challenge,
-            'modules'   => Module::all()
+            'modules'   => Module::all(),
+            'readme_content' => $this->converter->convertToHtml($readme_content),
+            
         ];
         return view('challenges.show', $data);
     }
