@@ -65,10 +65,10 @@ Booster - Data Table
                                     {{$data[$user->role]}}
                                 </td>
                                 <td>
-                                    <a href="{{route('users.show', $user)}}" class=""><i class="fa fa-eye"></i> toon</a>
+                                    <a href="{{route('users.show', $user)}}" class=""><i class="mdi mdi-eye"></i> toon</a>
                                 </td>
                                     @if(Auth::user()->role == 1)
-                                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                                     @endif
                             </tr>
                             @endforeach

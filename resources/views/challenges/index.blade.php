@@ -64,7 +64,7 @@ Gebruiker
                                 @if($challenge->status == 0)
                                 <span class="btn">Je moet nog modules afronden voordat je aan deze challenge kunt beginnen</span>
                                 @elseif($challenge->status == 1)
-                                <a href="{{route('challenges.show', $challenge)}}"><i class="fa fa-eye"></i> toon</a>
+                                <a href="{{route('challenges.show', $challenge)}}"><i class="mdi mdi-eye"></i> toon</a>
                                 @elseif($challenge->status == 2)
                                 <span class="btn">Deze challenge is behaald!!</span>
                                 @endif
@@ -83,7 +83,7 @@ Gebruiker
                                 {{$challenge->name}}
                             </td>
                             <td>
-                                <a href="{{route('challenges.edit', $challenge)}}"><i class="fa fa-eye"></i> Edit</a>
+                                <a href="{{route('challenges.edit', $challenge)}}"><i class="mdi mdi-pencil"></i> Edit</a>
                             </td>
                         </tr>
                         @endforeach

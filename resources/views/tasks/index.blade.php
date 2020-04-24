@@ -53,7 +53,7 @@ Tasks
                             <a href="{{$task->url}}" target="_blank">link to github</a>
                         </td>
                         <td>
-                            <a href="{{route('tasks.show', $task)}}"><i class="fa fa-eye"></i> toon</a>
+                            <a href="{{route('tasks.show', $task)}}"><i class="mdi mdi-eye"></i> toon</a>
                         </td>
                     </tr>
 

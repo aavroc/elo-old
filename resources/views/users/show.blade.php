@@ -45,7 +45,7 @@ Gebruiker
                                     <span class="text-danger" role="alert">Nooit ingelogd geweest!</span>
                                     @endif</td>
                                     @if(Auth::user()->role == 1)
-                                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                    <td><a href="{{route('users.edit', $user)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                                     @endif
                                 </tr>
                             </tbody>
@@ -82,7 +82,7 @@ Gebruiker
                             <td>open, closed</td>
                             <td>naam docent</td>
                             <td>opmerkingen docent</td>
-                            <td><a href="#" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                            <td><a href="#" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                         </tbody>
                         </table>
                     </div> <!-- end table responsive -->
@@ -116,7 +116,7 @@ Gebruiker
                                 <tr id="module-table-{{$module->id}}" class="@if($module->pivot->status ==1) table-success @elseif ($module->pivot->status ==0) table-danger @else table-info @endif">
                                     <td>{{$module->name}}</td> 
                                     <td id="txt_module-table-{{$module->id}}">@if($module->pivot->status ==1) open @elseif ($module->pivot->status ==3) done @else closed @endif</td> 
-                                    <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="fa fa-eye"></i> toon</a></td>
+                                    <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="mdi mdi-eye"></i> toon</a></td>
                                     @if(Auth::user()->role <= 2)
                                         <td>
                                             <div class="form-check form-check-inline">
