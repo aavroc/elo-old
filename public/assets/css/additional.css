@@ -70,3 +70,5 @@ background-color:#f9fafc;
     float: right;
     font-size: 30px;
 }
+
+.click-row { cursor: pointer; }

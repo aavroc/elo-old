@@ -14,31 +14,19 @@ Module: {{$module->name}}
 <div class="xp-contentbar">
     <div class="row">
         <!-- Start XP Col -->
-        <!-- End XP Col -->
-        <!-- Start XP Col -->
-        <div class="col-md-12 col-lg-12 col-xl-6">
-            <div class="card m-b-30">
-                <div class="card-body module-readme readme-txt">
-                @isset($readme_content)
-                    <p>{!!$readme_content!!}</p>
-                @endisset
-                </div>
-            </div> 
-        </div>
-        <!-- End XP Col -->
-        <!-- Start XP Col -->
-        <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                <h4>Taken - {{$module->name}}</h4>
+        <div class="col-lg-7">
+            <div class="card m-b-30 border-dark">
+            <div class="card-header bg-dark">
+                    <h5 class="card-title text-white">Taken - {{$module->name}}s</h5>
+                    <h6 class="card-subtitle text-white">klik op de taak waaraan je wilt werken</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                    <table class="table table-dark">
+                    <table class="table table-hover table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="bg-secondary text-white">
                                 <th>Taak</th>
-                                <th>Niveau</th>
+                                <th>Onderwerp</th>
                                 <th>Check or not to check</th>
                             </tr>
                         </thead>
@@ -46,9 +34,17 @@ Module: {{$module->name}}
                             @php $level = null ; @endphp
                             @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
 
-                                <tr class="@if($content->level == 'niveau1') bg-info @elseif($content->level == 'niveau2') bg-success @else bg-primary @endif">
-                                    <td><a href="{{route('tasks.show', $content)}}" class="task-list"><i class="mdi mdi-eye"></i> {{$content->name}}</a></td>
-                                    <td>{{$content->level}}</td>
+                            @if($level != $content->level)
+                            <tr class="alert-info"><td colspan="3" class="text-black f-w-6">{{$content->level}}</td></tr>
+                            @endif
+
+                                <tr class="click-row" data-href="{{route('tasks.show', $content)}}">
+                                    <td class="f-w-6">{{$content->name}} </td>
+                                    <td>
+                                    @foreach($content->tags as $tag) 
+                                        {{$tag->name}}@if(!$loop->last){{','}} @endif
+                                     @endforeach
+                                    </td>
                                     <td>
                                         @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp
                                         @if(Auth::user()->role == 3 && is_object($user->tasks()->where('task_id', $content->id)->first()))
@@ -61,8 +57,9 @@ Module: {{$module->name}}
                                     </td>
                                 </tr>
 
-                            @php $level = $content->level; @endphp
+                            @php $level = $content->level; 
                             
+                            @endphp
                             @endforeach
                             </tbody>
                         </table>
@@ -70,11 +67,34 @@ Module: {{$module->name}}
                 </div> <!-- End card body -->
                 </div> <!-- end card -->
             </div><!-- End XP Col -->
+             <!-- Start XP Col -->
+        <div class="col-md-12 col-lg-12 col-xl-5">
+            <div class="card m-b-30 border-info">
+            <div class="card-header bg-info">
+                <h5 class="card-title text-white">Over deze module</h5>
+                <h6 class="card-subtitle text-white">waar gaat de module {{$module->name}} over</h6>
+            </div>
+                <div class="card-body module-readme readme-txt">
+                @isset($readme_content)
+                    <p>{!!$readme_content!!}</p>
+                @endisset
+                </div>
+            </div> 
+        </div>
+        <!-- End XP Col -->
     </div>
     <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
 @endsection
 @section('script')
+
+<script type="text/javascript">
+$(document).ready(function($) {
+    $(".click-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+</script>
 
 @endsection 
