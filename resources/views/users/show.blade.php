@@ -164,8 +164,8 @@ Gebruiker
                             </tr>
                         </thead>
                         <tbody>
-                        @isset($user->challenge)
-                        @foreach ($user->challenge as $challenge)
+                        @isset($user->challenges)
+                        @foreach ($user->challenges as $challenge)
                             <tr>
                                 <td>{{$challenge->name}}</td>
                                 <td id="txt_module-table-{{$challenge->id}}">@if($challenge->pivot->status ==1) open @elseif ($challenge->pivot->status ==3) done @else closed @endif</td> 
