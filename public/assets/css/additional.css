@@ -71,4 +71,10 @@ background-color:#f9fafc;
     font-size: 30px;
 }
 
+a:focus.btn-module  {
+    color: #2a9154;
+    outline: 0;
+    text-decoration: none;
+}
+
 .click-row { cursor: pointer; }

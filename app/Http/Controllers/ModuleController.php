@@ -81,6 +81,7 @@ class ModuleController extends Controller
             'readme_content' => $this->converter->convertToHtml($readme_content),
             'module' => $module,
             'user' => Auth::user(),
+            'modules' => Module::all(),
 
         ];
         
