@@ -45,7 +45,7 @@ Toon Tags
                                 <tr>
                                     <td>{{$tag->name}}</td>
                                     @if(Auth::user()->role == 1)
-                                    <td><a href="{{route('tags.edit', $tag)}}" class=""><i class="fa fa-pencil"></i> bewerk</a></td>
+                                    <td><a href="{{route('tags.edit', $tag)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                                     <td>
                                         <form action="{{route('tags.delete', $tag)}}" method="post">
                                         <button type="submit" class="btn btn-danger btn-sm" value="delete"><i class="mdi mdi-delete-sweep"></i></button>

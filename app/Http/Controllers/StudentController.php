@@ -15,9 +15,13 @@ class StudentController extends Controller
 
     public function dashboard()
     {
+
+        $usernameByID = User::pluck('lastname', 'id');
+
         $data = [
             'modules' => Module::all(),
             'user'   => Auth::user(),
+            'usernameByID' => $usernameByID,
 
         ];
         return view('dashboards.student', $data);
