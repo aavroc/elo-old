@@ -281,9 +281,9 @@ Dashboard
                                 </div>
 
                                 <div class="extra m-b-10">
-                                <p class="f-w-6 m-t-10">Geef extra informatie </p>
-                                <textarea name="aanvullend" id="aanvullend" cols="10" rows="5" class="form-control"></textarea>
-                            </div>
+                                    <p class="f-w-6 m-t-10">Geef extra informatie </p>
+                                    <textarea name="aanvullend" id="aanvullend" cols="10" rows="5" class="form-control"></textarea>
+                                </div>
                             <div class="text-right">
                             <button type="submit" class="btn btn-primary my-1 aanvraag text-right m-t-20">Doe aanvraag! <i class="mdi mdi-send ml-2"></i></button>
                             </div>

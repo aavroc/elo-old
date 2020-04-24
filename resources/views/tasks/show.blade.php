@@ -10,14 +10,38 @@ Booster - Starter
 </div>
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
+<div class="row m-b-10">
+   <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="xp-button ">
+                    <a href="{{route('modules.show', ['module'=> $task->module->slug ])}}" class="btn btn-outline-info active" role="button" aria-pressed="true" >
+                        <i class="mdi mdi-arrow-left-drop-circle m-r-5 font-20"></i> 
+                        <span>terug naar takenoverzicht:  {{$task->module->name}}</span>
+                    </a>
+         </div>    
+    </div>
+</div>
     <!-- Write page content code here -->
     <!-- Start XP Row -->     
     <div class="row">
         <!-- Start XP Col -->
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header bg-white">
-                    <h5 class="card-title">module: {{$task->module->name}} | taak: {{$task->name}}</h5>
+        <div class="col-lg-7">
+        <div class="card m-b-30 border-dark">
+            <div class="card-header bg-dark">
+                    <h5 class="card-title text-white">module: {{$task->module->name}} | taak: {{$task->name}}</h5>
+                    <h6 class="card-subtitle text-white">Lees de beschrijving van de taak goed door</h6>
+                </div>
+            <div class="card-header alert-info">
+                    <h6 class="card-subtitle text-black m-t-5">De module bevat de volgende tags:
+                    <span class="f-w-6">
+                    @foreach($tags as $tag)
+                        @if($task->tags->find($tag->id) != null) 
+                            @if($task->tags->find($tag->id)->id == $tag->id)
+                                {{$tag->name}}@if(!$loop->last){{','}} @endif
+                            @endif
+                        @endif
+                    @endforeach
+                    </span>
+                    </h6>
                 </div>
                 <div class="card-body readme-txt">
                 @isset($readme_content)
@@ -26,71 +50,70 @@ Booster - Starter
                 </div> <!-- end card body -->
             </div> <!-- end card -->
         </div><!-- End XP Col -->
+
+        @if(Auth::user()->role < 3)
             <!-- Start XP Col -->
         <div class="col-lg-2">
-            <div class="card">
+            <div class="card border-info">
+            <div class="card-header bg-info">
+                <h5 class="card-title text-white">Tags</h6>
+             </div>
                 <div class="card-body">
                     <form action="{{route('tasks.tag', $task)}}" method="post">
                         @csrf
-                        <div class="m-b-20">
-                            <h6>Tags</h6>
-                        </div>
+
                         @foreach($tags as $tag)
-                            @if(Auth::user()->role < 3)
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="{{$tag->name}}_{{$tag->id}}" value="{{$tag->id}}"  name="tags[{{$tag->id}}]"
                                 @if($task->tags->find($tag->id) != null) @if($task->tags->find($tag->id)->id == $tag->id) checked @endif @endif>
                                 <label class="custom-control-label" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</label>
                             </div>
-                                @else
-                                <ul class="list-group">
-                                    @if($task->tags->find($tag->id) != null) 
-                                        @if($task->tags->find($tag->id)->id == $tag->id)
-                                           <li class="list-group-item text-success m-2" for="{{$tag->name}}_{{$tag->id}}">{{$tag->name}}</li>
-                                        @endif
-                                    @endif
-                                </ul>
-                                @endif
                         @endforeach
-                        @if(Auth::user()->role < 3)
-                        <button type="submit" class="btn btn-success m-t-20">Tag you're it</button>
-                        @endif
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary m-t-20">Opslaan</button>
+                        </div>
                     </form>
                 </div> <!-- end card body -->
             </div> <!-- end card -->
         </div><!-- End XP Col -->
-        <div class="col-lg-4">
-            @if(Auth::user()->role == 3)
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">Status taak</h5>
-                    <h6 class="card-subtitle">Ben je klaar? <code>verander de status hieronder</code></h6>
-                </div>
-                <div class="card-body">
+        @endif
+        
+        @if(Auth::user()->role == 3)
+         <!-- Start XP Col -->
+            <div class="col-lg-4">
+            <div class="card border-info">
+            <div class="card-header bg-info">
+                <h5 class="card-title text-white">Status taak</h6>
+                <h6 class="card-subtitle text-white">Ben je klaar? verander de status hieronder</h6>
+             </div>
+             <div class="card-body">
                 <form action="{{route('tasks.mark', ['task'=> $task])}}" method="post">
                         @csrf
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="radio" name="taak_status" id="busy" value="0" checked>
                             <label class="form-check-label" for="busy">
-                              Nog mee bezig
+                              Ik ben nog met deze taak bezig
                             </label>
                         </div>
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="radio" name="taak_status" id="voldaan" value="1">
                             <label class="form-check-label" for="voldaan">
-                              Markeer als voldaan
+                              Ik heb deze taak afgerond en de taak is gepushed naar gitHub
                             </label>
                         </div>
-                        <div class="form-group  mt-3">
-                            <input type="text" class="form-control" name="inputText" id="inputText" placeholder="Opmerkingen kun je hier neerzetten" >
+                        <div class="extra m-b-10 m-t-20">
+                            <textarea name="inputText" id="inputText" cols="10" rows="2" class="form-control" placeholder="Aanvullende opmerkingen? zet ze hier neer"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success m-t-20">Markeer als voldaan</button>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary m-t-20">Opslaan</button>
+                        </div>
+
                     </form>
                 </div>
-            </div>
-            @endif
+            </div>            
         </div>
-
+        
+        @endif
     </div>
     <!-- End XP Row -->  
 </div>
