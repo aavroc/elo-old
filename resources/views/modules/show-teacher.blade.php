@@ -53,11 +53,14 @@ Module: {{$module->name}}
                                 @foreach($module->tasks as $task)
                                 <th>
                                     <div>
-                                        <a href="#" data-toggle="popover" data-placement="top" title="{{$task->name}}" data-content="@foreach($task->tags as $tag) {{$tag->name}} @endforeach">{{$task->name}}</a>
-                                        <a href="{{route('tasks.show', $task->id)}}"><i class="mdi mdi-link-variant"></i></a>
+                                        @php
+                                            $tasknum = explode('taak',$task->name)[1];
+                                            $tasklevl = explode('iveau',$task->level)[1];
+                                        @endphp
+                                        <a href="#" data-toggle="popover" data-placement="top" title="{{$task->name}}" data-content="@foreach($task->tags as $tag) {{$tag->name}} @endforeach">{{'t'. $tasknum}} <sub>n{{$tasklevl}}</sub></a>
                                     </div>
                                     <div>
-                                        <sub>{{$task->level}}</sub>
+                                        <a href="{{route('tasks.show', $task->id)}}"> <i class="mdi mdi-link-variant"></i></a>
                                     </div>
                                 </th>
                                 @endforeach
@@ -97,8 +100,8 @@ Module: {{$module->name}}
                                 @foreach($module->tasks as $task)
                                     @if(is_object($task->users()->where('user_id', $user->id)->first()))
                                         @if($task->users()->where('task_id', $task->id)->first()->pivot->evaluation == 1)
-                                            <td>
-                                            <span class="text-success">Voldaan<i class="mdi mdi-check "></i></span>
+                                            <td >
+                                                <span class="text-success"><i class="mdi mdi-check "></i></span>
                                             </td>
                                         @endif
                                     @else
