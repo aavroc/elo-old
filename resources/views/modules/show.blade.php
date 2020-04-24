@@ -12,12 +12,27 @@ Module: {{$module->name}}
 <!-- End XP Breadcrumbbar -->
 <!-- Start XP Contentbar -->    
 <div class="xp-contentbar">
-    <div class="row">
+<div class="row m-b-10">
+   <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="xp-button ">
+        <span class="p-r-10 f-w-6"> Kies andere module: </span>
+            @foreach ($modules as $module_item)
+                @if($user->modules()->where('module_id', $module_item->id)->exists())
+                    @php  $levelStatus = $user->modules()->where('module_id', $module_item->id)->first()->pivot->status; @endphp
+                @if($levelStatus == 1 )
+                    <a href="{{route('modules.show', ['module'=> $module_item->slug ])}}" class="btn btn-outline-info @if($module_item->id == $module->id) active @endif" role="button" aria-pressed="true" >{{$module_item->name}} <i class="mdi mdi-arrow-right-drop-circle font-20 m-l-5"></i></a></li>
+                @endif
+            @endif
+            @endforeach
+         </div>    
+    </div>
+</div>
         <!-- Start XP Col -->
+        <div class="row">
         <div class="col-lg-7">
             <div class="card m-b-30 border-dark">
             <div class="card-header bg-dark">
-                    <h5 class="card-title text-white">Taken - {{$module->name}}s</h5>
+                    <h5 class="card-title text-white">Taken - {{$module->name}}</h5>
                     <h6 class="card-subtitle text-white">klik op de taak waaraan je wilt werken</h6>
                 </div>
                 <div class="card-body">
