@@ -526,10 +526,10 @@ class AdminController extends Controller
 
     public function update_level(Request $request)
     {
-      
-        $module_status = explode('_', $request->status);
-        $module = $module_status[0];
-        $status_text = $module_status[1];
+        $item_status = explode('_', $request->status);
+        $item = $item_status[0];
+        $id = $item_status[1];
+        $status_text = $item_status[2];
 
         if($status_text == 'done'){
             $status = 3;
@@ -541,13 +541,78 @@ class AdminController extends Controller
             $status = 0;
         }
 
-        DB::table('users_modules')->where('user_id', $request->student)->where('module_id', $module)->update(
-            [
-                'status' => $status,
-                'updated_at' => DB::raw('NOW()')
-            ]
-        );
-        return $status_text;
+        $student = User::find($request->student);
+
+        $data = [];
+
+        if($item == 'module'){
+            $module = Module::find($id);
+            DB::table('users_modules')->where( 'user_id', $student->id )->where('module_id', $module->id)->update(
+                [
+                    'status' => $status,
+                    'updated_at' => DB::raw('NOW()')
+                ]
+            );
+    
+            $challenge_done = $this->openChallenge($student, $module);  
+            $data['challenge_done'] = $challenge_done;
+
+        }
+        else{
+            $challenge = Challenge::find($id);
+            
+            DB::table('users_challenges')->where( 'user_id', $student->id )->where('challenge_id', $challenge->id)->update(
+                [
+                    'status' => $status,
+                    'updated_at' => DB::raw('NOW()')
+                ]
+            );
+        }
+        $data['status_text'] = $status_text;
+        
+        return $data;
+    }
+
+    public function openChallenge(User $student, Module $module){
+        
+        // $student = User::find(4);
+        // $module = Module::find(1);
+        $challenges = $module->challenges()->where('module_id', $module->id)->get();
+        $challenges_results = [];
+        foreach($challenges as $challenge){
+            
+            $challenges_results[$challenge->id] = TRUE;
+            
+            foreach ($challenge->modules as $module_ch) {
+                // dump($module_ch->name);
+                // dump($module_ch->users_done()->where('users.id', $student->id)->first());
+                if($module_ch->users_done()->where('users.id', $student->id)->first() == NULL){
+                    $challenges_results[$challenge->id] = FALSE;
+                }
+            }
+           
+        }
+        // var_dump($challenge_done);
+        $challenge_done = [];
+        foreach($challenges_results as $challenge_key => $status){
+            if($status == true){
+                $challenge_done[] = $challenge_key;
+                $student->challenges()->where('challenge_id', $challenge_key)->update(
+                    [
+                        'users_challenges.status' => 1
+                    ]
+                );
+                
+            }else{
+                $student->challenges()->where('challenge_id', $challenge_key)->update(
+                    [
+                        'users_challenges.status' => 0
+                    ]
+                );
+            }
+        }
+        return $challenge_done;
+        
     }
 
     

@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Module', 'users_modules')->withPivot('status');
     }
 
+    public function modules_done()
+    {
+         return $this->belongsToMany('App\Module', 'users_modules')->wherePivot('status', '>' , 0);
+    }
+
     public function classroom()
     {
          return $this->belongsTo('App\Classroom');

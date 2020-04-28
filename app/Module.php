@@ -20,8 +20,13 @@ class Module extends Model
     {
         return $this->belongsToMany('App\User', 'users_modules')->withPivot('status')->withTimestamps();
     }
+   
+    public function users_done()
+    {
+        return $this->belongsToMany('App\User', 'users_modules')->withPivot('status')->withTimestamps()->wherePivot('status', '=' , 3);
+    }
 
-    public function challenge()
+    public function challenges()
     {
         return $this->belongsToMany('App\Challenge', 'challenges_modules');
     }

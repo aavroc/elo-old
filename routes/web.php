@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('admin');
+    Route::get('students/openChallenge', 'AdminController@openChallenge')->name('students.openChallenge')->middleware('admin');
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');

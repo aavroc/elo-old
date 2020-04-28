@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Challenge;
 use App\Classroom;
 use App\Module;
 use App\User;
@@ -50,11 +51,13 @@ class ClassroomController extends Controller
     public function reset_levels(Classroom $classroom, Request $request)
     {
         $options = $request->basic_modules;
-        // dd($options);
+        
 
         $modules = Module::all();
+        $challenges = Challenge::all();
+
         foreach($classroom->students as $student){
-            foreach($modules as $module){
+            foreach($modules as $module){//reset all modules per user
                 
                 if(in_array($module->id, $options)){
                     DB::table('users_modules')->updateOrInsert(
@@ -92,6 +95,22 @@ class ClassroomController extends Controller
     
                     );
                 }
+            }
+
+            foreach($challenges as $challenge){ //reset all challenges per user
+                
+                DB::table('users_challenges')->updateOrInsert(
+                    [
+                        'user_id' => $student->id,
+                        'challenge_id' => $challenge->id,
+                    ],
+                    [
+                        
+                        'status' => 0,
+                    ]
+                );
+                    
+
             }
         }
         return redirect()->route('classrooms.show', $classroom);

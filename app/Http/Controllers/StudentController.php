@@ -142,13 +142,13 @@ class StudentController extends Controller
         //
     }
 
-    public function update_level(Request $request)
-    {
-        User::where('id', $request->student)->update(['level_id' => $request->level]);
+    // public function update_level(Request $request)
+    // {
+    //     User::where('id', $request->student)->update(['level_id' => $request->level]);
 
-        $msg = "The level of user with id " . $request->student . " has been changed to level " . $request->level;
-        return response()->json(array('msg' => $msg, 'level' => $request->level), 200);
-    }
+    //     $msg = "The level of user with id " . $request->student . " has been changed to level " . $request->level;
+    //     return response()->json(array('msg' => $msg, 'level' => $request->level), 200);
+    // }
 
     public function check_assignment_status(Request $request)
     {
