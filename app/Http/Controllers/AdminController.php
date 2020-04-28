@@ -268,21 +268,36 @@ class AdminController extends Controller
         $github = new GitHub();
 
         $user_events = null;
+        $repo_commits = [];
         if ($user->github_nickname != null) {
-            $user_events = $github->get_user_events($user->github_nickname);
+            $user_events  = $github->get_user_events($user->github_nickname);
+            
+            foreach ($all_modules as $module) {
+                $repo_commits[$module->slug] = $github->list_user_commits($module->slug, $user->github_nickname, $user->github_nickname);
+                
+            }
+            // dd($repo_commits);
+            
         }
+
+        
+
+        // dd($user_events);
 
 
 
         $data = [
-            'user'          => $user,
-            'all_modules'   => $all_modules,
-            'all_challenges'   => $all_challenges,
-            'user_events'   => $user_events
+            'user'           => $user,
+            'all_modules'    => $all_modules,
+            'all_challenges' => $all_challenges,
+            'user_events'    => $user_events,
+            'repo_commits'   => $repo_commits
         ];
 
         return view('users.show', $data);
     }
+
+    
 
     //laat de moduels uit de db zien op het scherm
     public function show_module(User $user, Module $module, Request $request)

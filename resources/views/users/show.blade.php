@@ -203,48 +203,57 @@ Gebruiker
     <div class="row">
         <div class="col-lg-6">
             @if($user->role == 3)
-            <div class="card m-b-30"><!-- commits card -->
                 <div class="card-body">
-                    <div class="m-b-10">
-                        <h6>Last pushed commits</h6>
-                    </div>
-                    {{-- {{dd($user_events)}} --}}
-                    @if(is_array($user_events))
-                    <div class="table-responsive">
-                        <table id="data-moduletable" class="display table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Module</th>
-                                    <th>Commit on github</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($user_events as $event)
-                                @if($event->type == "PushEvent")
-                                    @foreach($event->payload->commits as $commit)
-                                        @php $module = explode('/', $event->repo->name)[1]; @endphp
-                                        <tr>
-                                            <td>
-                                                <a href="{{route('users.repo', ['user'=> $user, 'module'=> $module])}}" class="card-link">{{$module}}</a>
-                                            </td>
-                                            <td>
-                                                <a href="https://github.com/{{$event->repo->name}}/commit/{{$commit->sha}}" target="_blank">{{$commit->message}}</a>
-                                            </td>
-                                        </tr>
+                    <div class="card m-b-30">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title text-black">Commits</h5>
+                            <h6 class="card-subtitle">Bekijk de gemaakte commits</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="col-3">
+                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    @foreach($all_modules as $key => $module)
+                                        <a class="nav-link @if($key == 0) active @endif" id="v-pills-{{$module->slug}}-tab" data-toggle="pill" href="#v-pills-{{$module->slug}}" role="tab" aria-controls="v-pills-{{$module->slug}}" aria-selected="false">{{$module->name}}</a>
                                     @endforeach
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </div>
+                              </div>
+                              <div class="col-9">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    {{-- {{dd($repo_commits)}} --}}
+                                    @foreach($repo_commits as $module_slug => $commit_arr)
+                                    <div class="tab-pane fade @if($module_slug == 'php-basic') show active @endif" id="v-pills-{{$module_slug}}" role="tabpanel" aria-labelledby="v-pills-{{$module_slug}}-tab">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Commit bericht</th>
+                                                    <th>Datum</th>
+                                                    <th>Commit Sha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                @if(is_array($commit_arr))
+                                                @foreach($commit_arr as $item)
+                                                <tr>
+                                                    <td>{{$item->commit->message}}</td>
+                                                    <td>{{$item->commit->committer->date}}</td>
+                                                    <td><a href="{{$item->html_url}}" target="_blank">{{Str::substr($item->sha, 0, 7)}}...</a></td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>  
+                                    @endforeach
+                                  
+                                  
+                                </div>
+                              </div>
+                            </div> 
+                        </div>
                     </div>
-                    @else
-                    <p>No events recored yet</p>
-                    <div class="col-lg-6">
-                        <h4>gebruiker: {{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h4>
-                    </div>
-                    @endif
                 </div>
-            </div><!--end commits card -->
             @endif
         </div>
         <div class="col-lg-6">

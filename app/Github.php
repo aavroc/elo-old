@@ -166,14 +166,24 @@ class GitHub
         return $this->get_request_json_secured($url);
     }
 
+    public function get_user_repo_events($user = null, $repo = '' )
+    {
+        if ($user == null) {
+            $user = $this->owner;
+        }
+
+        $url = 'https://api.github.com/users/' . $user .'/'. $repo . '/events';
+        return $this->get_request_json_secured($url);
+    }
+
   
     public function fork($repo = '')
     {
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo . '/forks'; // fork this repo
-        // dd($url);
-        // dd($this->post_request($url));
         return $this->post_request($url);
     }
+
+    
 
     public function retrieve_tasks(){
         $modules = Module::all();
