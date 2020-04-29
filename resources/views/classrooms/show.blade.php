@@ -45,16 +45,17 @@ Klassen
 
      <!-- Start XP Row -->
      <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">{{$classroom->name}} - Module Overzicht</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table-sm">
-                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
+                        <table id="xp-default-datatable" class="display table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                                 @foreach($modules as $module)
@@ -64,6 +65,7 @@ Klassen
                             <tr>
                                 <th>Voornaam</th>
                                 <th>Achternaam</th>
+                                <th>Laatste inlog</th>
                                 @foreach($modules as $module)
                                 <th>{{$module->name}}</th>
                                 @endforeach
@@ -79,6 +81,17 @@ Klassen
                                 </td>
                                 <td>
                                     <a href="{{route('users.show',$user->id)}}">{{$user->lastname}}</a>
+                                </td>
+                                <td>
+                                    @if(isset($user->session))
+                                    <span class="text-success" role="alert">
+                                        {{\Carbon\Carbon::parse($user->session->last_activity)->format('d-m-Y - H:i')}}
+                                    </span>
+                                    @else
+                                    <span class="text-danger" role="alert">
+                                        Nooit ingelogd geweest!
+                                    </span>
+                                    @endif
                                 </td>
                                 @foreach($modules as $module)
                                 <td>
@@ -97,106 +110,6 @@ Klassen
                                 </td>
                                 @endforeach
                             </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End XP Col -->
-        <div class="col-lg-4">
-            <div class="card m-b-30">
-                <div class="card-header bg-white">
-                    <h5 class="card-title text-black">{{$classroom->name}}</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="xp-default-datatable" class="display table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Voornaam</th>
-                                <th>Achternaam</th>
-                                <th>Laatste inlog</th>
-                                <th>Toon</th>
-                                @if(Auth::user()->role == 1)
-                                <th>Bewerk</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                            <tr>
-                                <td>
-                                    {{$user->firstname}}
-                                </td>
-                                <td>
-                                    {{$user->lastname}}
-                                </td>
-                                
-                                <td>
-                                    @if(isset($user->session))
-                                    <span class="text-success" role="alert">
-                                        {{$user->session->last_activity}}
-                                    </span>
-                                    @else
-                                    <span class="text-danger" role="alert">
-                                        Nooit ingelogd geweest!
-                                    </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{route('users.show', $user)}}" class=""><i class="mdi mdi-eyee"></i> toon</a>
-                                </td>
-                                @if(Auth::user()->role == 1)
-                                <td>
-                                <a href="{{route('users.edit', $user)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a>
-                                </td>
-                                @endif
-                            </tr>
-                            <script>
-                                $('input[type=radio][name=level_user_{{$user->id}}').change(function() {
-                                console.log(this.id);
-                                let level_id = $(this).attr('data-level');
-                                let student_id = $(this).attr('data-student');
-                                console.log(student_id);
-                                $.ajax({
-                                    method: "POST",
-                                    url: "/students/update_level",
-                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                    data: { 
-                                            'student': student_id, 
-                                            'level': level_id,
-                                        },
-                                    success: function(response){ // What to do if we succeed
-                                        console.log(response); 
-                                    },
-                                    error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                                        console.log(JSON.stringify(jqXHR));
-                                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                                    }
-                                })
-                                .done(function( msg ) {
-                                    var messageType = '';
-                                    if(msg.level == 1){
-                                        messageType = 'secondary';
-                                    }
-                                    if(msg.level == 2){
-                                        messageType = 'warning';
-                                    }
-                                    if(msg.level == 3){
-                                        messageType = 'success';
-                                    }
-                                    $("#message").html(
-                                        
-                                        '<div class="alert alert-'+messageType+'" role="alert">'+ msg.msg+'</div>'
-                                        
-                                    );
-                                });
-                            // Run code
-                            });
-                                                
-                            </script>
                             @endforeach
                             </tbody>
                         </table>
