@@ -42,7 +42,6 @@ Module: {{$module->name}}
                             <tr class="bg-secondary text-white">
                                 <th>Taak</th>
                                 <th>Onderwerp</th>
-                                <th>Check or not to check</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,16 +58,6 @@ Module: {{$module->name}}
                                     @foreach($content->tags as $tag) 
                                         {{$tag->name}}@if(!$loop->last){{','}} @endif
                                      @endforeach
-                                    </td>
-                                    <td>
-                                        @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp
-                                        @if(Auth::user()->role == 3 && is_object($user->tasks()->where('task_id', $content->id)->first()))
-                                            <i class="{{$stats[$user->tasks()->where('task_id', $content->id)->first()->pivot->evaluation][1]}}"></i>
-                                            {{$stats[$user->tasks()->where('task_id', $content->id)->first()->pivot->evaluation][0]}}
-                                        @else
-                                            <i class="mdi mdi-play"></i>
-                                            Nog niet begonnen
-                                        @endif
                                     </td>
                                 </tr>
 
