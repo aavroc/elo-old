@@ -214,7 +214,7 @@ Gebruiker
                               <div class="col-3">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     @foreach($all_modules as $key => $module)
-                                        <a class="nav-link @if($key == 0) active @endif" id="v-pills-{{$module->slug}}-tab" data-toggle="pill" href="#v-pills-{{$module->slug}}" role="tab" aria-controls="v-pills-{{$module->slug}}" aria-selected="false">{{$module->name}}</a>
+                                        <a class="nav-link @if($key == 0) active @endif" id="v-pills-{{$module->slug}}-tab" data-toggle="pill" href="#c-pills-{{$module->slug}}" role="tab" aria-controls="v-pills-{{$module->slug}}" aria-selected="false">{{$module->name}}</a>
                                     @endforeach
                                 </div>
                               </div>
@@ -222,7 +222,7 @@ Gebruiker
                                 <div class="tab-content" id="v-pills-tabContent">
                                     {{-- {{dd($repo_commits)}} --}}
                                     @foreach($repo_commits as $module_slug => $commit_arr)
-                                    <div class="tab-pane fade @if($module_slug == 'php-basic') show active @endif" id="v-pills-{{$module_slug}}" role="tabpanel" aria-labelledby="v-pills-{{$module_slug}}-tab">
+                                    <div class="tab-pane fade @if($module_slug == 'php-basic') show active @endif" id="c-pills-{{$module_slug}}" role="tabpanel" aria-labelledby="v-pills-{{$module_slug}}-tab">
                                         <table class="table">
                                             <thead>
                                                 <tr>
