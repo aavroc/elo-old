@@ -78,16 +78,6 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -97,58 +87,6 @@ class StudentController extends Controller
     {
         //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $student)
-    {
-        // $exercises     = $student->exercises;
-        // $all_exercises = Exercise::all();
-        // $all_levels    = Level::all();
-
-        // $data = [
-        //     'exercises'     => $exercises,
-        //     'user'          => $student,
-        //     'all_exercises' => $all_exercises,
-        //     'all_levels'    => $all_levels,
-        // ];
-        // return view('users.show', $data);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    // public function update_level(Request $request)
-    // {
-    //     User::where('id', $request->student)->update(['level_id' => $request->level]);
-
-    //     $msg = "The level of user with id " . $request->student . " has been changed to level " . $request->level;
-    //     return response()->json(array('msg' => $msg, 'level' => $request->level), 200);
-    // }
 
     public function check_assignment_status(Request $request)
     {
