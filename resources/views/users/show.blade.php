@@ -64,25 +64,111 @@ Gebruiker
                         <table id="xp-default-datatable" class="display table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>Omschrijving</th>
-                            <th>Link</th>
                             <th>Type</th>
-                            <th>Datum</th>
+                            <th>Opmerkingen</th>
+                            <th>Link</th>
                             <th>Status</th>
                             <th>Bekeken door</th>
-                            <th>Opmerkingen</th>
-                            <th>Bewerk</th>
+                            <th>Datum</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <td>omschrijving</td>
-                            <td>link naar taak</td>
-                            <td>assistentie, nakijken, overig</td>
-                            <td>datum en tijd</td>
-                            <td>open, closed</td>
-                            <td>naam docent</td>
-                            <td>opmerkingen docent</td>
-                            <td><a href="#" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
+                            @isset($user->verzoeken)
+                            @foreach($user->verzoeken->sortBy('updated_at') as $request)
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal-request{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-request{{$request->id}}Title" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal-request{{$request->id}}Title">Verzoek vraag</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>{{$request->extra}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <tr data-status="type{{$request->status}}">
+                    
+                                    @switch($request->type)
+                                    
+                                    @case(1)
+                                        <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag : </span>
+                                        <!-- Button trigger modal -->
+                                        <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                        <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                        </button></td>                                                          
+                                        <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
+                                    @break
+
+                                    @case(2)
+                                        <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> modulegesprek :</span>
+                                        <!-- Button trigger modal -->
+                                        <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                        <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                        </button></td>                                                         
+                                        <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
+                                    @break
+
+                                    @case(3)
+                                        <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek :</span>
+                                        <!-- Button trigger modal -->
+                                        <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                        <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                        </button></td>                                                        
+                                        <td><a href="#">coachgesprek</a></td>
+                                    @break
+
+                                    @case(4)
+                                        <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop : </span>
+                                        <!-- Button trigger modal -->
+                                        <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                        <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                        </button></td>                                                        
+                                        <td><a href="#">workshop</a></td>                     
+                                    @break                                                  
+
+                                    @default
+                                        <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ? : </span>
+                                        <!-- Button trigger modal -->
+                                        <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-request{{$request->id}}">
+                                        <i class="mdi mdi-comment-eye"> bekijk</i></td>
+                                        </button></td>                                                        
+                                        <td><a href="#">lege aanvraag</a></td>  
+                                    @endswitch
+                                    
+                                    <td>
+                                        @if($request->status == 1)
+                                            <h6><span class="badge badge-danger"> open </span></h6>
+                                        @elseif($request->status == 2)
+                                            <h6><span class="badge badge-warning"> in behandeling </span></h6>
+                                        @elseif($request->status == 3)
+                                            <h6><span class="badge badge-success"> voltooid </span></h6>
+                                        @else
+                                            <h6><span class="badge badge-danger"> open </span></h6>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($request->status == 1)
+                                        nog niet toegewezen
+                                        @else
+                                            @isset($usernameByID[$request->docent_id])
+                                                {{$usernameByID[$request->docent_id]}}
+                                            @endisset
+                                        @endif
+                                    </td>
+                                    <td>{{\Carbon\Carbon::parse($request->updated_at)->format('d-m-Y |  H:i')}}</td>
+    
+                                </tr>
+
+                            @endforeach
+                            @endisset
                         </tbody>
                         </table>
                     </div> <!-- end table responsive -->
