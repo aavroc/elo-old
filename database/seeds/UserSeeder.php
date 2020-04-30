@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Generator as Faker;
 
 class UserSeeder extends Seeder
 {
@@ -61,5 +62,14 @@ class UserSeeder extends Seeder
             'user_id' => 4,
             'module_id' => 1,
         ]);
+
+        //Add random users for testing
+        if (app()->environment() !== 'production'){
+            factory(App\User::class, 10)->create();
+        }
+
+
+
+
     }
 }
