@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('admin');
+    Route::post('students/update_skill', 'AdminController@update_skill')->name('students.update_skill')->middleware('admin');
     Route::get('students/openChallenge', 'AdminController@openChallenge')->name('students.openChallenge')->middleware('admin');
 
     //Classrooms
@@ -76,6 +77,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tags/{tag}', 'TagController@edit')->name('tags.edit')->middleware('teacher'); // Wijzig een tagnaam
     Route::put('tags/{tag}/update', 'TagController@update')->name('tags.update')->middleware('teacher'); // Update een tag
     Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); // Verwijder een tag
+
+    //Skills
+    Route::get('skills', 'SkillController@index')->name('skills.index')->middleware('teacher'); // Overzicht van alle tags
+    Route::get('skills/create', 'SkillController@create')->name('tags.create')->middleware('teacher'); // Maak een tag aan
+    Route::post('skills', 'SkillController@store')->name('skills.store')->middleware('teacher'); // Sla de tag op
+    Route::get('skills/{skill}', 'SkillController@edit')->name('skills.edit')->middleware('teacher'); // Wijzig een tagnaam
+    Route::put('skills/{skill}/update', 'SkillController@update')->name('skills.update')->middleware('teacher'); // Update een tag
+    Route::delete('skills/{skill}/delete', 'SkillController@delete')->name('skills.delete')->middleware('teacher'); // Verwijder een tag
+     
      
     
 

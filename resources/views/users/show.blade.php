@@ -402,6 +402,46 @@ Gebruiker
             @endif
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @if($user->role == 3)
+            <div class="card m-b-20">
+                <div class="card-header bg-white">
+                    <h5 class="card-title">Skills</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th><a data-toggle="popover" data-placement="top" title="Bekwaamheid" data-content="Bekwaamheid">Bekwaamheid</a></th>
+                                    <th>Interesse</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user->skills as $skill)
+                                    <tr>
+                                        <td>
+                                            {{$skill->name}}
+                                        </td>
+                                        <td>
+                                            <input type="number" name="level_{{$skill->id}}" id="level_{{$skill->id}}" value="{{$skill->pivot->level}}" class="form-control skills" min="0"  max="4" >
+                                        </td>
+                                        <td>
+                                            <input type="number" name="interest_{{$skill->id}}" id="interest_{{$skill->id}}" value="{{$skill->pivot->interest}}" class="form-control skills" min="0" max="1">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div><!-- End TABLE RESPONSIVE -->
+                </div> <!-- End card body -->
+                
+            </div> <!-- end card -->
+            @endif
+        </div><!-- End XP Col -->
+    </div>
     
 </div><!-- End XP Contentbar -->
 
@@ -411,6 +451,38 @@ Gebruiker
 @section('script')
 
 <script>
+    $('.skills').change(function() {
+        
+        let value = $(this).val();
+        let id = $(this).attr('id');
+        let name = id.split("_")[0];
+        let number = id.split("_")[1];
+   
+
+        $.ajax({
+            method: "POST",
+            url: "/students/update_skill",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: { 
+                    'student': {{$user->id}}, 
+                    'attribute_name': name,
+                    'attribute_number': number,
+                    'value': value
+                },
+            success: function(response){ // What to do if we succeed
+                // console.log(response); 
+            },
+            error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                // console.log(JSON.stringify(jqXHR));
+                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+            }
+        })
+        .done(function( msg ) {
+           
+           
+            
+        });
+    });
     //handle module radio buttons
     $('input[type=radio]').change(function() {
         var trID = $(this).closest('tr').attr('id'); // table row ID 

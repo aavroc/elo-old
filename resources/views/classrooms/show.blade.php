@@ -120,6 +120,67 @@ Klassen
         <!-- End XP Col -->
     </div>
     <!-- End XP Row -->
+
+      <!-- Start XP Row -->
+      <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-b-30">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-black">{{$classroom->name}} - Skills Overzicht</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive table-sm">
+                        <table id="xp-default-datatable" class="display table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                @foreach($users as $user)
+                                <th colspan="2" style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></th>
+                                @endforeach
+                                
+                            </tr>
+                            <tr>
+                                <th>Werkprocessen</th>
+                                @foreach($users as $user)
+                                <th style="text-align:center;font-size:12px;" ><a href="#" data-toggle="tooltip" data-placement="top" title="Bekwaamheid" data-content="Bekwaamheid">B</a></th>
+                                <th style="text-align:center;font-size:12px;" ><a href="#" data-toggle="tooltip" data-placement="top" title="Interesse" data-content="Interesse">I</a></th>
+                                @endforeach
+                                
+                            </tr>
+                            
+                        </thead> 
+                        <tbody>
+                            @foreach ($skills as $skill)
+                            <tr>
+                                <td style="width:200px">
+                                    <a href="{{route('skills.edit',$skill->id)}}">{{$skill->name}}</a>
+                                </td>
+                                @foreach ($skill->users as $usr)
+                                    @php $level_number = $usr->skills()->where('skill_id', $skill->id)->where('user_id', $usr->id)->first()->pivot->level; @endphp
+                                    @php $interest_number = $usr->skills()->where('skill_id', $skill->id)->where('user_id', $usr->id)->first()->pivot->interest; @endphp
+                                
+                                <td  style="text-align:center;"  class="@if($level_number <=1 ) bg-danger @elseif($level_number == 2) bg-warning @elseif($level_number >=3 ) bg-success @endif">
+                                    
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="@if($level_number ==0 ) Onbekwaam @elseif($level_number == 1) Knows @elseif($level_number ==2 ) Knows How @elseif($level_number == 3 ) Shows How @elseif($level_number == 4 ) Does @endif" >{{$level_number}}</a>
+                                    
+                                </td>
+                                <td  style="text-align:center;" class="@if($interest_number ==0 ) bg-danger @elseif($interest_number == 1) bg-success  @endif">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="@if($interest_number ==0 ) Heeft geen interesse @elseif($interest_number == 1) Is geinteresseerd @endif" >{{$interest_number}}</a>
+                                    
+                                    
+                                </td>
+                                @endforeach
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End XP Col -->
+    </div>
+    <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
 @endsection
