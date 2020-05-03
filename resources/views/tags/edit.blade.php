@@ -7,6 +7,7 @@ Toon Tags
 @section('rightbar-content')
 
 
+
 <h4>Edit Tag</h4>
 <!-- Start XP Breadcrumbbar -->                    
 <div class="xp-breadcrumbbar text-center">
