@@ -232,8 +232,8 @@ class AdminController extends Controller
         $user->email = $request->email;
         
         $user->role = $request->type_gebruiker;
-        
-
+        $user->save();
+       
         if($user->role == 3){
             $user->classroom = 'LCTAO2020';
             $modules = Module::all();
@@ -250,6 +250,7 @@ class AdminController extends Controller
             }
         }
         $user->save();
+        dd($user);
 
         return redirect()->route('users.edit', $user);
     }
