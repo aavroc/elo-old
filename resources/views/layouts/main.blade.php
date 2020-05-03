@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="Booster is a Responsive Bootstrap & Laravel Admin Dashboard Template">
-        <meta name="keywords" content="admin, admin template, admin panel, dashboard template, laravel, ui kits, web app, crm, cms, responsive, bootstrap 4, html, sass support, scss">
-        <meta name="author" content="Themesbox">
+        <meta name="description" content="EagleDev is een online platform om het werk van studenten via github te volgen">
+        <meta name="keywords" content="github, platform, coderen, php, volgsysteem, modules">
+        <meta name="author" content="Opleiding software development - ROC van Amsterdam - College Amstelland">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title> @yield('title') </title>
