@@ -19,4 +19,7 @@ return [
     'token' => 'Wachtwoord reset token is onjuist.',
     'user' => 'We kunnen geen gebruiker vinden met dat e-mail adres.',
     'sentLink' => 'Verstuur wachtwoord reset link',
+    'email' => 'Emailadres',
+    'resetTitle' => 'Reset je wachtwoord hier',
+    'confirmTitle' => 'Bevestig Wachtwoord',
 ];
