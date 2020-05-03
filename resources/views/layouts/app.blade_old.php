@@ -72,7 +72,6 @@
                     <div class="modal-body">
                         Je bent nog niet aangemeld bij GitHub. Doe dit nog even via onderstaande knop. 
                         Doe je het niet dan gaat het universum imploden
-                        
                     </div>
                     <div class="modal-footer">
                     @auth

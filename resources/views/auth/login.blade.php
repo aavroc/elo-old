@@ -25,7 +25,7 @@ Booster - Login
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                     <div class="text-center mb-3">
-                                        <h4 class="text-black">{{ __('Login') }}</h4> 
+                                        <h4 class="text-black">{{ __('auth.logintitle') }}</h4> 
                                     </div>                  
                                     <div class="form-group">
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -47,16 +47,16 @@ Booster - Login
                                         <div class="form-group col-6">
                                             <div class="custom-control custom-checkbox">
                                               <input type="checkbox" class="custom-control-input" id="rememberme">
-                                              <label class="custom-control-label" for="rememberme">{{ __('Remember Me') }}</label>
+                                              <label class="custom-control-label" for="rememberme">{{ __('auth.remember') }}</label>
                                             </div>                                
                                         </div>                  
                                   <button type="submit" class="btn btn-primary btn-rounded btn-lg btn-block">
-                                    {{ __('Login') }}
+                                    {{ __('auth.loginbtn') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                        {{ __('auth.forgot') }}
                                     </a>
                                 @endif
                                 </form>
