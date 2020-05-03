@@ -618,6 +618,28 @@ class AdminController extends Controller
         
     }
 
+    public function update_skill(Request $request)
+    {
+        $student = User::find($request->student);
+        if($request->attribute_name == 'level'){
+           $student->skills()->where('skill_id', $request->attribute_number)->update(
+                [
+                    'users_skills.level' => $request->value
+                ]
+            );
+        }
+        elseif($request->attribute_name == 'interest'){
+            $student->skills()->where('skill_id', $request->attribute_number)->update(
+                [
+                    'users_skills.interest' => $request->value
+                ]
+            );
+        }
+
+        
+
+    }
+
     
 
     

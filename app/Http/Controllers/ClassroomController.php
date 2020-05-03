@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Challenge;
 use App\Classroom;
 use App\Module;
+use App\Skill;
 use App\User;
 use App\Task;
 use Illuminate\Http\Request;
@@ -34,7 +35,9 @@ class ClassroomController extends Controller
     public function show(Classroom $classroom)
     {
         $modules = Module::all();
+        $skills = Skill::all();
         $users  = User::where([['status_id', '!=', 0], ['role', 3], ['classroom', $classroom->name]])->get();
+        
 
         // dd($exercises);
 
@@ -42,6 +45,7 @@ class ClassroomController extends Controller
             'users'               => $users,
             'classroom'           => $classroom,
             'modules'             => $modules,
+            'skills'             => $skills,
             'number_of_exercises' => Task::count()
         ];
 
@@ -55,8 +59,9 @@ class ClassroomController extends Controller
 
         $modules = Module::all();
         $challenges = Challenge::all();
+        $skills = Skill::all();
 
-        foreach($classroom->students as $student){
+        foreach($classroom->students as $student){//loop door alle studenten van deze klas
             foreach($modules as $module){//reset all modules per user
                 
                 if(in_array($module->id, $options)){
@@ -109,9 +114,22 @@ class ClassroomController extends Controller
                         'status' => 0,
                     ]
                 );
-                    
-
             }
+            
+            foreach($skills as $skill){
+                DB::table('users_skills')->updateOrInsert(
+                    [
+                        'user_id' => $student->id,
+                        'skill_id' => $skill->id
+                    ],
+                    [
+                        'level' => 0,
+                        'interest' => 0
+                    ]
+                );
+            }
+
+            
         }
         return redirect()->route('classrooms.show', $classroom);
     }

@@ -76,5 +76,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Task', 'users_tasks')->withPivot('evaluation')->withTimestamps();
     }
+
+    public function skills()
+    {
+        return $this->belongsToMany('App\Skill', 'users_skills')->withPivot('level')->withPivot('interest')->withTimestamps();
+    }
     
 }
