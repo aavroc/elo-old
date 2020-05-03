@@ -1,5 +1,5 @@
 @section('title') 
-Booster - Login
+Login
 @endsection
 @extends('layouts.main')
 @section('style')
