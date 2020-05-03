@@ -1,5 +1,5 @@
 @section('title') 
-Overicht: {{$user->firstname}} {{$user->lastname}}
+Overzicht: {{$user->firstname}} {{$user->lastname}}
 @endsection
 @extends('layouts.main')
 @section('style')
