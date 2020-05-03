@@ -78,3 +78,7 @@ a:focus.btn-module  {
 }
 
 .click-row { cursor: pointer; }
+
+.form-control {
+    background-color: #dee2e6;
+}
