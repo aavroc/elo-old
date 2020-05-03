@@ -15,5 +15,8 @@ return [
 
     'failed' => 'Deze gegevens zijn onjuist.',
     'throttle' => 'Te vaak geprobeerd. Wacht nog :seconds seconden.',
-
+    'logintitle' => 'Login',
+    'remember' => 'Onthoud mij',
+    'forgot' => 'Wachtwoord vergeten?',
+    'loginbtn' => 'Inloggen',
 ];
