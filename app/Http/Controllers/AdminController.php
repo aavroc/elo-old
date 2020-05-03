@@ -250,7 +250,6 @@ class AdminController extends Controller
             }
         }
         $user->save();
-        dd($user);
 
         return redirect()->route('users.edit', $user);
     }
