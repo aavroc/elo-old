@@ -1,5 +1,5 @@
 @section('title') 
-Bekijk Gebruiker
+Overicht: {{$user->firstname}} {{$user->lastname}}
 @endsection
 @extends('layouts.main')
 @section('style')
