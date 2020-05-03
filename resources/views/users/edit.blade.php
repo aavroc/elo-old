@@ -1,5 +1,5 @@
 @section('title') 
-Booster - Form Layouts
+Wijzig gebruiker
 @endsection
 @extends('layouts.main')
 @section('style')

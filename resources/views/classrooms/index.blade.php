@@ -1,3 +1,6 @@
+@section('title') 
+Klassenoverzicht
+@endsection
 @extends('layouts.main')
 
 @section('content')

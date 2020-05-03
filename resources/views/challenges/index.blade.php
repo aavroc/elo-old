@@ -1,5 +1,5 @@
 @section('title') 
-Gebruiker
+Challenges
 @endsection
 @extends('layouts.main')
 @section('style')

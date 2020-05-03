@@ -1,5 +1,5 @@
 @section('title') 
-Klassen
+Klas:  {{$classroom->name}}
 @endsection
 @extends('layouts.main')
 @section('style')

@@ -1,5 +1,5 @@
 @section('title') 
-Module: {{$challenge->name}}
+Wijzig challenge: {{$challenge->name}}
 @endsection
 @extends('layouts.main')
 @section('style')

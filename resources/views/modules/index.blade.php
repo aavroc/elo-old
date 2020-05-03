@@ -1,5 +1,5 @@
 @section('title') 
-Gebruiker
+Modules
 @endsection
 @extends('layouts.main')
 @section('style')

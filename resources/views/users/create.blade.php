@@ -1,3 +1,6 @@
+@section('title') 
+Maak gebruiker
+@endsection
 @extends('layouts.main')
 
 @section('content')

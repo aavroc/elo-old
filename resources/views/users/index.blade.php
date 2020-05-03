@@ -1,5 +1,5 @@
 @section('title') 
-Booster - Data Table
+Gebruikers
 @endsection
 @extends('layouts.main')
 @section('style')
