@@ -22,6 +22,13 @@ Booster - Login
                                 <a href="index.html" class="xp-web-logo"><img src="{{asset('assets/images/logo.svg')}}" height="40" alt="logo"></a>
                             </h3>
                             <div class="p-3">
+
+                            @if (Auth::check())
+                                Je bent al ingelogd....wat doe je hier dan?
+                            @else
+    
+
+
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                     <div class="text-center mb-3">
@@ -61,6 +68,7 @@ Booster - Login
                                 @endif
                                 </form>
                             </div>
+                            @endif 
                         </div>
                     </div>
 
