@@ -42,9 +42,9 @@ class EigenResetWachtwoord extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->view(
-            'auth.emails.resetwachtwoord', ['token' => $this->token]
-        );
+        return (new MailMessage)->markdown(
+            'auth.emails.resetwachtwoord', ['token' => $this->token, 'firstname' => $notifiable->firstname]
+        )->subject('Je wachtwoord resetten - EagleDev')->from('support@eagledev.nl', 'EagleDev Support Team');
         
         // return (new MailMessage)
         //             ->greeting('Hallo ', $notifiable->firstname)
