@@ -90,6 +90,8 @@ class ModuleController extends Controller
 
     public function show_teacher( Module $module)
     {
+
+        
         $data = [
             'module' => $module,
             'modules' => Module::all(),
@@ -99,6 +101,26 @@ class ModuleController extends Controller
         if(Auth::user()->role <= 2){
             return view('modules.show-teacher', $data);
         }
+    }
+
+    public function eindopdracht(Module $module)
+    {
+        $github = new GitHub();
+        $opdracht = $github->get_specific_readme($module->slug,'opdracht');
+        
+        // dd($opdracht);
+        if(isset($opdracht->message)){
+            $readme_content = 'Deze opdracht moet nog gemaakt worden.';
+        }else{
+            $readme_content = base64_decode($opdracht->content);
+        }
+
+
+        $data = [
+            'module' => $module,
+            'readme_content' => $this->converter->convertToHtml($readme_content),
+        ];
+        return view('modules.show-end', $data);
     }
 
     //if the user is a student, fork the repo to the students github account

@@ -80,6 +80,7 @@ class GitHub
     {
 
         $url = 'https://api.github.com/repos/' . $this->owner . '/' . $repo  . '/contents/' . $path . '/README.md'; // get readme.md
+        // dd($url);
         return $this->get_request_json_secured($url);
     }
 

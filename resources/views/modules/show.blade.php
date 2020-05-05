@@ -86,11 +86,18 @@ Module: {{$module->name}}
                 </div> <!-- end card -->
             </div><!-- End XP Col -->
              <!-- Start XP Col -->
-        <div class="col-md-12 col-lg-12 col-xl-5">
+        <div class="col-md-12 col-lg-12 col-xl-5 mb-4">
             <div class="card m-b-30 border-info">
             <div class="card-header bg-info">
-                <h5 class="card-title text-white">Over deze module</h5>
-                <h6 class="card-subtitle text-white">waar gaat de module {{$module->name}} over</h6>
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="card-title text-white">Over deze module</h5>
+                        <h6 class="card-subtitle text-white">waar gaat de module {{$module->name}} over</h6>
+                    </div>
+                    <div class="col-4">
+                        <a href="{{route('modules.eindopdracht', $module->slug)}}" class="btn btn-warning">Module Eindopdracht</a>
+                    </div>
+                </div>
             </div>
                 <div class="card-body module-readme readme-txt">
                 @isset($readme_content)
@@ -98,6 +105,7 @@ Module: {{$module->name}}
                 @endisset
                 </div>
             </div> 
+              
         </div>
         <!-- End XP Col -->
     </div>
