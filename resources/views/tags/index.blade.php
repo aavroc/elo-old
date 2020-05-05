@@ -74,8 +74,11 @@ Toon Tags
                 @csrf
                 <div class="form-group">
                     <label for="tag">Tag naam</label>
-                    <input type="text" class="form-control" id="tag" name="tag">
+                    <input type="text" class="form-control" id="tag" name="name">
                     </div>
+                    @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 <button type="submit" class="btn btn-primary">Maak Tag</button>
                 </form>
                 </div>

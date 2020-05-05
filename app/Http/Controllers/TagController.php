@@ -41,6 +41,11 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required|unique:tags|max:255',
+        ]);
+
         $tag = new Tag();
         $tag->name = $request->tag;
         $tag->save();
