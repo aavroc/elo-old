@@ -30,9 +30,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}/module/{module}/task/{path?}', 'AdminController@show_task')->where('path', '.*')->name('users.task')->middleware('teacher'); //docent mag gebruiker details bekijken
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
-    Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('admin');
-    Route::post('students/update_skill', 'AdminController@update_skill')->name('students.update_skill')->middleware('admin');
-    Route::get('students/openChallenge', 'AdminController@openChallenge')->name('students.openChallenge')->middleware('admin');
+    Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('teacher');
+    Route::post('students/update_skill', 'AdminController@update_skill')->name('students.update_skill')->middleware('teacher');
+    Route::get('students/openChallenge', 'AdminController@openChallenge')->name('students.openChallenge')->middleware('teacher');
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
