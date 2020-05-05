@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Module;
+use App\UsersRequest;
 
 class TeacherController extends Controller
 {
@@ -20,7 +21,6 @@ class TeacherController extends Controller
 
     public function dashboard()
     {
-
         $users = User::where(
             [
                 ['role', 3],
@@ -29,15 +29,33 @@ class TeacherController extends Controller
             ]
         )->get();
 
+        $requests = UsersRequest::where('status', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
+        $taken_requests = UsersRequest::where('type', '=' , 1)->where(
+                [
+                    ['status', '!=' , 4],
+                ]
+                )->with('task')->get();
+
+        
+        
+        $usernameByID = User::pluck('lastname', 'id');
+        $task_requests = $requests->pluck('task');
+        $counted_tasks = $taken_requests->pluck('task_id')->countBy()->toArray();
         $modules = Module::all();
-
-
+                // dd($usernameByID );
+        // dd($taken_requests);
         $data = [
             'users' => $users,
-
             'modules' => $modules,
+            'requests' => $requests,
+            'usernameByID' => $usernameByID,
+            'task_requests' => $task_requests,
+            'counted_tasks' => $counted_tasks,
+            'taken_requests' => $taken_requests,
+            // 'results' => $this->calculateChallengeResults(),
 
         ];
+        
         return view('dashboards.teacher', $data);
 
         
