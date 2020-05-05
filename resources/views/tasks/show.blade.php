@@ -120,5 +120,9 @@ Booster - Starter
 <!-- End XP Contentbar -->
 @endsection
 @section('script')
-
+    <script>
+        let url = $('img[alt="Eindresultaat"]').attr('src');
+        console.log(url);
+        $('img[alt="Eindresultaat"]').attr('src', url+'?raw=true')
+    </script>    
 @endsection
