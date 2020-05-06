@@ -35,7 +35,13 @@ Dashboard
                                 }
                             }
                             $levelStatus = $user->modules()->where('module_id', $module->id)->first()->pivot->status;
-
+                            // dd($user->tasks_done()->where('module_id',$module->id)->count());
+                            $tasks_done = $user->tasks_done()->where('module_id',$module->id)->count();
+                            $total_tasks = $module->tasks()->count();
+                            $progress = $tasks_done / $total_tasks;
+                            $percent = round(    (float)$tasks_done / $total_tasks * 100 );
+                            // dd($percent);
+                            
                             foreach($names as $name => $tag) {
 
                                 $separator = count( $names );
@@ -50,7 +56,12 @@ Dashboard
                             <div class="col-xl-3 m-b-10">
                                
                                     @if($levelStatus == 1 )
-                                    <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="btn btn-outline-success btn-lg btn-module f-w-7 border-success" data-toggle="tooltip" data-placement="bottom" title="OPEN - onderwerpen: {{$tooltip}}" >{{$module->name}} (#/#) <i class="mdi mdi-arrow-right-drop-circle"></i></a>
+                                    <a href="{{route('modules.show', ['module'=> $module->slug ])}}" class="btn btn-outline-success btn-lg btn-module f-w-7 border-success" data-toggle="tooltip" data-placement="bottom"   title="OPEN - onderwerpen: {{$tooltip}}" >{{$module->name}} ({{$tasks_done}}/{{$total_tasks}}) <i class="mdi mdi-arrow-right-drop-circle"></i>
+                                        <div class="progress m-b-30" style="height: 20px;">
+                                            <div class="progress-bar @if($percent <25) bg-danger @elseif($percent >= 25 && $percent <50) bg-warning @elseif($percent >= 50 && $percent <70) bg-info @else bg-success @endif " role="progressbar" style="padding:5px; width: {{$percent}}%" aria-valuenow="{{$percent}}" aria-valuemin="0" aria-valuemax="100">{{$percent}}%</div>
+                                        </div>
+                                    </a>
+                                   
                                     @elseif($levelStatus == 0 )
                                     <a href="#" class="btn alert-danger btn-lg btn-module f-w-3" data-toggle="tooltip" data-placement="bottom" title="GEEN TOEGANG - onderwerpen: {{$tooltip}}">{{$module->name}} <i class="mdi mdi mdi-close-circle"></i> </a>
                                     @else
