@@ -38,9 +38,14 @@ Dashboard
                             // dd($user->tasks_done()->where('module_id',$module->id)->count());
                             $tasks_done = $user->tasks_done()->where('module_id',$module->id)->count();
                             $total_tasks = $module->tasks()->count();
-                            $progress = $tasks_done / $total_tasks;
-                            $percent = round(    (float)$tasks_done / $total_tasks * 100 );
-                            // dd($percent);
+                            if($total_tasks != 0){
+                                $progress = $tasks_done / $total_tasks;
+                                $percent = round(    (float)$tasks_done / $total_tasks * 100 );
+                            }
+                            else{
+                                $percent = 0;
+                            }
+                            
                             
                             foreach($names as $name => $tag) {
 
