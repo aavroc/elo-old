@@ -50,26 +50,7 @@ class TaskController extends Controller
         return view('tasks.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  
 
     /**
      * Display the specified resource.
@@ -80,12 +61,16 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $tags = Tag::all();
-
         $readme_content = base64_decode($task->readme);
-        $data['readme_content'] = $this->converter->convertToHtml($readme_content);
-        $data['tags'] = $tags;
-        $data['task'] = $task;
 
+        $data = [
+            'readme_content'  => $this->converter->convertToHtml($readme_content),
+            'tags'  =>  $tags,
+            'task'  =>  $task,
+            'user_task_evaluation'  =>  Auth::user()->tasks()->where('task_id', $task->id)->first()->pivot->evaluation,
+        ];
+
+        // dd($data['user_task_evaluation']);
 
         return view('tasks.show', $data);
     }

@@ -90,13 +90,13 @@ Booster - Starter
                 <form action="{{route('tasks.mark', ['task'=> $task])}}" method="post">
                         @csrf
                         <div class="form-check mt-3">
-                            <input class="form-check-input" type="radio" name="taak_status" id="busy" value="0" checked>
+                            <input class="form-check-input" type="radio" name="taak_status" id="busy" value="0" @if($user_task_evaluation == 0) checked @endif>
                             <label class="form-check-label" for="busy">
                               Ik ben nog met deze taak bezig
                             </label>
                         </div>
                         <div class="form-check mt-3">
-                            <input class="form-check-input" type="radio" name="taak_status" id="voldaan" value="1">
+                            <input class="form-check-input" type="radio" name="taak_status" id="voldaan" value="1" @if($user_task_evaluation == 1) checked @endif>
                             <label class="form-check-label" for="voldaan">
                               Ik heb deze taak afgerond en de taak is gepushed naar gitHub
                             </label>
