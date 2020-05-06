@@ -68,9 +68,10 @@ Module: {{$module->name}}
                                         @if(is_object($user->tasks()->where('task_id', $content->id)->first()))
                                             <i class="{{$stats[$user->tasks()->where('task_id', $content->id)->first()->pivot->evaluation][1]}}"></i>
                                             {{$stats[$user->tasks()->where('task_id', $content->id)->first()->pivot->evaluation][0]}}
-                                        @endif
+                                        @else
                                             <i class="mdi mdi-play"></i>
                                             Nog niet begonnen
+                                        @endif
                                     </td>
                                     @endif
                                 </tr>
