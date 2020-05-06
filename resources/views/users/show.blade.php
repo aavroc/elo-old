@@ -371,7 +371,13 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($module->tasks as $task)
+                                                @php $level = NULL; @endphp
+                                                @foreach($module->tasks->sortBy('level') as $key => $task)
+                                                @if($level != $task->level ) 
+                                                <tr>
+                                                <td colspan="2" class="bg-warning">{{$task->level}}</td>
+                                                </tr>
+                                                @endif
                                                 <tr>
                                                     <td>{{$task->name}}</td>
                                                     <td>
@@ -386,6 +392,12 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
 
                                                     </td>
                                                 </tr>
+                                                
+                                                @php
+                                                    
+                                                   $level = $task->level;
+                                                @endphp
+                                                
                                                 @endforeach
                                             </tbody>
                                         </table>
