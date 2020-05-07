@@ -18,9 +18,9 @@
                     @endif
                     <li><a href="{{route('challenges.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Challenges</span></a></li>
                     <li><a href="{{route('modules.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Modules</span></a></li>
-                    <li><a href="{{route('tasks.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Tasks</span></a></li>
+                    <li><a href="{{route('tasks.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Taken</span></a></li>
                     <li><a href="{{route('tags.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Tags</span></a></li>
-                    <li><a href="{{route('skills.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Skills</span></a></li>
+                    <li><a href="{{route('skills.index')}}"><i class="mdi mdi-view-dashboard"></i><span>Vaardigheden</span></a></li>
                   </ul>
                 </div>
             </nav>
