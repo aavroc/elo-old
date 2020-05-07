@@ -39,7 +39,7 @@ class SkillController extends Controller
         $skill->name = $request->skill;
         $skill->save();
 
-        for($x = 0 ; $x < 4; $x++){
+        for($x = 0 ; $x < 6; $x++){
             $ind = new Indicator();
             $skill->indicators()->save($ind);
 
