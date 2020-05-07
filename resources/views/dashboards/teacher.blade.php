@@ -1,19 +1,19 @@
-@section('title') 
+@section('title')
 Dashboard
 @endsection
 @extends('layouts.main')
 @section('style')
 
-@endsection 
+@endsection
 @section('rightbar-content')
-<!-- Start XP Breadcrumbbar -->                    
+<!-- Start XP Breadcrumbbar -->
 <div class="xp-breadcrumbbar text-center">
 </div>
 <!-- End XP Breadcrumbbar -->
-<!-- Start XP Contentbar -->    
+<!-- Start XP Contentbar -->
 <div class="xp-contentbar">
     <!-- Write page content code here -->
-    <!-- Start XP Row -->    
+    <!-- Start XP Row -->
     <div class="row">
         <!-- Start XP Col -->
         <div class="col-md-12 col-lg-12 col-xl-12">
@@ -22,7 +22,12 @@ Dashboard
             </div>
         </div>
         <!-- End XP Col -->
-        <!-- Start XP Col -->               
+        
+        {{-- show barchart --}}
+        @include('layouts.charts.chart')
+        @yield('content')
+
+        <!-- Start XP Col -->
         <div class="col-lg-4">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
@@ -70,12 +75,12 @@ Dashboard
             </div>
         </div>
         <!-- End XP Col -->
-    </div>   
     </div>
-    <!-- End XP Row -->  
+    </div>
+    <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
 @endsection
 @section('script')
 
-@endsection 
+@endsection
