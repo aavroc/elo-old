@@ -122,7 +122,7 @@ Klas:  {{$classroom->name}}
     <!-- End XP Row -->
 
       <!-- Start XP Row -->
-      <div class="row">
+      {{-- <div class="row">
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
@@ -134,35 +134,83 @@ Klas:  {{$classroom->name}}
                 <div class="card-body">
                     <div class="table-responsive table-sm">
                         <table id="xp-default-datatable" class="display table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                @foreach($users as $user)
-                                <th colspan="2" style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></th>
+                            <thead>
+                                @foreach ($skills as $skill)
+                                    <tr>
+                                        <th>
+                                            <a href="{{route('skills.edit',$skill->id)}}">{{$skill->name}}</a>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        @foreach($skill->indicators as $indicator)
+                                        <th>{{$indicator->name}}</th>
+                                        @endforeach
+                                    </tr>
                                 @endforeach
-                                
-                            </tr>
-                            <tr>
-                                <th>Werkprocessen</th>
+                                        
+                                        {{-- <th>
+                                            @php
+                                            //get current status
+                                            $docent_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent;
+                                            $student_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student;
+                                            @endphp
+                                            @if($docent_status == 0)
+                                                <span class="text-danger">Niet Voldaan</span>
+                                            @elseif($docent_status == 1)
+                                                <span class="text-success">Voldaan</span>
+                                            @endif
+                                        </th>
+                                        <th>
+                                        @if($student_status == 0)
+                                            <span class="text-danger">Niet Voldaan</span>
+                                        @elseif($student_status == 1)
+                                            <span class="text-success">Voldaan</span>
+                                        @endif
+                                        </th> --}}
+
+
+                                        {{-- <td>
+                                            @php
+                                                //get current status
+                                                $docent_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent;
+                                            @endphp
+                                            <div class="custom-control custom-radio custom-control-inline text-success skills">
+                                                <input type="radio" id="{{$indicator->id}}_voldaan" name="indy_{{$indicator->id}}" class="custom-control-input " value="voldaan" @if( $docent_status == 1) checked  @endif>
+                                                <label class="custom-control-label " for="{{$indicator->id}}_voldaan">Voldaan</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline text-danger skills" >
+                                                <input type="radio" id="{{$indicator->id}}_nietvoldaan" name="indy_{{$indicator->id}}" class="custom-control-input" value="niet_voldaan" @if( $docent_status == 0) checked  @endif>
+                                                <label class="custom-control-label " for="{{$indicator->id}}_nietvoldaan">Niet voldaan</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if( $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student == 0 )
+                                                <span class="text-danger">Niet voldaan</span> 
+                                                @elseif( $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student == 1 )
+                                                <span class="text-success">Voldaan</span> 
+                                                
+                                            @endif
+                                        </td> --}}
+                                 
+                            </thead>
+                            <tbody>
                                 @foreach($users as $user)
-                                <th style="text-align:center;font-size:12px;" ><a href="#" data-toggle="tooltip" data-placement="top" title="Bekwaamheid" data-content="Bekwaamheid">B</a></th>
-                                <th style="text-align:center;font-size:12px;" ><a href="#" data-toggle="tooltip" data-placement="top" title="Interesse" data-content="Interesse">I</a></th>
+                                <tr>
+                                    <td style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></td>
+                                    @foreach($user->skills as $skills)
+
+                                    @endforeach
+                                    
+                                </tr>
                                 @endforeach
+                                {{-- @foreach ($skill->users as $usr)
                                 
-                            </tr>
-                            
-                        </thead> 
-                        <tbody>
-                            @foreach ($skills as $skill)
-                            <tr>
-                                <td style="width:200px">
-                                    <a href="{{route('skills.edit',$skill->id)}}">{{$skill->name}}</a>
-                                </td>
-                                @foreach ($skill->users as $usr)
-                                    @php $level_number = $usr->skills()->where('skill_id', $skill->id)->where('user_id', $usr->id)->first()->pivot->level; @endphp
-                                    @php $interest_number = $usr->skills()->where('skill_id', $skill->id)->where('user_id', $usr->id)->first()->pivot->interest; @endphp
+                                    @php $docent_status = $usr->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent; @endphp
+                                    @php $student_status = $usr->skills()->where('indicator_id', $indicator->id)->first()->pivot->student; @endphp
+                                    
                                 
-                                <td  style="text-align:center;"  class="@if($level_number <=1 ) bg-danger @elseif($level_number == 2) bg-warning @elseif($level_number >=3 ) bg-success @endif">
+                                <td style="text-align:center;"  class="@if($docent_status == 0 ) bg-danger @elseif($docent_status == 1) bg-success @endif">
                                     
                                     <a href="#" data-toggle="tooltip" data-placement="top" title="@if($level_number ==0 ) Onbekwaam @elseif($level_number == 1) Knows @elseif($level_number ==2 ) Knows How @elseif($level_number == 3 ) Shows How @elseif($level_number == 4 ) Does @endif" >{{$level_number}}</a>
                                     
@@ -172,9 +220,7 @@ Klas:  {{$classroom->name}}
                                     
                                     
                                 </td>
-                                @endforeach
-                            </tr>
-                            @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -182,7 +228,7 @@ Klas:  {{$classroom->name}}
             </div>
         </div>
         <!-- End XP Col -->
-    </div>
+    </div> --}}
     <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
