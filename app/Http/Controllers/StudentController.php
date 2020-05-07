@@ -184,4 +184,22 @@ class StudentController extends Controller
 
         return redirect()->route('student');
     }
+
+    public function update_indicator_student(Request $request)
+    {
+        $student = Auth::user();
+
+        if($request->status == 'voldaan'){
+            $status = 1;
+        }
+        elseif($request->status == 'niet_voldaan'){
+            $status = 0;
+        }
+
+        $student->skills()->where('indicator_id', $request->indicator_id)->update(
+            [
+                'student' => $status
+            ]
+        );
+    }
 }

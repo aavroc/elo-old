@@ -31,13 +31,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/{user}/edit', 'AdminController@edit')->name('users.edit')->middleware('admin');
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('teacher');
-    Route::post('students/update_skill', 'AdminController@update_skill')->name('students.update_skill')->middleware('teacher');
+    
+    Route::post('update_indicator_teacher', 'AdminController@update_indicator_teacher')->name('students.update_indicator_teacher')->middleware('teacher');
+    Route::post('update_indicator_student', 'StudentController@update_indicator_student')->name('students.update_indicator_student')->middleware('student');
+    
     Route::get('students/openChallenge', 'AdminController@openChallenge')->name('students.openChallenge')->middleware('teacher');
 
     //Classrooms
     Route::get('classrooms', 'ClassroomController@index')->name('classrooms.index')->middleware('teacher');
     Route::get('classrooms/{classroom}', 'ClassroomController@show')->name('classrooms.show')->middleware('teacher');
     Route::post('classrooms/{classroom}/reset_levels', 'ClassroomController@reset_levels')->name('reset_levels')->middleware('admin');
+    Route::get('classrooms/{classroom}/resetskills', 'ClassroomController@reset_all_skills')->name('resetskills')->middleware('admin');
+
 
     //DASHBOARDS
     Route::post('/student', 'StudentController@form_request')->name('student.request')->middleware('student'); 
@@ -81,7 +86,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('tags/{tag}/delete', 'TagController@delete')->name('tags.delete')->middleware('teacher'); // Verwijder een tag
 
     //Skills
-    Route::get('skills', 'SkillController@index')->name('skills.index')->middleware('teacher'); // Overzicht van alle tags
+    Route::get('skills', 'SkillController@index')->name('skills.index')->middleware('teacher'); // Overzicht van alle skills
+    
+    Route::get('skills-overview', 'SkillController@student_index')->name('skills.student_index')->middleware('student'); // Overzicht van alle skills
+    
     Route::get('skills/create', 'SkillController@create')->name('tags.create')->middleware('teacher'); // Maak een tag aan
     Route::post('skills', 'SkillController@store')->name('skills.store')->middleware('teacher'); // Sla de tag op
     Route::get('skills/{skill}', 'SkillController@edit')->name('skills.edit')->middleware('teacher'); // Wijzig een tagnaam

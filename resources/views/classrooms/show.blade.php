@@ -127,6 +127,9 @@ Klas:  {{$classroom->name}}
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">{{$classroom->name}} - Skills Overzicht</h5>
+                    @if(Auth::user()->role == 1)
+                        <a href="{{route('resetskills', $classroom)}}" class="btn btn-danger" name="submit" >Reset all Skills</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table-sm">

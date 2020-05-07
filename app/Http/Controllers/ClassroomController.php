@@ -59,7 +59,7 @@ class ClassroomController extends Controller
 
         $modules = Module::all();
         $challenges = Challenge::all();
-        $skills = Skill::all();
+       
 
         foreach($classroom->students as $student){//loop door alle studenten van deze klas
             foreach($modules as $module){//reset all modules per user
@@ -115,36 +115,39 @@ class ClassroomController extends Controller
                     ]
                 );
             }
-            
-            foreach($skills as $skill){
-                DB::table('users_skills')->updateOrInsert(
-                    [
-                        'user_id' => $student->id,
-                        'skill_id' => $skill->id
-                    ],
-                    [
-                        'level' => 0,
-                        'interest' => 0
-                    ]
-                );
-            }
+    
 
             
         }
         return redirect()->route('classrooms.show', $classroom);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Classroom  $classroom
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Classroom $classroom)
+    public function reset_all_skills(Classroom $classroom)
     {
-        //
-    }
+        $skills = Skill::all();
+        
+        foreach($classroom->students as $student){//loop door alle studenten van deze klas    
+            foreach($skills as $skill){
+                foreach($skill->indicators as $indicator){
+                    DB::table('users_skills')->updateOrInsert(
+                        [
+                            'user_id' => $student->id,
+                            'skill_id' => $skill->id,
+                            'indicator_id' => $indicator->id,
+                        ],
+                        [
+                            'docent' => 0,
+                            'student' => 0
+                        ]
+                    );
+                }
+            }
 
+            
+        }
+        return redirect()->route('classrooms.show', $classroom);
+    }
+        
     /**
      * Update the specified resource in storage.
      *

@@ -22,7 +22,7 @@ Toon skills
         <div class="card m-b-30">
                 <div class="card-body">
                     <div class="m-b-20">
-                        <h6>Skills</h6>
+                        <h6>Vaardigdheid</h6>
                     </div>
                 @if (session('status'))
                     <div class="xp-alert">
@@ -35,7 +35,7 @@ Toon skills
                         <table id="xp-default-datatable" class="display table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Skill naam</th>
+                                    <th>Vaardigdheid</th>
                                     <th>bewerk</th>
                                     <th>verwijder</th>
                                 </tr>
@@ -43,7 +43,16 @@ Toon skills
                             <tbody>
                             @foreach($skills as $skill)
                                 <tr>
-                                    <td>{{$skill->name}}</td>
+                                    <td>
+                                        {{$skill->name}}
+                                        <ul>
+                                            @foreach($skill->indicators as $indicator)
+                                                @if($indicator->name != '')
+                                                <li>{{$indicator->name}}</li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </td>
                                     @if(Auth::user()->role == 1)
                                     <td><a href="{{route('skills.edit', $skill)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                                     <td>
@@ -68,7 +77,7 @@ Toon skills
             <div class="card m-b-30">
                 <div class="card-body">
                 <div class="m-b-20">
-                        <h6>Maak skill</h6>
+                        <h6>Maak Vaardigdheid</h6>
                 </div>
                 <form action="{{route('skills.store')}}" method="post">
                 @csrf

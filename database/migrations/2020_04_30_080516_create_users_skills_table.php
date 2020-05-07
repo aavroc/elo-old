@@ -17,12 +17,14 @@ class CreateUsersSkillsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('skill_id');
-            $table->integer('level')->comment('0=onbekwaam, 1=knows, 2=knows how, 3=show how, 4=does');
-            $table->integer('interest')->comment('0=geen interesese, 1=interesse');
+            $table->unsignedBigInteger('indicator_id');
+            $table->integer('docent')->comment('0=niet_voldaan, 1=voldaan');
+            $table->integer('student')->comment('0=niet_voldaan, 1=voldaan');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('skill_id')->references('id')->on('skills');
+            $table->foreign('indicator_id')->references('id')->on('skill_indicators');
         });
     }
 

@@ -204,7 +204,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                     <td id="txt_module-table-{{$module->id}}">@if($module->pivot->status ==1) open @elseif ($module->pivot->status ==3) done @else closed @endif</td> 
                                     <td><a href="{{route('users.repo', ['user'=> $user, 'module'=> $module->slug])}}" class="task-list"><i class="mdi mdi-eye"></i> toon</a></td>
                                     @if(Auth::user()->role <= 2)
-                                        <td>
+                                        <td class="modules">
                                             <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="user_level_{{$module->slug}}" id="module_{{$module->id}}_closed" value="0" @if($module->pivot->status ==0) checked @endif>
                                             <label class="form-check-label f-w-3" for="module_{{$module->id}}_closed">closed</label>
@@ -419,29 +419,68 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
             @if($user->role == 3)
             <div class="card m-b-20">
                 <div class="card-header bg-white">
-                    <h5 class="card-title">Skills</h5>
+                    <h5 class="card-title">Vaardigheden</h5>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive table-bordered ">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Skill</th>
-                                    <th><a data-toggle="popover" data-placement="top" title="Bekwaamheid" data-content="Bekwaamheid">Bekwaamheid</a></th>
-                                    <th>Interesse</th>
+                                    
+                                   <th>
+                                       Vaardigheid
+                                   </th>
+                                    <th>
+                                        Indicatoren
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user->skills as $skill)
+                                {{-- {{dd($user->skills->unique('name'))}} --}}
+                                @foreach($user->skills->unique() as $skill)
                                     <tr>
                                         <td>
                                             {{$skill->name}}
                                         </td>
                                         <td>
-                                            <input type="number" name="level_{{$skill->id}}" id="level_{{$skill->id}}" value="{{$skill->pivot->level}}" class="form-control skills" min="0"  max="4" >
-                                        </td>
-                                        <td>
-                                            <input type="number" name="interest_{{$skill->id}}" id="interest_{{$skill->id}}" value="{{$skill->pivot->interest}}" class="form-control skills" min="0" max="1">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>&nbsp;</th>
+                                                        <th>docent</th>
+                                                        <th>student</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($skill->indicators as $indicator)
+                                                    <tr>
+                                                        <td>  {{$indicator->name}}</td>
+                                                        <td>
+                                                            @php
+                                                                //get current status
+                                                                $docent_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent;
+                                                            @endphp
+                                                            <div class="custom-control custom-radio custom-control-inline text-success skills">
+                                                                <input type="radio" id="{{$indicator->id}}_voldaan" name="indy_{{$indicator->id}}" class="custom-control-input " value="voldaan" @if( $docent_status == 1) checked  @endif>
+                                                                <label class="custom-control-label " for="{{$indicator->id}}_voldaan">Voldaan</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline text-danger skills" >
+                                                                <input type="radio" id="{{$indicator->id}}_nietvoldaan" name="indy_{{$indicator->id}}" class="custom-control-input" value="niet_voldaan" @if( $docent_status == 0) checked  @endif>
+                                                                <label class="custom-control-label " for="{{$indicator->id}}_nietvoldaan">Niet voldaan</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            @if( $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student == 0 )
+                                                               <span class="text-danger">Niet voldaan</span> 
+                                                               @elseif( $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student == 1 )
+                                                               <span class="text-success">Voldaan</span> 
+                                                                
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -449,37 +488,31 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                         </table>
                     </div><!-- End TABLE RESPONSIVE -->
                 </div> <!-- End card body -->
-                
             </div> <!-- end card -->
             @endif
         </div><!-- End XP Col -->
     </div>
     
 </div><!-- End XP Contentbar -->
-
-
 @endsection 
 
 @section('script')
 
 <script>
-    $('.skills').change(function() {
+    $('.skills input[type=radio]').change(function() {
         
         let value = $(this).val();
         let id = $(this).attr('id');
-        let name = id.split("_")[0];
-        let number = id.split("_")[1];
-   
+        let ind_id = id.split("_")[0];
 
         $.ajax({
             method: "POST",
-            url: "/students/update_skill",
+            url: "/update_indicator_teacher",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: { 
                     'student': {{$user->id}}, 
-                    'attribute_name': name,
-                    'attribute_number': number,
-                    'value': value
+                    'status': value,
+                    'indicator_id': ind_id,
                 },
             success: function(response){ // What to do if we succeed
                 // console.log(response); 
@@ -490,13 +523,13 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
             }
         })
         .done(function( msg ) {
-           
+            console.log(msg);
            
             
         });
     });
     //handle module radio buttons
-    $('input[type=radio]').change(function() {
+    $('.modules input[type=radio]').change(function() {
         var trID = $(this).closest('tr').attr('id'); // table row ID 
         var status = this.id;
         $.ajax({

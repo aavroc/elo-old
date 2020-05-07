@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Classroom;
+use App\Indicator;
 use Illuminate\Support\Facades\DB;
 use App\Skill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SkillController extends Controller
 {
@@ -35,6 +38,34 @@ class SkillController extends Controller
         $skill = new Skill();
         $skill->name = $request->skill;
         $skill->save();
+
+        for($x = 0 ; $x < 4; $x++){
+            $ind = new Indicator();
+            $skill->indicators()->save($ind);
+
+        }
+        $classrooms = Classroom::all();
+        foreach ($classrooms as $classroom) {
+            # code...
+        
+            foreach($classroom->students as $student){
+                foreach($skill->indicators as $indicator){
+                    DB::table('users_skills')->updateOrInsert( //save skill and its indicators to the user
+                        [
+                            'user_id' => $student->id,
+                            'skill_id' => $skill->id,
+                            'indicator_id' => $indicator->id,
+                        ],
+                        [
+                            'docent' => 0,
+                            'student' => 0
+                        ]
+                    );
+                }
+            }
+        }
+
+
         return redirect()->route('skills.index');
     }
 
@@ -47,15 +78,17 @@ class SkillController extends Controller
         return redirect()->route('skills.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Skill $skill)
+  
+    public function student_index()
     {
-        //
+        $user = Auth::user();
+
+        $data = [
+            'skills' => $user->skills,
+            'user'   => $user
+        ];
+
+        return view('skills.student_index', $data);
     }
 
     /**
@@ -66,7 +99,11 @@ class SkillController extends Controller
      */
     public function edit(Skill $skill)
     {
-        //
+        $data = [
+            'skill' => $skill,
+            'indicators' => $skill->indicators,
+        ];
+        return view('skills.edit', $data);
     }
 
     /**
@@ -78,7 +115,25 @@ class SkillController extends Controller
      */
     public function update(Request $request, Skill $skill)
     {
-        //
+        $request->validate([
+            'vaardigheid' => 'required'
+        ]);
+        $skill->name =  $request->vaardigheid;
+        $skill->save();
+
+        foreach($request->ind as $ind_id => $name){
+            if($name == NULL){
+                $name = '';
+            }
+                $skill->indicators()->where('id', $ind_id)->update(
+                    [
+                        'name' => $name
+                        ]
+                    );
+
+        }
+
+        return redirect()->route('skills.index');
     }
 
     /**
