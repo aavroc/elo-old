@@ -122,7 +122,7 @@ Klas:  {{$classroom->name}}
     <!-- End XP Row -->
 
       <!-- Start XP Row -->
-      {{-- <div class="row">
+      <div class="row">
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
@@ -135,7 +135,7 @@ Klas:  {{$classroom->name}}
                     <div class="table-responsive table-sm">
                         <table id="xp-default-datatable" class="display table table-bordered table-hover">
                             <thead>
-                                @foreach ($skills as $skill)
+                                {{-- @foreach ($skills as $skill)
                                     <tr>
                                         <th>
                                             <a href="{{route('skills.edit',$skill->id)}}">{{$skill->name}}</a>
@@ -147,7 +147,7 @@ Klas:  {{$classroom->name}}
                                         <th>{{$indicator->name}}</th>
                                         @endforeach
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                                         
                                         {{-- <th>
                                             @php
@@ -195,7 +195,7 @@ Klas:  {{$classroom->name}}
                                  
                             </thead>
                             <tbody>
-                                @foreach($users as $user)
+                                {{-- @foreach($users as $user)
                                 <tr>
                                     <td style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></td>
                                     @foreach($user->skills as $skills)
@@ -203,7 +203,7 @@ Klas:  {{$classroom->name}}
                                     @endforeach
                                     
                                 </tr>
-                                @endforeach
+                                @endforeach --}}
                                 {{-- @foreach ($skill->users as $usr)
                                 
                                     @php $docent_status = $usr->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent; @endphp
@@ -228,7 +228,7 @@ Klas:  {{$classroom->name}}
             </div>
         </div>
         <!-- End XP Col -->
-    </div> --}}
+    </div>
     <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
