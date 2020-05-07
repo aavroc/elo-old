@@ -135,9 +135,15 @@ class ModuleController extends Controller
     }
 
 
-    public function retrieve_tasks_per_module(Module $module){
+    public function retrieve_tasks_per_module(Module $module, Request $request){
 
-        Task::where('module_id', $module->id)->delete();
+        if($request->deleteAll == 1){
+            foreach($module->tasks as $task){
+                $task->users()->detach();
+                $task->tags()->detach();
+            }
+            Task::where('module_id', $module->id)->delete();
+        }
 
         $github = new GitHub();
         $toplevel = $github->get_contents($module->slug);

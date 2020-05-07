@@ -18,7 +18,8 @@ Module: {{$module->name}}
                 <div class="card-header bg-white">
                     <h4>Modules</h4>
                     @if(Auth::user()->role == 1)
-                    <a href="{{route('modules.retrieve_tasks_per_module', $module)}}">Get data</a>
+                    <a href="{{route('modules.retrieve_tasks_per_module', $module)}}" id="module_retrieval" class="btn btn-warning">Update current data</a>
+                    <a href="{{route('modules.retrieve_tasks_per_module', ['module'=> $module, 'deleteAll'=> true])}}" id="module_retrieval" class="btn btn-danger" onclick="return confirm('Are you sure?')">Get data AND delete all connections</a>
                     @endif
                 </div>
                 <div class="card-body">
