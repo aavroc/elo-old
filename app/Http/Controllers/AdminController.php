@@ -186,15 +186,15 @@ class AdminController extends Controller
     }
 
 
-    //retrieve all tasks from github and store them in db
-    public function tasks()
-    {
-        $github = new GitHub();
-        $github->retrieve_tasks();
+    // //retrieve all tasks from github and store them in db
+    // public function tasks()
+    // {
+    //     $github = new GitHub();
+    //     $github->retrieve_tasks();
         
-        // dd($data_generated);
-        return view('tasks.index');
-    }
+    //     // dd($data_generated);
+    //     return view('tasks.index');
+    // }
 
     public function index()
     {
@@ -468,7 +468,7 @@ class AdminController extends Controller
     {
         $this->challenges();
         $this->modules();
-        $this->tasks();
+        // $this->tasks();
         return redirect()->route('admin');
     }
 

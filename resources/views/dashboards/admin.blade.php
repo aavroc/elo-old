@@ -434,7 +434,7 @@ Dashboard
                 </div>
                 <div class="card-body">
                     <div class="xp-button">
-                    <a href="{{route('retrieve')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Retrieve all modules and tasks</a>
+                    <a href="{{route('retrieve')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Retrieve Challenge and Module data</a>
                     <a href="{{route('users.select_file')}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Upload Users</a>
                     </div>
                 </div>

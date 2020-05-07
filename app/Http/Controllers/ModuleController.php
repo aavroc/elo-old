@@ -7,7 +7,7 @@ use App\GitHub;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
-
+use App\Task;
 class ModuleController extends Controller
 {
     protected $converter;
@@ -134,7 +134,41 @@ class ModuleController extends Controller
             }
     }
 
-    
 
+    public function retrieve_tasks_per_module(Module $module){
+
+        Task::where('module_id', $module->id)->delete();
+
+        $github = new GitHub();
+        $toplevel = $github->get_contents($module->slug);
+        $tasksdirectories = [];
+        foreach($toplevel as $directories){
+            if($directories->type == "dir"){
+                $tasksdirectories[$directories->path] = $github->get_contents($module->slug, $directories->path);
+            }
+        }
+        // dd($tasksdirectories);
+        foreach($tasksdirectories as $dir => $tasks){
+            foreach($tasks as $task){
+                if($task->type == "dir"){
+                    Task::updateOrInsert( //insert task....or... update it.
+                        [
+                            'name' => $task->name,
+                            'module_id' => $module->id,
+                            'level'  => $dir,
+                        ],
+                        [
+                            'readme' => $github->get_specific_readme($module->slug, $task->path)->content,
+                            'url' => $task->html_url,
+                            'status' => 1,
+                            'points' => 3,
+                            ]
+                        );
+                }
+            }
+        }
+        
+        return redirect()->route('modules.show_teacher', $module);
+    }
 
 }

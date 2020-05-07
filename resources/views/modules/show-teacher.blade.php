@@ -17,6 +17,9 @@ Module: {{$module->name}}
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h4>Modules</h4>
+                    @if(Auth::user()->role == 1)
+                    <a href="{{route('modules.retrieve_tasks_per_module', $module)}}">Get data</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <nav aria-label="Page navigation example">
@@ -53,11 +56,8 @@ Module: {{$module->name}}
                                 @foreach($module->tasks as $task)
                                 <th>
                                     <div>
-                                        @php
-                                            $tasknum = explode('taak',$task->name)[1];
-                                            $tasklevl = explode('iveau',$task->level)[1];
-                                        @endphp
-                                        <a href="#" data-toggle="popover" data-placement="top" title="{{$task->name}}" data-content="@foreach($task->tags as $tag) {{$tag->name}} @endforeach">{{'t'. $tasknum}} <sub>n{{$tasklevl}}</sub></a>
+                                        <a href="#" data-toggle="popover" data-placement="top" title="{{$task->name}}" data-content="@foreach($task->tags as $tag) {{$tag->name}} @endforeach">{{$task->name}}<div>     <sub>
+                                            {{$task->level}}</sub></div></a>
                                     </div>
                                     <div>
                                         <a href="{{route('tasks.show', $task->id)}}"> <i class="mdi mdi-link-variant"></i></a>

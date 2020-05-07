@@ -63,11 +63,16 @@ class TaskController extends Controller
         $tags = Tag::all();
         $readme_content = base64_decode($task->readme);
 
+        $user_task_evaluation = 0;
+        if(Auth::user()->tasks()->where('task_id', $task->id)->exists()){
+            $user_task_evaluation = Auth::user()->tasks()->where('task_id', $task->id)->first()->pivot->evaluation;
+        }
+
         $data = [
             'readme_content'  => $this->converter->convertToHtml($readme_content),
             'tags'  =>  $tags,
             'task'  =>  $task,
-            'user_task_evaluation'  =>  Auth::user()->tasks()->where('task_id', $task->id)->first()->pivot->evaluation,
+            'user_task_evaluation'  => $user_task_evaluation
         ];
 
         // dd($data['user_task_evaluation']);

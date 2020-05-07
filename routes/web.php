@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('modules/{module}', 'ModuleController@show')->name('modules.show')->middleware('student');
     Route::get('modules/{module}/teacher', 'ModuleController@show_teacher')->name('modules.show_teacher')->middleware('teacher');
     Route::get('modules/{module}/eindopdracht', 'ModuleController@eindopdracht')->name('modules.eindopdracht')->middleware('student');
+    Route::get('modules/{module}/retrieve_tasks_per_module', 'ModuleController@retrieve_tasks_per_module')->name('modules.retrieve_tasks_per_module')->middleware('admin');
     Route::get('retrieve/data', 'AdminController@retrieve')->name('retrieve')->middleware('admin'); //
     Route::get('github-call', 'GithubController@redirectToProvider')->name('github.call');
     Route::get('github-callback', 'GithubController@handleProviderCallback')->name('github.callback');
