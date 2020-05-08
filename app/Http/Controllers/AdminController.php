@@ -642,10 +642,10 @@ class AdminController extends Controller
     //update het commentarenveld dat bij iedere skill voor iedere student wordt bijgehouden
     public function update_skills_text(Request $request)
     {
-        
-        $request->student
-        $request->text
-        $request->skill
+
+        // $request->student
+        // $request->text
+        // $request->skill
     }
     
 
