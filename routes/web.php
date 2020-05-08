@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('users/{user}', 'AdminController@update')->name('users.update')->middleware('admin');
     Route::post('students/update_level', 'AdminController@update_level')->name('students.update_level')->middleware('teacher');
     
+    Route::post('update_skills_text', 'AdminController@update_skills_text')->name('students.update_skills_text')->middleware('teacher');
     Route::post('update_indicator_teacher', 'AdminController@update_indicator_teacher')->name('students.update_indicator_teacher')->middleware('teacher');
     Route::post('update_indicator_student', 'StudentController@update_indicator_student')->name('students.update_indicator_student')->middleware('student');
     

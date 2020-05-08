@@ -135,8 +135,9 @@ Klas:  {{$classroom->name}}
                     <div class="table-responsive table-sm">
                         <table id="xp-default-datatable" class="display table table-bordered table-hover">
                             <thead>
-                                {{-- @foreach ($skills as $skill)
+                                @foreach ($skills as $skill)
                                     <tr>
+                                        <th>&nbsp;</th>|
                                         <th>
                                             <a href="{{route('skills.edit',$skill->id)}}">{{$skill->name}}</a>
                                         </th>
@@ -147,7 +148,21 @@ Klas:  {{$classroom->name}}
                                         <th>{{$indicator->name}}</th>
                                         @endforeach
                                     </tr>
-                                @endforeach --}}
+                                </thead>
+                                <tbody>
+                                    @foreach($users as $user)
+                                        <tr>
+                                            <td style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></td>
+                                            @foreach($user->skills as $skills)
+
+                                            @endforeach
+                                            
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                @endforeach
+                            
+                                
                                         
                                         {{-- <th>
                                             @php
@@ -193,17 +208,7 @@ Klas:  {{$classroom->name}}
                                             @endif
                                         </td> --}}
                                  
-                            </thead>
-                            <tbody>
-                                {{-- @foreach($users as $user)
-                                <tr>
-                                    <td style="text-align:center;padding:0 10px"><a href="{{route('users.show',$user->id)}}">{{$user->firstname}}</a></td>
-                                    @foreach($user->skills as $skills)
-
-                                    @endforeach
-                                    
-                                </tr>
-                                @endforeach --}}
+                           
                                 {{-- @foreach ($skill->users as $usr)
                                 
                                     @php $docent_status = $usr->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent; @endphp

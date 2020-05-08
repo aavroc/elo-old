@@ -430,8 +430,11 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                    <th>
                                        Vaardigheid
                                    </th>
+                                   <th>
+                                       Indicatoren
+                                    </th>
                                     <th>
-                                        Indicatoren
+                                        Opmerkingen
                                     </th>
                                 </tr>
                             </thead>
@@ -442,6 +445,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                         <td>
                                             {{$skill->name}}
                                         </td>
+                                        
                                         <td>
                                             <table class="table">
                                                 <thead>
@@ -468,6 +472,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                                 <input type="radio" id="{{$indicator->id}}_nietvoldaan" name="indy_{{$indicator->id}}" class="custom-control-input" value="niet_voldaan" @if( $docent_status == 0) checked  @endif>
                                                                 <label class="custom-control-label " for="{{$indicator->id}}_nietvoldaan">Niet voldaan</label>
                                                             </div>
+                                                            
                                                         </td>
                                                         <td>
                                                             @if( $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->student == 0 )
@@ -481,6 +486,11 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                     @endforeach
                                                 </tbody>
                                             </table>
+                                        </td>
+                                        <td>
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="vaardigheidText" id="vaardigheidText" data-skill="{{$skill->id}}"  rows="10" placeholder="Aanvullingen"></textarea>
+                                        </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -499,6 +509,45 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
 @section('script')
 
 <script>
+    $('#vaardigheidText').keyup(delay(function (e) {
+     console.log('Time elapsed!', this.value);
+     let val = this.value;
+     let skill = $(this).data('skill');
+     
+     $.ajax({
+            method: "POST",
+            url: "/update_skills_text",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: { 
+                    'student': {{$user->id}}, 
+                    'text': val,
+                    'skill': skill,
+                },
+            success: function(response){ // What to do if we succeed
+                // console.log(response); 
+            },
+            error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                // console.log(JSON.stringify(jqXHR));
+                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+            }
+        })
+        .done(function( msg ) {
+            console.log(msg);
+           
+            
+        });
+    
+    }, 500));
+
+    function delay(fn, ms) {
+        let timer = 0
+        return function(...args) {
+            clearTimeout(timer)
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+        }
+
+
     $('.skills input[type=radio]').change(function() {
         
         let value = $(this).val();

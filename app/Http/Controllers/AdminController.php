@@ -527,6 +527,7 @@ class AdminController extends Controller
         return $file;
     }
 
+    //update module niveau van een student
     public function update_level(Request $request)
     {
         $item_status = explode('_', $request->status);
@@ -576,6 +577,7 @@ class AdminController extends Controller
         return $data;
     }
 
+    //zet een challenge open op basis van de stand van de bijbehorende modules
     public function openChallenge(User $student, Module $module){
         
         // $student = User::find(4);
@@ -618,6 +620,7 @@ class AdminController extends Controller
         
     }
 
+    //update de beoordeling op vaardigheden door de docent
     public function update_indicator_teacher(Request $request)
     {
         $student = User::find($request->student);
@@ -636,6 +639,14 @@ class AdminController extends Controller
         );
     }
 
+    //update het commentarenveld dat bij iedere skill voor iedere student wordt bijgehouden
+    public function update_skills_text(Request $request)
+    {
+        
+        $request->student
+        $request->text
+        $request->skill
+    }
     
 
     
