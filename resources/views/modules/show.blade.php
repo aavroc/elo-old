@@ -49,7 +49,7 @@ Module: {{$module->name}}
                         </thead>
                         <tbody>
                             @php $level = null ; @endphp
-                            @foreach($module->tasks->sortBy('name')->sortBy('level')  as $content)
+                            @foreach($module->tasks  as $content)
 
                             @if($level != $content->level)
                             <tr class="alert-info"><td colspan="3" class="text-black f-w-6">{{$content->level}}</td></tr>
