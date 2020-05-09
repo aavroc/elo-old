@@ -8,6 +8,7 @@ use App\Module;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use App\Charts\completedTasks;
 
 class TeacherController extends Controller
 {
@@ -24,7 +25,6 @@ class TeacherController extends Controller
 
     public function dashboard()
     {
-        $this->getChartData();
 
         $users = User::where(
             [
@@ -41,91 +41,35 @@ class TeacherController extends Controller
             'users' => $users,
 
             'modules' => $modules,
+            'chart' => $this->getChartDataTotalTasksDonePerClassroom(),
 
         ];
-        return view('dashboards.teacher', $data)->tasks;
+
+        return view('dashboards.teacher', $data);
 
     }
 
-    public function getChartData(){
-//        $tasks = User::where('role', 3)->groupBy('classroom', 'users');
-        // $tasks = User::where('role', 3)::with('tasks');
-        // $users = User::with('tasks')->get();
-        // $users = DB::table('users')->groupBy('classroom')->get();
-        // $users = user::has('tasks')->get();
-        // $users = user::withCount('tasks')->get();
-        // $users = User::withCount('tasks')->get();
-        // $classrooms = $users->groupBy('classroom');
-        // // // $count = $classrooms->sum('tasks_count');
-
-        // foreach ($classrooms as $classroom) {
-
-        //     echo $classroom->sum('tasks_count')."<br>";
-        //     foreach($classroom as $user){
-        //         // dd($user);
-        //         // echo $user->sum('tasks_count');
-        //         // echo $user->sum('tasks_count');
-
-        //     }
-        //     // dd($classroom);
-        // }
-
+    public function getChartDataTotalTasksDonePerClassroom(){
         $users = User::withCount('tasks')->get();
+        $classrooms = $users->groupBy('classroom');
         $grouped = $users->groupBy('classroom')->map(function($row){
             return $row->sum('tasks_count');
         });
+        //remove users without a classroom value
+        $grouped_filtered = $grouped->filter(function($value, $key){
+            return $key !== "";
+        });
 
+        $arr_clasroom_names = array_keys($grouped_filtered->toArray());
+        $arr_clasroom_totals = array_values($grouped_filtered->toArray());
 
+        $data = [];
 
-        dd($grouped->toArray());
-
-
-
-        // foreach ($classrooms as $classroom) {
-        //     foreach($classroom as $user){
-        //         dd($user['tasks_count']);
-        //         // $total += $user->tasks_count;
-        //     }
-        // }
-        // echo $total;
-
-        // $collection = new Collection([
-        //     ['year' => '2015', 'speakers' => 12],
-        //     ['year' => '2014', 'speakers' => 21],
-        //     ['year' => '2013', 'speakers' => 10]
-
-        // ]);
-
-        // $tasks = $users->groupBy('classroom');
-
-        // $user_tasks_completed = DB::table('users')
-        //     ->with('tasks')
-        //     ->select('classroom', DB::raw('count(*) as total'))
-        //     ->groupBy('classroom')
-        //     ->get();
-
-        // $users = User::withCount('tasks')
-        // $classrooms = $users->groupBy('classroom');
-        //     $tc = User::with('tasks')
-        //         ->groupBy('classroom')
-        //         ->get();
-        //     $tcc = $tc->max('tasks_count');
-
-        // dd($tc);
-
-
-        // $users = User::groupBy('classroom')->get();
-        // $tasks = $users->tasks->get();
-
-        // foreach ($users->take(2) as $user) {
-        //     $tasks -> $user->tasks()->get();
-        //     dd($tasks);
-        // }
-
-//        $c = Classroom::find(1)->getNumberOfCompletedTasks;
+        $data['labels'] = $arr_clasroom_names;
+        $data['datasets']['data'] = $arr_clasroom_totals;
+        $data = json_encode($data);
+        return $data;
     }
-
-
 
     /**
      * Show the form for creating a new resource.

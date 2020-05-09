@@ -22,13 +22,13 @@ Dashboard
             </div>
         </div>
         <!-- End XP Col -->
-        
+
         {{-- show barchart --}}
-        @include('layouts.charts.chart')
+        @include('layouts.charts.classroom-total-tasks-completed')
         @yield('content')
 
         <!-- Start XP Col -->
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
                     <h5 class="card-title text-black">Klassen</h5>
@@ -84,3 +84,4 @@ Dashboard
 @section('script')
 
 @endsection
+
