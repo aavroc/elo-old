@@ -13,6 +13,26 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 class StudentController extends Controller
 {
 
+    protected $converter;
+    
+    public function __construct()
+    {
+        $this->converter = new GithubFlavoredMarkdownConverter([
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'enable_em' => true,
+            'enable_strong' => true,
+            'use_asterisk' => true,
+            'use_underscore' => true,
+            'unordered_list_markers' => ['-', '*', '+'],
+            'max_nesting_level' => INF,
+        ]);
+    }
+
+
     public function dashboard()
     {
 
@@ -25,6 +45,44 @@ class StudentController extends Controller
 
         ];
         return view('dashboards.student', $data);
+    }
+
+    public function helpvideos()
+    {
+        return view('help.videos');
+    }
+
+    public function helptekst()
+    {
+        $tekst = "  # Start module
+
+        Je bent begonnen aan een nieuwe module, hieronder staat beschreven wat je moet doen om met deze module te kunnen werken in VS Code:
+        
+        1. Er is een `fork` (kopie) gemaakt van de module onder je eigen Github account. Ga naar [Github](https://github.com/) en login dan zie je een nieuwe repository staan met de naam van deze Module.
+        2. Open de repository en copy/paste de clone link (zoals je dat ook doet voor Classroom assignments)
+        3. Als je nog geen map hebt aangemaakt voor al je werk maak deze dan aan. Noem deze map `op4-eagle-modules`.
+        4. Om lokaal op je laptop te werken moet je eerste een `clone` maken. Open de `op4-eagle-modules` map in VS Code met `File > Open Folder` of <kbd>CTRL</kbd>+<kbd>K</kbd> <kbd>CTRL</kbd>+<kbd>O</kbd>
+        5. Open de terminal met `Terminal > New Terminal` of <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>`</kbd>
+        6. Voer het onderstaande commando uit in de terminal:
+        ```POWERSHELL
+        git clone <link_naar_module_repository_op_je_eigen_account.git>
+        ```
+        7. Open nu de map die is aangemaakt door Git. Je kunt nu aan de slag met de code maar voor je dat doet moet je nog een handeling uitvoeren zodat je ook updates kunt ophalen vanuit de originele module repository.
+        8. Ga terug naar de repository op Github, bovenaan staat de naam van repository met daaronder de regel: `forked from ROC-van-Amsterdam-College-Amstelland/module_naam. Klik op die link en copy/paste de repository url.
+        9. Voer het onderstaande commando uit in de terminal:
+        ```POWERSHELL
+        git remote add upstream <link_naar_module_repository_op_ROC_account.git>
+        ```
+        10. Je kunt nu aan de slag en je code inleveren door gewoon te pushen zoals je gewend bent. Mocht een docent zeggen dat er updates zijn in een module waar je aan werkt dan kun die binnenhalen door in VS code bij het `Source Control` tabblad te kiezen voor `Pull from` > `Upstream` > `Upstream/Master`. ";
+
+        $converted_tekst = $this->converter->convertToHtml($tekst);
+        
+        $data = [
+            'uitleg' => $converted_tekst
+        ];
+
+        
+        return view('help.uitleg', $data);
     }
 
     public function show_module(Request $request)

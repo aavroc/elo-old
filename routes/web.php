@@ -49,7 +49,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/student', 'StudentController@form_request')->name('student.request')->middleware('student'); 
     Route::get('/take_request/{user_request}', 'AdminController@handleRequest')->name('handleRequest')->middleware('teacher'); 
     Route::post('/request_to_done', 'AdminController@request_to_done')->name('request_to_done')->middleware('teacher'); 
-
+    
+    Route::get('/help/videos', 'StudentController@helpvideos')->name('help.videos')->middleware('student'); 
+    Route::get('/help/tekst', 'StudentController@helptekst')->name('help.tekst')->middleware('student'); 
+    
     Route::get('/student', 'StudentController@dashboard')->name('student')->middleware('student'); //1
     Route::get('/admin', 'AdminController@dashboard')->name('admin')->middleware('admin');
     Route::get('/teacher', 'TeacherController@dashboard')->name('teacher')->middleware('teacher');
