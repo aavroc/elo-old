@@ -24,7 +24,7 @@ class TeacherController extends Controller
     }
 
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $users = User::where(
             [
@@ -57,16 +57,10 @@ class TeacherController extends Controller
             'task_requests' => $task_requests,
             'counted_tasks' => $counted_tasks,
             'taken_requests' => $taken_requests,
-            // 'results' => $this->calculateChallengeResults(),
             'chart' => $this->getChartDataTotalTasksDonePerClassroom(),
 
         ];
-        
-
-        
-
         return view('dashboards.teacher', $data);
-
     }
 
     public function getChartDataTotalTasksDonePerClassroom(){

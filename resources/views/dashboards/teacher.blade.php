@@ -75,7 +75,7 @@ Dashboard
 
                                     <tr>
                         
-                                        @switch($request->status)
+                                        @switch($request->type)
                                         
                                         @case(1)
                                             <td><span class="f-w-6"><i class="mdi mdi-help mr-2"></i> hulpvraag</span>
@@ -230,7 +230,7 @@ Dashboard
                                 </div>
     
                                 <tr data-status="type{{$request->status}}">
-                    
+                                   
                                     @switch($request->type)
                                     
                                     @case(1)
