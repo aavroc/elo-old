@@ -22,9 +22,9 @@ Dashboard
     <!-- Start XP Row -->    
     <div class="row">
         <div class="col-4">
-            @include('layouts.charts.classroom-total-tasks-completed')
+            {{-- @include('layouts.charts.classroom-total-tasks-completed') --}}
         </div>
-        <div class="col">
+        <div class="col-8">
             <div class="card  m-b-10">
                 <div class="card-header bg-white">
                     <div class="row">
