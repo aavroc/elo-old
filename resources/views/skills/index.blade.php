@@ -53,7 +53,7 @@ Toon skills
                                             @endforeach
                                         </ul>
                                     </td>
-                                    @if(Auth::user()->role == 1)
+                                    @if(Auth::user()->role <= 2) 
                                     <td><a href="{{route('skills.edit', $skill)}}" class=""><i class="mdi mdi-pencil"></i> bewerk</a></td>
                                     <td>
                                         <form action="{{route('skills.delete', $skill)}}" method="post">
