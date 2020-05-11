@@ -7,6 +7,10 @@ use App\User;
 use App\Module;
 use App\UsersRequest;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
+use App\Charts\completedTasks;
+
 class TeacherController extends Controller
 {
     /**
@@ -18,6 +22,7 @@ class TeacherController extends Controller
     {
         //
     }
+
 
     public function dashboard()
     {
@@ -53,14 +58,38 @@ class TeacherController extends Controller
             'counted_tasks' => $counted_tasks,
             'taken_requests' => $taken_requests,
             // 'results' => $this->calculateChallengeResults(),
+            'chart' => $this->getChartDataTotalTasksDonePerClassroom(),
 
         ];
         
-        return view('dashboards.teacher', $data);
 
         
+
+        return view('dashboards.teacher', $data);
+
     }
 
+    public function getChartDataTotalTasksDonePerClassroom(){
+        $users = User::withCount('tasks')->get();
+        $classrooms = $users->groupBy('classroom');
+        $grouped = $users->groupBy('classroom')->map(function($row){
+            return $row->sum('tasks_count');
+        });
+        //remove users without a classroom value
+        $grouped_filtered = $grouped->filter(function($value, $key){
+            return $key !== "";
+        });
+
+        $arr_clasroom_names = array_keys($grouped_filtered->toArray());
+        $arr_clasroom_totals = array_values($grouped_filtered->toArray());
+
+        $data = [];
+
+        $data['labels'] = $arr_clasroom_names;
+        $data['datasets']['data'] = $arr_clasroom_totals;
+        $data = json_encode($data);
+        return $data;
+    }
 
     /**
      * Show the form for creating a new resource.
