@@ -61,10 +61,32 @@ class AdminController extends Controller
             'task_requests' => $task_requests,
             'counted_tasks' => $counted_tasks,
             'taken_requests' => $taken_requests,
-            'results' => $this->calculateChallengeResults(),
+            'chart' => $this->getChartDataTotalTasksDonePerClassroom(),
 
         ];
         return view('dashboards.admin', $data);
+    }
+
+    public function getChartDataTotalTasksDonePerClassroom(){
+        $users = User::withCount('tasks')->get();
+        $classrooms = $users->groupBy('classroom');
+        $grouped = $users->groupBy('classroom')->map(function($row){
+            return $row->sum('tasks_count');
+        });
+        //remove users without a classroom value
+        $grouped_filtered = $grouped->filter(function($value, $key){
+            return $key !== "";
+        });
+
+        $arr_clasroom_names = array_keys($grouped_filtered->toArray());
+        $arr_clasroom_totals = array_values($grouped_filtered->toArray());
+
+        $data = [];
+
+        $data['labels'] = $arr_clasroom_names;
+        $data['datasets']['data'] = $arr_clasroom_totals;
+        $data = json_encode($data);
+        return $data;
     }
 
     protected function calculateChallengeResults() //calculate the results of challenge1

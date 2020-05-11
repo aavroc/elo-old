@@ -8,43 +8,9 @@ Dashboard
 <link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
-<style>
-    /* Pie charts consist of solid slices where you can use this selector to override the default style. */
-.ct-series-a .ct-slice-pie {
-  /* fill of the pie slieces */
-  fill: hsl(48, 100%, 50%) !important;
-
-}
-
-.ct-series-b .ct-slice-pie {
-  /* fill of the pie slieces */
-  fill: hsl(1, 100%, 50%) !important;
-
-}
-
-.ct-series-c .ct-slice-pie {
-  /* fill of the pie slieces */
-  fill: hsl(93, 100%, 50%) !important;
-
-}
-</style>
 @endsection 
 @section('rightbar-content')
 
-@php 
-    $status = [
-        1 => 'hulpvraag',
-        2 => 'modulegesprek',
-        3 => 'coachgesprek',
-        4 => 'workshop',
-    ];
-    $type = [
-        1 => 'open',
-        2 => 'in behandeling',
-        3 => 'voltooid',
-        4 => 'trash',
-    ];
-@endphp
 
 <!-- Start XP Breadcrumbbar -->                    
 <div class="xp-breadcrumbbar text-center">
@@ -54,13 +20,16 @@ Dashboard
 <div class="xp-contentbar">
     <!-- Write page content code here -->
     <!-- Start XP Row -->    
-    <div class="row">   
-        <div class="col-md-12 col-lg-12 col-xl-12"><!-- Start XP Col --> 
+    <div class="row">
+        <div class="col-4">
+            @include('layouts.charts.classroom-total-tasks-completed')
+        </div>
+        <div class="col">
             <div class="card  m-b-10">
                 <div class="card-header bg-white">
                     <div class="row">
                         <div class="col-lg-7 m-t-10">
-                            <h5 class="text-black">Verzoeken</h5>
+                            <h5 class="text-black">Verzoeken af te handelen</h5>
                             <h6>Mijn aangenomen verzoeken</h6>
                         </div>
                         <div class="card-body">
@@ -190,10 +159,11 @@ Dashboard
                         </div> <!-- end card body -->
                     </div><!-- end card -->
                 </div><!-- End XP Col -->
-        
-    </div> <!-- end row -->
-    <div class="row">   
-        <div class="col-md-12 col-lg-12 col-xl-12"><!-- Start XP Col --> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <div class="card  m-b-30">
                 <div class="card-header bg-white">
                     <div class="row">
@@ -237,9 +207,9 @@ Dashboard
                                 {{-- {{dd($user->verzoeken)}} --}} 
                                 @isset($requests)
                                 @foreach($requests as $request)
-
+    
                                 
-
+    
                                 <!-- Modal -->
                                 <div class="modal fade" id="modal-request{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-request{{$request->id}}Title" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -258,7 +228,7 @@ Dashboard
                                     </div>
                                     </div>
                                 </div>
-
+    
                                 <tr data-status="type{{$request->status}}">
                     
                                     @switch($request->type)
@@ -272,7 +242,7 @@ Dashboard
                                         <td><a href="{{route('users.show', $request->user->id)}}"><u>{{$request->user->firstname}}</u></a></td>                             
                                         <td><a href="{{route('tasks.show', $request->task->id)}}"><u>@isset($request->module->name){{$request->module->name}} @endisset > @isset($request->task){{$request->task->level}} @endisset > @isset($request->task->name){{$request->task->name}} @endisset</u></a></td>
                                     @break
-
+    
                                     @case(2)
                                         <td><span class="f-w-6"><i class="mdi mdi-school mr-2"></i> eindgesprek :</span>
                                         <!-- Button trigger modal -->
@@ -282,7 +252,7 @@ Dashboard
                                         <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                         <td><a href="#">@isset($request->module->name){{$request->module->name}}@endisset eindgesprek</a></td>
                                     @break
-
+    
                                     @case(3)
                                         <td><span class="f-w-6"><i class="mdi mdi-account mr-2"></i> coachgesprek :</span>
                                         <!-- Button trigger modal -->
@@ -292,7 +262,7 @@ Dashboard
                                         <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                         <td><a href="#">coachgesprek</a></td>
                                     @break
-
+    
                                     @case(4)
                                         <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> workshop : </span>
                                         <!-- Button trigger modal -->
@@ -302,7 +272,7 @@ Dashboard
                                         <td><a href="{{route('users.show', $request->user->id)}}">{{$request->user->firstname}}</a></td>                             
                                         <td><a href="#">workshop</a></td>                     
                                     @break                                                  
-
+    
                                     @default
                                         <td><span class="f-w-6"><i class="mdi mdi-laptop mr-2"></i> ? : </span>
                                         <!-- Button trigger modal -->
@@ -344,7 +314,7 @@ Dashboard
                                     </td>
     
                                 </tr>
-
+    
                             @endforeach
                             @endisset
                         </tbody>
@@ -352,8 +322,8 @@ Dashboard
                 </div> <!-- end table responsive -->      
                 </div> <!-- end card body -->
             </div><!-- end card -->
-        </div><!-- End XP Col -->
-    </div> <!-- end row -->
+        </div>
+    </div>
     <div class="row">   
         <div class="col-md-12 col-lg-12 col-xl-12"><!-- Start XP Col --> 
         <div class="card  m-b-30">

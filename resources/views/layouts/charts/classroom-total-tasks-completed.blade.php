@@ -1,5 +1,3 @@
-<!-- Start XP Col -->
-<div class="col-lg-4">
     <div class="card m-b-30">
         <div class="card-header bg-white">
             <h5 class="card-title text-black">Total completed Tasks</h5>
@@ -9,8 +7,6 @@
             <canvas id="xp-chartjs-horizontal-bar-chart" class="xp-chartjs-chart"></canvas>
         </div>
     </div>
-</div>
-<!-- End XP Col -->
 
 @section('script')
 <script src="{{ asset('assets/plugins/chart.js/chart.min.js') }}"></script>
