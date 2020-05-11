@@ -122,7 +122,7 @@ Klas:  {{$classroom->name}}
     <!-- End XP Row -->
 
       <!-- Start XP Row -->
-      <div class="row">
+      {{-- <div class="row">
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header bg-white">
@@ -164,7 +164,7 @@ Klas:  {{$classroom->name}}
                             
                                 
                                         
-                                        {{-- <th>
+                                        <th>
                                             @php
                                             //get current status
                                             $docent_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent;
@@ -182,10 +182,10 @@ Klas:  {{$classroom->name}}
                                         @elseif($student_status == 1)
                                             <span class="text-success">Voldaan</span>
                                         @endif
-                                        </th> --}}
+                                        </th>
 
 
-                                        {{-- <td>
+                                        <td>
                                             @php
                                                 //get current status
                                                 $docent_status = $user->skills()->where('indicator_id', $indicator->id)->first()->pivot->docent;
@@ -225,7 +225,7 @@ Klas:  {{$classroom->name}}
                                     
                                     
                                 </td>
-                                @endforeach --}}
+                                @endforeach 
                             </tbody>
                         </table>
                     </div>
@@ -233,7 +233,7 @@ Klas:  {{$classroom->name}}
             </div>
         </div>
         <!-- End XP Col -->
-    </div>
+    </div> --}}
     <!-- End XP Row -->
 </div>
 <!-- End XP Contentbar -->
