@@ -64,7 +64,7 @@ class AdminController extends Controller
             'chart' => $this->getChartDataTotalTasksDonePerClassroom(),
 
         ];
-        return view('dashboards.admin', $data);
+        return view('dashboards.teacher', $data);
     }
 
     public function getChartDataTotalTasksDonePerClassroom(){
