@@ -153,25 +153,28 @@ class ModuleController extends Controller
                 $tasksdirectories[$directories->path] = $github->get_contents($module->slug, $directories->path);
             }
         }
-        // dd($tasksdirectories);
+        // dump($tasksdirectories);
         foreach($tasksdirectories as $dir => $tasks){
             foreach($tasks as $task){
                 if($task->type == "dir"){
-                    Task::updateOrInsert( //insert task....or... update it.
-                        [
-                            'name' => $task->name,
-                            'module_id' => $module->id,
-                            'level'  => $dir,
-                        ],
-                        [
-                            'readme' => $github->get_specific_readme($module->slug, $task->path)->content,
-                            'url' => $task->html_url,
-                            'status' => 1,
-                            'points' => 3,
-                            ]
-                        );
+                    if (strpos($task->name, 'taak') !== false) {
+                        Task::updateOrInsert( //insert task....or... update it.
+                                [
+                                        'name' => $task->name,
+                                        'module_id' => $module->id,
+                                        'level'  => $dir,
+                                    ],
+                                    [
+                                            'readme' => $github->get_specific_readme($module->slug, $task->path)->content,
+                                            'url' => $task->html_url,
+                                            'status' => 1,
+                                            'points' => 3,
+                                            ]
+                                        );
+                                }
                 }
             }
+            // dd();
         }
         
         return redirect()->route('modules.show_teacher', $module);
