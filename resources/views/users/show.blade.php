@@ -393,7 +393,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                         
 
                                                             <i class="{{$stats[$task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()->pivot->evaluation][1]}}"></i>
-                                                            {{$stats[$task->users()->where('task_id', $task->id)->first()->pivot->evaluation][0]}}
+                                                            {{$stats[$task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()->pivot->evaluation][0]}}
                                                         @else
                                                             <i class="mdi mdi-play"></i>
                                                             Nog niet begonnen
