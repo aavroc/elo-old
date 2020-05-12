@@ -42,7 +42,7 @@
         <script src="{{ asset('assets/js/main.js') }}"></script>
         <!-- End JS -->
         @auth
-            @if(Auth::user()->github_access_token == null)
+            @if(Auth::user()->github_access_token == null && Auth::user()->role == 3)
             <script>
                 $( document ).ready(function() {
                     $('#staticBackdrop').modal();
