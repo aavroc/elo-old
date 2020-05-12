@@ -34,7 +34,7 @@
                     <div class="xp-profilebar text-right">
                         <ul class="list-inline mb-0">
                             @auth
-                                @if(Auth::user()->role < 2)
+                                @if(Auth::user()->role <= 2)
                                 @php 
                                 $status = [
                                     1 => 'hulpvraag',
@@ -85,7 +85,7 @@
                                     </li>
                                 @endif
                          
-                                @if(Auth::user()->role < 2)
+                                @if(Auth::user()->role <= 2)
                                 <li class="list-inline-item">
                                     <div class="dropdown xp-notification mr-3">
                                         <a class="dropdown-toggle user-profile-img text-white" href="#" role="button" id="xp-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
