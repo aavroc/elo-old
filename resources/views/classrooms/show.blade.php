@@ -42,7 +42,7 @@ Klas:  {{$classroom->name}}
     </div>
     <!-- End XP Row -->
     @endif
-
+    @include('classrooms.task-overview')
      <!-- Start XP Row -->
      <div class="row">
         <div class="col-lg-12">
@@ -120,7 +120,7 @@ Klas:  {{$classroom->name}}
         <!-- End XP Col -->
     </div>
     <!-- End XP Row -->
-
+    
       <!-- Start XP Row -->
       {{-- <div class="row">
         <div class="col-lg-12">
