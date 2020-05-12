@@ -10,7 +10,7 @@
                         @php
                             $number = \DB::table('users_tasks')->where('evaluation', 1)->where('user_id', $user->id)->count();
                         @endphp
-                        <p class="">{{$user->firstname}}<span class="pull-right">{{$number}}</span></p>
+                        <p class=""><a href="{{route('users.show', $user)}}">{{$user->firstname}}</a><span class="pull-right">{{$number}}</span></p>
                         <div class="progress m-b-20" style="height: 10px;">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: {{$number}}%" aria-valuenow="{{$number}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
