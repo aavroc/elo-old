@@ -390,6 +390,8 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                     <td>
                                                         @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp
                                                         @if(is_object($task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()))
+                                                        
+
                                                             <i class="{{$stats[$task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()->pivot->evaluation][1]}}"></i>
                                                             {{$stats[$task->users()->where('task_id', $task->id)->first()->pivot->evaluation][0]}}
                                                         @else

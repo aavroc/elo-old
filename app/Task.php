@@ -18,6 +18,6 @@ class Task extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Task', 'users_tasks')->withTimestamps()->withPivot('evaluation');
+        return $this->belongsToMany('App\Task', 'users_tasks')->withTimestamps()->withPivot(['evaluation', 'user_id']);
     }
 }
