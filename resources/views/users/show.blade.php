@@ -352,7 +352,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                 <div class="card-body">
                     <div class="card m-b-30">
                         <div class="card-header bg-white">
-                            <h5 class="card-title text-black">Takenoverzicht</h5>
+                            <h5 class="card-title text-black">Takenoverzicht {{$user->firstname}} {{$user->prefix}} {{$user->lastname}}</h5>
                             <h6 class="card-subtitle">Bekijk de gemaakte taken per module</h6>
                         </div>
                         <div class="card-body">
@@ -387,8 +387,8 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                     <td>{{$task->name}}</td>
                                                     <td>
                                                         @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp
-                                                        @if(is_object($task->users()->where('task_id', $task->id)->first()))
-                                                            <i class="{{$stats[$task->users()->where('task_id', $task->id)->first()->pivot->evaluation][1]}}"></i>
+                                                        @if(is_object($task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()))
+                                                            <i class="{{$stats[$task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()->pivot->evaluation][1]}}"></i>
                                                             {{$stats[$task->users()->where('task_id', $task->id)->first()->pivot->evaluation][0]}}
                                                         @else
                                                             <i class="mdi mdi-play"></i>
