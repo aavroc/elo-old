@@ -8,7 +8,7 @@
         </div>
     </div>
 
-@section('script')
+@section('chartscript')
 <script src="{{ asset('assets/plugins/chart.js/chart.min.js') }}"></script>
 {{-- <script src="{{ asset('assets/plugins/chart.js/chart-bundle.min.js') }}"></script> --}}
 <script src="{{ asset('assets/js/init/chartjs-init.js') }}"></script>

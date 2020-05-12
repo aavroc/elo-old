@@ -41,8 +41,8 @@ class TeacherController extends Controller
                 ]
                 )->with('task')->get();
 
-        
-        
+
+
         $usernameByID = User::pluck('lastname', 'id');
         $task_requests = $requests->pluck('task');
         $counted_tasks = $taken_requests->pluck('task_id')->countBy()->toArray();
@@ -71,7 +71,7 @@ class TeacherController extends Controller
         });
         //remove users without a classroom value
         $grouped_filtered = $grouped->filter(function($value, $key){
-            return $key !== "";
+            return $key !== "" && $key !== "LCTAO2020";
         });
 
         $arr_clasroom_names = array_keys($grouped_filtered->toArray());
