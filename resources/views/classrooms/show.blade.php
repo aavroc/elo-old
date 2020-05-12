@@ -85,7 +85,7 @@ Klas:  {{$classroom->name}}
                                 <td>
                                     @if(isset($user->session))
                                     <span class="text-success" role="alert">
-                                        {{\Carbon\Carbon::parse($user->session->last_activity)->format('d-m-Y - H:i')}}
+                                        {{\Carbon\Carbon::parse($user->session->last_activity, 'Europe/Amsterdam')->format('d-m-Y - H:i')}}
                                     </span>
                                     @else
                                     <span class="text-danger" role="alert">

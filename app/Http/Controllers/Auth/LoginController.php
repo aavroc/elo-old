@@ -68,7 +68,7 @@ class LoginController extends Controller
     {
         $user->status_id = 2;
         $now = Carbon::now();
-        // $now->tz = 'Europe/Amsterdam';
+        $now->tz = 'Europe/Amsterdam';
         // $user->logged_in = $now->toDateTimeString();
         $user->save();
 

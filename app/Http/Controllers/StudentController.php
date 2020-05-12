@@ -210,8 +210,8 @@ class StudentController extends Controller
                             ],
                             [
                                 'extra'     => $request->aanvullend,
-                                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
-                                "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                                "created_at" =>  \Carbon\Carbon::now('Europe/Amsterdam'), # new \Datetime()
+                                "updated_at" => \Carbon\Carbon::now('Europe/Amsterdam'),  # new \Datetime()
                             ]
                         );
                     }
