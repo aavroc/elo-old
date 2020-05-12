@@ -185,6 +185,11 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                     <h5 class="card-title">Modules</h5>
                 </div>
                 <div class="card-body">
+                    @if (\Session::has('geen_github'))
+                    <div class="alert alert-danger">
+                            {!! \Session::get('geen_github') !!}
+                    </div>
+                     @endif
                     <div class="table-responsive">
                         <table class="table">
                             <thead>

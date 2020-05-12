@@ -312,6 +312,11 @@ class AdminController extends Controller
     //laat de moduels uit de db zien op het scherm
     public function show_module(User $user, Module $module, Request $request)
     {
+        // dd($user->firstname);
+        if(Auth::user()->github_nickname == null){
+            return redirect()->route('users.show', $user)->with('geen_github', 'U heeft nog geen github link gemaakt!! Pagina is niet toegankelijk');
+        }
+
         $github = new GitHub();
 
         $commits = null;
@@ -322,29 +327,14 @@ class AdminController extends Controller
         $tasks_level_2 = null;
         $tasks_level_3 = null;
         if ($user->github_nickname != null) {
-            $commits = $github->list_user_commits($module->slug, $user->github_nickname);
-            // $commit_activity = $github->get_last_year_commit_activity($module->name, $user->github_nickname);
-
-            // $user_events = $github->get_user_events($user->github_nickname);
-            // $levels = $github->get_contents($module->slug, '', $user->github_nickname);
-            // $tasks_level_1 = $github->get_contents($module->slug, 'niveau1', $user->github_nickname);
-            // $tasks_level_2 = $github->get_contents($module->slug, 'niveau2', $user->github_nickname);
-            // $tasks_level_3 = $github->get_contents($module->slug, 'niveau3', $user->github_nickname);
+            $commits = $github->list_user_commits($module->slug, $user->github_nickname, $user->github_nickname);
         }
-
-        // dd( $tasks_level_1 );
-        // dd( $commits );
 
         $data = [
             'user'              => $user,
             'module'            => $module,
             'commits'           => $commits,
             'commit_activity'   => $commit_activity, //nog niet toonbaar op het scherm
-            // 'user_events'       => $user_events,
-            // 'levels'            => $levels,
-            // 'tasks_level_1'     => $tasks_level_1,
-            // 'tasks_level_2'     => $tasks_level_2,
-            // 'tasks_level_3'     => $tasks_level_3,
         ];
 
         return view('users.repo', $data);
