@@ -23,6 +23,13 @@
                 <a class="nav-link text-danger" href="{{route('tags.index')}}"><i class="fas fa-tags"></i>
                     Tags</a>
             </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-package-variant"></i><span>Help</span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{route('help.videos')}}">Videos</a></li>
+                  <li><a href="{{route('help.tekst')}}">Tekst</a></li>
+                </ul>
+              </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
