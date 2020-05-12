@@ -389,6 +389,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                                     <td>{{$task->name}}</td>
                                                     <td>
                                                         @php $stats = [['nog mee bezig', 'mdi mdi-reload'], ['voldaan', 'mdi mdi-check']]; @endphp
+                                                        {{dump($task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first())}}
                                                         @if(is_object($task->users()->where('task_id', $task->id)->where('user_id', $user->id)->first()))
                                                         
 
