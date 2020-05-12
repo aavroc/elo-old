@@ -65,7 +65,7 @@ class TeacherController extends Controller
 
     public function getChartDataTotalTasksDonePerClassroom(){
         $users = User::withCount('tasks')->get();
-        $classrooms = $users->groupBy('classroom');
+        // $classrooms = $users->groupBy('classroom');
         $grouped = $users->groupBy('classroom')->map(function($row){
             return $row->sum('tasks_count');
         });
