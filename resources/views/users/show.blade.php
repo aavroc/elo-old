@@ -369,7 +369,7 @@ Overzicht: {{$user->firstname}} {{$user->lastname}}
                                     
                                     @foreach($all_modules as $key => $module)
                                     <div class="tab-pane fade @if($key == 0)show active @endif" id="v-pills-{{$module->slug}}" role="tabpanel" aria-labelledby="v-pills-{{$module->slug}}-tab">
-                                        <a href="https://github.com/{{$user->github_nickname}}">Github</a>
+                                        <a href="https://github.com/{{$user->github_nickname}}/{{$module->slug}}">Github</a>
                                         <table class="table">
                                             <thead>
                                                 <tr>
