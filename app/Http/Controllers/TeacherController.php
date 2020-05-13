@@ -32,8 +32,11 @@ class TeacherController extends Controller
                 ['github_nickname', '!=', NULL]
 
             ]
-        )->get();
-
+        )->withCount('tasks')->get();
+        $users = $users->sortByDesc(function($row){
+            return $row->tasks()->sum('evaluation');
+        });
+        
         $requests = UsersRequest::where('status', '<=' ,  3)->with('task')->orderBy('updated_at')->get();
         $taken_requests = UsersRequest::where('type', '=' , 1)->where(
                 [
@@ -65,7 +68,7 @@ class TeacherController extends Controller
 
     public function getChartDataTotalTasksDonePerClassroom(){
         $users = User::withCount('tasks')->get();
-        $classrooms = $users->groupBy('classroom');
+        // $classrooms = $users->groupBy('classroom');
         $grouped = $users->groupBy('classroom')->map(function($row){
             return $row->sum('tasks_count');
         });
